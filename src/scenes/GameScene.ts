@@ -84,6 +84,9 @@ export class GameScene extends Scene {
             () => this.onSell(),
             (type) => this.onGameAction(type)
         );
+
+        // Initialize button states based on starting resources
+        this.ui.updateButtonStates(this.gold, this.mana);
     }
 
     exit(): void {}
@@ -321,6 +324,7 @@ export class GameScene extends Scene {
                 this.selectedTower.level < this.selectedTower.maxLevel,
                 this.gold
             );
+            this.ui.updateButtonStates(this.gold, this.mana);
         }
     }
 
@@ -332,6 +336,7 @@ export class GameScene extends Scene {
         resources.soundManager.play('sell');
         this.selectedTower = null;
         this.ui.hideTowerActions();
+        this.ui.updateButtonStates(this.gold, this.mana);
     }
 
     private onGameAction(type: GameButtonType): void {
@@ -385,6 +390,9 @@ export class GameScene extends Scene {
 
         resources.soundManager.play('build');
         this.placingTower = null;
+
+        // Update button states to reflect new gold amount
+        this.ui.updateButtonStates(this.gold, this.mana);
     }
 
     private canPlaceTower(col: number, row: number): boolean {
@@ -425,6 +433,8 @@ export class GameScene extends Scene {
             if (!(this.castingSpell instanceof Lightning)) {
                 this.castingSpell = null;
             }
+            // Update button states to reflect new mana amount
+            this.ui.updateButtonStates(this.gold, this.mana);
         }
     }
 
