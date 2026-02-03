@@ -168,6 +168,12 @@ export class GameScene extends Scene {
             }
         }
 
+        // Check for any enemies that died but weren't caught by projectile death checks
+        // (e.g., from bouncing SpreadProjectiles that null their target before dying)
+        for (const enemy of this.enemies) {
+            this.checkEnemyDeath(enemy);
+        }
+
         // Update area effects
         for (const effect of this.areaEffects) {
             effect.update(deltaTime);

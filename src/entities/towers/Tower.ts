@@ -79,12 +79,6 @@ export abstract class Tower extends GameObject {
     fire(): Projectile | null {
         if (!this.canFire() || !this.target) return null;
 
-        // Check if target is still in range
-        if (!this.isInRange(this.target)) {
-            this.target = null;
-            return null;
-        }
-
         this.cooldownTimer = this.attackSpeed * 1000; // Convert to ms
 
         // Play sound
