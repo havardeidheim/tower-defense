@@ -1,0 +1,82 @@
+nn
+nn nn
+nn nn nn
+1n1n   ff
+nn ssff
+ss ssff
+nnnfn sssfs
+3n sssfff
+2n 2n dd
+nnddnnddnnddnndd
+2d  2d  2d
+2s2sdddd ff**
+2s2s 2<2< dddddd
+2s2s <<<<1f1f1f1f1f1f
+ssdd 2s2sdd <<****
+2s2s 3<3<3d<3d
+4* 4*
+5* 5*
+
+nn ff
+nnnn ff
+nn ns nd
+ss  <<ff
+nnnnnnss dddd 
+nn << dfdfdfdf ssssss dd
+ssss  <<<< dd **
+<<<<ffff ss  ffffff
+<2d<2d<2d<2d<2d<2d
+1ss<<1d* 1ss<<1d* 1ss<<1d* 1ss<<1d*
+ss1s1s dddddddddddddddddddddd
+2s2s2s2s d<d d<d **
+3*3*3*3*
+2n2n2n2n2n2n2s2s2<3<3<3<
+1s1s1s1s1<1<1s1s1s1s1d1d1s1s1s1s1<1<1s1s1s1s1d1d
+
+nn|
+|nn
+n|n
+nnn
+nnf||f
+nnnnnn
+nnnfff
+|s||s||f||f|
+sss   nnn   fff
+dd||dd||dd||
+sss   <ff
+sss   <<<
+nsnf<ff<f
+nnnnnnd<dd<d
+2d||2d||2d||
+sss<<<ddd
+1s1s1s1s1s1s|||dddddd
+1s1s1s1s1s1s|||<<<<<<
+sss<<<nnssnn   1s1s1s1s1s1s
+***s1f1f1fs1f1f1fssss1f1f1f
+ss|ss|dd|dd|dd|2<2<|2d2d|
+1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d
+**<<<<ddddddssssss1<1<1<1<1<1<ddd
+
+nnnn
+nnnnnn
+nnnnff
+ffffffff
+ssssnnnnff
+ssssssnnnnnnffff
+ssssssssssffffffff
+1s1s <<<<<<
+2s2s dddddd
+2s2s <<<<dddd
+2s2s <<dd**
+1s1s1s1s<<<<****
+1d1d1d1d12s2sd1d1d1d1d1d1d1d1d1d1d
+2n2n2n2n2<2<2<2<2<2<2<
+1*1*1*1*1*1*1*1*1*1*1*1*1*
+2s1<d2s1<d2s1<d2s1<d2s1<d2s1<d2s1<d2s1<d2s1<d
+2s1<1d2s1<1d2s1<1d2s1<1d2s1<1d2s1<1d2s1<1d2s1<1d2s1<1d
+4*4*4*4*4*4*
+7f7f7f7f7f7f7f7f
+7s7s7s7sff
+5d5d5d5d5d
+3s2<2d3s2<2d3s2<2d3s2<2d3s2<2d3s2<2d3s2<2d3s2<2d3s2<2d3s2<2d
+7*7*7*
