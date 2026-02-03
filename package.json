@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dev": "tsc && vite",
+    "build": "tsc && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.83.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  }
+}
