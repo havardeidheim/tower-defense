@@ -4,12 +4,13 @@
   "description": "Road Defender: Revenge of the Road - A TypeScript tower defense game",
   "type": "module",
   "scripts": {
-    "dev": "node build.cjs --watch",
-    "build": "node build.cjs"
+    "dev": "tsc --noEmit && vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "esbuild": "^0.20.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.0.0"
   },
   "keywords": ["tower-defense", "game", "typescript"],
   "license": "MIT"
