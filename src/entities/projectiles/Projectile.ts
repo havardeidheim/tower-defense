@@ -35,7 +35,7 @@ export abstract class Projectile extends GameObject {
         }
     }
 
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         if (!this.active) return;
 
         // Update velocity to track target (heat-seeking)

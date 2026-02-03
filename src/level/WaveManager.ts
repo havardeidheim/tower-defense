@@ -6,7 +6,6 @@ import { DodgeEnemy } from '../entities/enemies/DodgeEnemy';
 import { NoslowEnemy } from '../entities/enemies/NoslowEnemy';
 import { SuperEnemy } from '../entities/enemies/SuperEnemy';
 import { Level } from './Level';
-import { Vector2 } from '../core/Vector2';
 import {
     TILE_SIZE,
     ENEMY_NORMAL, ENEMY_FAST, ENEMY_SHIELD,

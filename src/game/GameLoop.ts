@@ -1,4 +1,4 @@
-import { TARGET_FPS, FRAME_TIME } from './constants';
+import { FRAME_TIME } from './constants';
 
 export class GameLoop {
     private lastTime: number = 0;

@@ -1,6 +1,6 @@
 import { Projectile } from './Projectile';
 import { Enemy } from '../enemies/Enemy';
-import { SHIELD_DAMAGE_REDUCTION, DODGE_CHANCE } from '../../game/constants';
+import { SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 export class PoisonProjectile extends Projectile {
     poisonTicks: number;

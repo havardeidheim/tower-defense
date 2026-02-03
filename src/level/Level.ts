@@ -1,6 +1,6 @@
 import { Tile, TileType } from './Tile';
 import { Vector2 } from '../core/Vector2';
-import { TILE_SIZE, TILE_PATH, TILE_SPAWN, TILE_TARGET, TILE_GROUND, TILE_OBSTACLE } from '../game/constants';
+import { TILE_SIZE, TILE_GROUND } from '../game/constants';
 import { LevelData } from '../resources/LevelLoader';
 
 export type Direction = 'u' | 'd' | 'l' | 'r';

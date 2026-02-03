@@ -10,8 +10,8 @@ export class UIManager {
     private buttons: Button[] = [];
     towerButtons: TowerButton[] = [];
     spellButtons: SpellButton[] = [];
-    upgradeButton: UpgradeButton;
-    sellButton: SellButton;
+    upgradeButton!: UpgradeButton;
+    sellButton!: SellButton;
     gameButtons: GameButton[] = [];
     infoDisplay: InfoDisplay;
 

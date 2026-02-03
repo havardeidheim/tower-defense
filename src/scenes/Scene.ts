@@ -8,8 +8,8 @@ export abstract class Scene {
     abstract update(deltaTime: number): void;
     abstract render(ctx: CanvasRenderingContext2D): void;
 
-    handleClick(x: number, y: number): void {}
-    handleRightClick(x: number, y: number): void {}
-    handleMouseMove(x: number, y: number): void {}
-    handleKeyDown(key: string): void {}
+    handleClick(_x: number, _y: number): void {}
+    handleRightClick(_x: number, _y: number): void {}
+    handleMouseMove(_x: number, _y: number): void {}
+    handleKeyDown(_key: string): void {}
 }

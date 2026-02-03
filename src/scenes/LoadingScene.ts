@@ -6,7 +6,6 @@ import { MenuScene } from './MenuScene';
 export class LoadingScene extends Scene {
     private progress: number = 0;
     private message: string = 'Loading...';
-    private loadingComplete: boolean = false;
 
     enter(): void {
         resources.onProgress((progress, message) => {
@@ -15,7 +14,6 @@ export class LoadingScene extends Scene {
         });
 
         resources.loadAll().then(() => {
-            this.loadingComplete = true;
             // Transition to menu after a short delay
             setTimeout(() => {
                 this.game.setScene(new MenuScene());

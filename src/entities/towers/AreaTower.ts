@@ -1,7 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
 import { Projectile } from '../projectiles/Projectile';
-import { TOWER_AREA, TILE_SIZE } from '../../game/constants';
+import { TOWER_AREA } from '../../game/constants';
 import { resources } from '../../resources/ResourceLoader';
 
 export class AreaTower extends Tower {

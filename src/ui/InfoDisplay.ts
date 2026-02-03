@@ -1,4 +1,3 @@
-import { resources } from '../resources/ResourceLoader';
 import { ENEMY_NORMAL, ENEMY_FAST, ENEMY_SHIELD, ENEMY_DODGE, ENEMY_NOSLOW, ENEMY_SUPER } from '../game/constants';
 
 export class InfoDisplay {
