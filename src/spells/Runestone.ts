@@ -13,7 +13,7 @@ export class Runestone extends Spell {
     }
 
     getImageKey(): string {
-        return 'ground'; // Shows ground tile as preview
+        return 'blanctower';
     }
 
     canCastAt(x: number, y: number, context: SpellContext): boolean {
@@ -50,17 +50,17 @@ export class Runestone extends Spell {
         const snapX = col * TILE_SIZE;
         const snapY = row * TILE_SIZE;
 
-        const img = resources.imageCache.get('ground');
-        if (img) {
-            ctx.globalAlpha = 0.7;
-            ctx.drawImage(img, snapX, snapY, TILE_SIZE, TILE_SIZE);
-            ctx.globalAlpha = 1.0;
-
-            if (!valid) {
-                const crossImg = resources.imageCache.get('cross');
-                if (crossImg) {
-                    ctx.drawImage(crossImg, snapX, snapY, TILE_SIZE, TILE_SIZE);
-                }
+        if (valid) {
+            const img = resources.imageCache.get('blanctower');
+            if (img) {
+                ctx.globalAlpha = 0.7;
+                ctx.drawImage(img, snapX, snapY, TILE_SIZE, TILE_SIZE);
+                ctx.globalAlpha = 1.0;
+            }
+        } else {
+            const crossImg = resources.imageCache.get('cross');
+            if (crossImg) {
+                ctx.drawImage(crossImg, snapX, snapY, TILE_SIZE, TILE_SIZE);
             }
         }
     }

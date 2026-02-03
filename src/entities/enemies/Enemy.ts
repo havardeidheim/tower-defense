@@ -48,7 +48,7 @@ export abstract class Enemy extends GameObject {
             if (this.poisonTimer >= POISON_TICK_INTERVAL) {
                 this.poisonTimer -= POISON_TICK_INTERVAL;
                 this.poisonTicks--;
-                this.health -= POISON_DAMAGE_PER_TICK;
+                this.takePoisonDamage(POISON_DAMAGE_PER_TICK);
             }
         }
 
@@ -170,6 +170,11 @@ export abstract class Enemy extends GameObject {
     takeDamage(amount: number): boolean {
         this.health -= amount;
         return this.health <= 0;
+    }
+
+    // Called each poison tick - can be overridden by ShieldEnemy/SuperEnemy for damage reduction
+    takePoisonDamage(amount: number): void {
+        this.health -= amount;
     }
 
     applyPoison(ticks: number): void {

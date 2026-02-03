@@ -1,5 +1,5 @@
 import { Enemy } from './Enemy';
-import { ENEMY_GOLD_REWARD } from '../../game/constants';
+import { ENEMY_GOLD_REWARD, SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 export class SuperEnemy extends Enemy {
     constructor(x: number, y: number, healthLevel: number = 0) {
@@ -34,6 +34,20 @@ export class SuperEnemy extends Enemy {
 
     canBlockSlow(): boolean {
         return true;
+    }
+
+    // 50% chance to dodge poison application (original Java behavior)
+    applyPoison(ticks: number): void {
+        if (Math.random() > 0.5) {
+            super.applyPoison(ticks);
+        }
+        // else: dodged the poison
+    }
+
+    // Shield reduces poison tick damage (original Java behavior)
+    takePoisonDamage(amount: number): void {
+        const reducedDamage = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
+        this.health -= reducedDamage;
     }
 
     protected getFallbackColor(): string {

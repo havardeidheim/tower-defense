@@ -12,7 +12,7 @@ export class SpellButton extends Button {
     constructor(x: number, y: number, spellType: SpellType, onCast: (type: SpellType) => void) {
         super(x, y, 40, 40);
         this.spellType = spellType;
-        this.imageKey = spellType === 'Lightning' ? 'lightningknapp' : 'ground';
+        this.imageKey = spellType === 'Lightning' ? 'lightningknapp' : 'blanctower';
         this.onCast = onCast;
     }
 

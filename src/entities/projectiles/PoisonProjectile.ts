@@ -1,14 +1,13 @@
 import { Projectile } from './Projectile';
 import { Enemy } from '../enemies/Enemy';
-import { SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 export class PoisonProjectile extends Projectile {
-    poisonTicks: number;
+    // In original Java, damage = number of poison ticks to apply
+    // No immediate damage is dealt - only poison is applied
 
-    constructor(x: number, y: number, target: Enemy, damage: number, poisonTicks: number) {
-        super(x, y, target, damage);
+    constructor(x: number, y: number, target: Enemy, poisonTicks: number) {
+        super(x, y, target, poisonTicks); // damage field stores poison ticks
         this.speed = 6;
-        this.poisonTicks = poisonTicks;
     }
 
     getImageKey(): string {
@@ -18,21 +17,9 @@ export class PoisonProjectile extends Projectile {
     onHit(): void {
         if (!this.target || this.target.isDead()) return;
 
-        // Check if target can dodge
-        if (this.target.canDodge && this.target.canDodge()) {
-            return; // Dodged!
-        }
-
-        // Apply initial damage (reduced by shield)
-        let finalDamage = this.damage;
-        if (this.target.hasShield && this.target.hasShield()) {
-            finalDamage = Math.max(0, finalDamage - SHIELD_DAMAGE_REDUCTION);
-        }
-
-        // Apply damage - blocking is handled by enemy's takeDamage method
-        this.target.takeDamage(finalDamage);
-
-        // Apply poison effect - blocking is handled by enemy's applyPoison method
-        this.target.applyPoison(this.poisonTicks);
+        // Apply poison effect only (no immediate damage)
+        // The enemy's applyPoison handles dodge chance for DodgeEnemy/SuperEnemy
+        // Each tick will deal POISON_DAMAGE_PER_TICK (18) damage
+        this.target.applyPoison(this.damage); // damage = number of ticks
     }
 }

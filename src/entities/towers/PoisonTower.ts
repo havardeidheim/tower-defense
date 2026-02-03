@@ -5,9 +5,10 @@ import { Projectile } from '../projectiles/Projectile';
 import { TOWER_POISON } from '../../game/constants';
 
 export class PoisonTower extends Tower {
-    poisonDuration: number = 3; // Number of poison ticks
+    // In the original Java, "damage" represents the number of poison ticks applied
+    // Each tick deals a fixed 18 damage (POISON_DAMAGE_PER_TICK)
 
-    getBaseDamage(): number { return 2; }
+    getBaseDamage(): number { return 2; } // Base poison ticks
     getBaseRange(): number { return 120; }
     getBaseSpeed(): number { return 1.2; }
     getCost(): number { return 70; }
@@ -16,31 +17,36 @@ export class PoisonTower extends Tower {
     getSoundKey(): string { return 'poison'; }
 
     getUpgradeCost(): number {
-        const costs = [35, 50, 70];
+        const costs = [40, 80, 120];
         return this.level < this.maxLevel ? costs[this.level] : 0;
     }
 
     protected applyUpgrade(): void {
-        // +1 duration, +1 damage each level
-        this.poisonDuration = 3 + this.level;
+        // +1 tick per level, extra +1 at max level
+        // L0: 2 ticks, L1: 3 ticks, L2: 4 ticks, L3: 6 ticks
         this.damage = this.getBaseDamage() + this.level;
+        if (this.level >= 3) {
+            this.damage += 1; // Extra tick at max level
+        }
     }
 
-    // Override scan to prioritize unpoisoned enemies
+    // Override scan to prioritize enemies with least poison (original Java behavior)
     scan(enemies: Enemy[]): void {
         let bestTarget: Enemy | null = null;
         let lowestPoison = Infinity;
-        let bestDistance = -1;
+        let bestProgress = -1;
 
         for (const enemy of enemies) {
             if (enemy.isDead() || !enemy.active) continue;
             if (!this.isInRange(enemy)) continue;
 
-            // Prioritize enemies with fewer poison ticks
-            if (enemy.poisonTicks < lowestPoison ||
-                (enemy.poisonTicks === lowestPoison && enemy.pixelsTraveled > bestDistance)) {
+            // Primary: fewer poison ticks. Secondary: most progress (original Java logic)
+            if (enemy.poisonTicks < lowestPoison) {
                 lowestPoison = enemy.poisonTicks;
-                bestDistance = enemy.pixelsTraveled;
+                bestProgress = enemy.pixelsTraveled;
+                bestTarget = enemy;
+            } else if (enemy.poisonTicks === lowestPoison && enemy.pixelsTraveled > bestProgress) {
+                bestProgress = enemy.pixelsTraveled;
                 bestTarget = enemy;
             }
         }
@@ -49,6 +55,7 @@ export class PoisonTower extends Tower {
     }
 
     createProjectile(target: Enemy): Projectile {
-        return new PoisonProjectile(this.centerX, this.centerY, target, this.damage, this.poisonDuration);
+        // damage = number of poison ticks to apply
+        return new PoisonProjectile(this.centerX, this.centerY, target, this.damage);
     }
 }

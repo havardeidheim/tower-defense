@@ -16,16 +16,18 @@ export class AreaTower extends Tower {
     getSoundKey(): string { return 'frost'; }
 
     getUpgradeCost(): number {
-        const costs = [40, 60, 80];
+        const costs = [40, 80, 120];
         return this.level < this.maxLevel ? costs[this.level] : 0;
     }
 
     protected applyUpgrade(): void {
-        // +6 damage, +5% slow (30%→50%), +20 range at L3
+        // +6 damage, +5% slow per level, at max level: +20 range and 50% slow
         this.damage = this.getBaseDamage() + this.level * 6;
-        this.slowPercent = 0.3 + this.level * 0.05;
         if (this.level >= 3) {
             this.range = this.getBaseRange() + 20;
+            this.slowPercent = 0.5;
+        } else {
+            this.slowPercent = 0.3 + this.level * 0.05;
         }
     }
 

@@ -34,6 +34,12 @@ export class ShieldEnemy extends Enemy {
         return this.health <= 0;
     }
 
+    // Shield reduces poison tick damage (original Java behavior)
+    takePoisonDamage(amount: number): void {
+        const reducedDamage = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
+        this.health -= reducedDamage;
+    }
+
     protected getFallbackColor(): string {
         return '#4169E1'; // Royal blue for soldier (shield)
     }

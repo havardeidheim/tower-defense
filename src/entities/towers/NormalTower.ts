@@ -14,8 +14,7 @@ export class NormalTower extends Tower {
     getSoundKey(): string { return 'stone'; }
 
     getUpgradeCost(): number {
-        // Costs: L1->L2: 40, L2->L3: 60, L3: max
-        const costs = [40, 60, 80];
+        const costs = [40, 80, 120];
         return this.level < this.maxLevel ? costs[this.level] : 0;
     }
 

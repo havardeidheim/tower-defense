@@ -18,15 +18,28 @@ export class SpreadTower extends Tower {
     getSoundKey(): string { return 'fire'; }
 
     getUpgradeCost(): number {
-        const costs = [40, 60, 80];
+        const costs = [40, 80, 120];
         return this.level < this.maxLevel ? costs[this.level] : 0;
     }
 
     protected applyUpgrade(): void {
-        // +1 target (2→3→4), +2 damage, bounces at L3
-        this.targetCount = 2 + this.level;
-        this.damage = this.getBaseDamage() + this.level * 2;
-        this.canBounce = this.level >= 3;
+        // Matches original Java logic:
+        // L1: 3 targets, 18 dmg
+        // L2: 4 targets, 22 dmg
+        // L3: 4 targets, 22 dmg, bounce enabled
+        if (this.level === 3) {
+            this.targetCount = 4;
+            this.damage = 22;
+            this.canBounce = true;
+        } else if (this.level === 2) {
+            this.targetCount = 4;
+            this.damage = 22;
+            this.canBounce = false;
+        } else {
+            this.targetCount = 2 + this.level;
+            this.damage = this.getBaseDamage() + this.level * 2;
+            this.canBounce = false;
+        }
     }
 
     // Override scan to find multiple targets
