@@ -28,9 +28,11 @@ export class MenuScene extends Scene {
         const levels = resources.levelLoader.getAllLevels();
         const saveData = this.saveManager.load();
 
-        const startY = 180;
-        const buttonHeight = 60;
-        const spacing = 20;
+        const buttonHeight = 50;
+        const spacing = 15;
+        // Center buttons vertically: title ends ~130, leave margin at bottom
+        const totalHeight = levels.length * buttonHeight + (levels.length - 1) * spacing;
+        const startY = 140 + (CANVAS_HEIGHT - 140 - totalHeight) / 2;
 
         levels.forEach((level, index) => {
             this.levelButtons.push({
@@ -131,30 +133,30 @@ export class MenuScene extends Scene {
 
         // Level name
         ctx.fillStyle = unlocked ? 'white' : '#666';
-        ctx.font = 'bold 18px Times New Roman';
+        ctx.font = 'bold 16px Times New Roman';
         ctx.textAlign = 'left';
-        ctx.fillText(`${levelIndex + 1}. ${name}`, bounds.x + 15, bounds.y + 25);
+        ctx.fillText(`${levelIndex + 1}. ${name}`, bounds.x + 15, bounds.y + 20);
 
         // Stars
         if (unlocked && stars > 0) {
             ctx.fillStyle = '#FFD700';
-            ctx.font = '20px Times New Roman';
+            ctx.font = '18px Times New Roman';
             const starStr = '\u2605'.repeat(stars) + '\u2606'.repeat(5 - stars);
             ctx.textAlign = 'right';
-            ctx.fillText(starStr, bounds.right - 15, bounds.y + 25);
+            ctx.fillText(starStr, bounds.right - 15, bounds.y + 20);
         }
 
         // Locked indicator
         if (!unlocked) {
             ctx.fillStyle = '#666';
-            ctx.font = '14px Times New Roman';
+            ctx.font = '12px Times New Roman';
             ctx.textAlign = 'center';
-            ctx.fillText('Locked', bounds.centerX, bounds.y + 45);
+            ctx.fillText('Locked', bounds.centerX, bounds.y + 38);
         } else {
             ctx.fillStyle = '#888';
-            ctx.font = '12px Times New Roman';
+            ctx.font = '11px Times New Roman';
             ctx.textAlign = 'left';
-            ctx.fillText('Click to play', bounds.x + 15, bounds.y + 45);
+            ctx.fillText('Click to play', bounds.x + 15, bounds.y + 38);
         }
     }
 }

@@ -4,7 +4,7 @@ import { SpellButton, SpellType } from './SpellButton';
 import { UpgradeButton, SellButton } from './ActionButton';
 import { GameButton, GameButtonType } from './GameButton';
 import { InfoDisplay } from './InfoDisplay';
-import { GAME_WIDTH } from '../game/constants';
+import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT } from '../game/constants';
 
 export class UIManager {
     private buttons: Button[] = [];
@@ -39,38 +39,40 @@ export class UIManager {
     }
 
     private createButtons(): void {
-        const uiX = GAME_WIDTH + 15;
+        // Center tower buttons: 4 × 40px + 3 × 10px gaps = 190px, centered in 220px
+        const towerStartX = GAME_WIDTH + 15;  // 15px margin each side
 
         // Tower buttons (row at y=35)
         const towerTypes: TowerType[] = ['Normal', 'Area', 'Spread', 'Poison'];
         towerTypes.forEach((type, i) => {
-            const btn = new TowerButton(uiX + i * 50, 35, type, this.onTowerSelect);
+            const btn = new TowerButton(towerStartX + i * 50, 35, type, this.onTowerSelect);
             this.towerButtons.push(btn);
             this.buttons.push(btn);
         });
 
-        // Spell buttons (row at y=105)
+        // Spell buttons (row at y=105) - aligned with first two tower buttons
         const spellTypes: SpellType[] = ['Lightning', 'Runestone'];
         spellTypes.forEach((type, i) => {
-            const btn = new SpellButton(uiX + i * 50, 105, type, this.onSpellSelect);
+            const btn = new SpellButton(towerStartX + i * 50, 105, type, this.onSpellSelect);
             this.spellButtons.push(btn);
             this.buttons.push(btn);
         });
 
         // Upgrade and Sell buttons
-        this.upgradeButton = new UpgradeButton(uiX, 380, this.onUpgrade);
-        this.sellButton = new SellButton(uiX + 60, 380, this.onSell);
+        this.upgradeButton = new UpgradeButton(towerStartX, 380, this.onUpgrade);
+        this.sellButton = new SellButton(towerStartX + 60, 380, this.onSell);
         this.buttons.push(this.upgradeButton);
         this.buttons.push(this.sellButton);
 
-        // Game control buttons
+        // Game control buttons: 3 × 70px + 2 × 5px gaps = 220px
+        const gameStartX = GAME_WIDTH + 5;  // 5px margin
         const gameButtonConfigs: { type: GameButtonType; label: string }[] = [
             { type: 'start', label: 'Start' },
             { type: 'fast', label: 'Fast' },
             { type: 'menu', label: 'Menu' }
         ];
         gameButtonConfigs.forEach((config, i) => {
-            const btn = new GameButton(uiX + i * 75, 450, config.type, config.label, this.onGameAction);
+            const btn = new GameButton(gameStartX + i * 72, 450, config.type, config.label, this.onGameAction);
             this.gameButtons.push(btn);
             this.buttons.push(btn);
         });
@@ -128,7 +130,7 @@ export class UIManager {
     render(ctx: CanvasRenderingContext2D): void {
         // Draw UI background
         ctx.fillStyle = '#1a1a2e';
-        ctx.fillRect(GAME_WIDTH, 0, 214, 506);
+        ctx.fillRect(GAME_WIDTH, 0, UI_WIDTH, CANVAS_HEIGHT);
 
         // Draw all buttons
         for (const button of this.buttons) {

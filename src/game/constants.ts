@@ -9,9 +9,9 @@ export const TILE_TARGET = 't';
 export const TILE_SIZE = 40;
 export const GAME_WIDTH = 640;
 export const GAME_HEIGHT = 480;
-export const UI_WIDTH = 214;
-export const CANVAS_WIDTH = 854;
-export const CANVAS_HEIGHT = 506;
+export const UI_WIDTH = 220;
+export const CANVAS_WIDTH = 860;
+export const CANVAS_HEIGHT = 480;
 export const MAP_COLS = 16;
 export const MAP_ROWS = 12;
 
