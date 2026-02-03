@@ -89,7 +89,12 @@ export class SpreadProjectile extends Projectile {
             this.hasBounced = true;
             this.usedTarget = this.target;
             this.target = null!;
-            // Don't die yet - scan() will be called next update to find new target
+            // Immediately scan for bounce target
+            this.scan();
+            if (!this.target) {
+                // No valid bounce target found - die
+                this.active = false;
+            }
         }
     }
 
