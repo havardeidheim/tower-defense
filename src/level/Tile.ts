@@ -55,9 +55,9 @@ export class Tile {
                 break;
             }
             case TILE_GROUND: {
-                const groundImg = imageCache.get('ground');
-                if (groundImg) {
-                    ctx.drawImage(groundImg, this.x, this.y, TILE_SIZE, TILE_SIZE);
+                const blanctowerImg = imageCache.get('blanctower');
+                if (blanctowerImg) {
+                    ctx.drawImage(blanctowerImg, this.x, this.y, TILE_SIZE, TILE_SIZE);
                 }
                 break;
             }

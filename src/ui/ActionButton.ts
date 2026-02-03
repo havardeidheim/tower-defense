@@ -3,6 +3,7 @@ import { resources } from '../resources/ResourceLoader';
 
 export class UpgradeButton extends Button {
     cost: number = 0;
+    private canUpgrade: boolean = false;
     private onUpgrade: () => void;
 
     constructor(x: number, y: number, onUpgrade: () => void) {
@@ -38,6 +39,14 @@ export class UpgradeButton extends Button {
 
     setCost(cost: number): void {
         this.cost = cost;
+    }
+
+    setCanUpgrade(canUpgrade: boolean): void {
+        this.canUpgrade = canUpgrade;
+    }
+
+    updateEnabled(gold: number): void {
+        this.enabled = this.canUpgrade && gold >= this.cost;
     }
 }
 

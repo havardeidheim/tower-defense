@@ -95,11 +95,15 @@ export class UIManager {
     updateButtonStates(gold: number, mana: number): void {
         this.towerButtons.forEach(btn => btn.updateEnabled(gold));
         this.spellButtons.forEach(btn => btn.updateEnabled(mana));
+        if (this.upgradeButton.visible) {
+            this.upgradeButton.updateEnabled(gold);
+        }
     }
 
     showTowerActions(upgradeCost: number, sellValue: number, canUpgrade: boolean, gold: number): void {
         this.upgradeButton.visible = true;
         this.upgradeButton.setCost(upgradeCost);
+        this.upgradeButton.setCanUpgrade(canUpgrade);
         this.upgradeButton.enabled = canUpgrade && gold >= upgradeCost;
 
         this.sellButton.visible = true;

@@ -233,11 +233,11 @@ export class GameScene extends Scene {
         if (allWavesDone && noEnemiesLeft) {
             this.gameState = 'won';
 
-            // Calculate stars
-            const stars = this.lives >= 5 ? 3 : this.lives >= 3 ? 2 : 1;
+            // Calculate stars (1 star per life remaining)
+            const stars = this.lives;
 
             // Play appropriate sound
-            if (stars === 3) {
+            if (stars >= 4) {
                 resources.soundManager.play('verygood');
             } else {
                 resources.soundManager.play('ok');
@@ -586,9 +586,9 @@ export class GameScene extends Scene {
             ctx.font = 'bold 48px Times New Roman';
             ctx.fillText('Victory!', GAME_WIDTH / 2, GAME_HEIGHT / 2 - 30);
 
-            const stars = this.lives >= 5 ? 3 : this.lives >= 3 ? 2 : 1;
+            const stars = this.lives;
             ctx.font = '36px Times New Roman';
-            ctx.fillText('\u2605'.repeat(stars) + '\u2606'.repeat(3 - stars), GAME_WIDTH / 2, GAME_HEIGHT / 2 + 20);
+            ctx.fillText('\u2605'.repeat(stars) + '\u2606'.repeat(5 - stars), GAME_WIDTH / 2, GAME_HEIGHT / 2 + 20);
         } else {
             ctx.fillStyle = '#FF4444';
             ctx.font = 'bold 48px Times New Roman';

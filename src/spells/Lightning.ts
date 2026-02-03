@@ -109,4 +109,14 @@ export class Lightning extends Spell {
             }
         }
     }
+
+    renderPreview(ctx: CanvasRenderingContext2D, x: number, y: number, _valid: boolean): void {
+        // Only show the lightning icon, no red overlay
+        const img = resources.imageCache.get(this.getImageKey());
+        if (img) {
+            ctx.globalAlpha = 0.7;
+            ctx.drawImage(img, x - 40, y - 40, 40, 40);
+            ctx.globalAlpha = 1.0;
+        }
+    }
 }

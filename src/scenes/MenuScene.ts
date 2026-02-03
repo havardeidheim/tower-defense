@@ -139,7 +139,7 @@ export class MenuScene extends Scene {
         if (unlocked && stars > 0) {
             ctx.fillStyle = '#FFD700';
             ctx.font = '20px Times New Roman';
-            const starStr = '\u2605'.repeat(stars) + '\u2606'.repeat(3 - stars);
+            const starStr = '\u2605'.repeat(stars) + '\u2606'.repeat(5 - stars);
             ctx.textAlign = 'right';
             ctx.fillText(starStr, bounds.right - 15, bounds.y + 25);
         }
