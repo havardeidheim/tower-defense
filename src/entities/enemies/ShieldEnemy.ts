@@ -2,8 +2,6 @@ import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 export class ShieldEnemy extends Enemy {
-    private shieldHits: number = 3;
-
     constructor(x: number, y: number, healthLevel: number = 0) {
         super(x, y, healthLevel);
         this.goldReward = Math.floor(ENEMY_GOLD_REWARD * 1.5);
