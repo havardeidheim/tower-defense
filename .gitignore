@@ -2,3 +2,4 @@ dist/
 node_modules/
 .claude/
 original-java-game/src/resources/sounds/
+public/sounds/
