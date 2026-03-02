@@ -135,8 +135,10 @@ export abstract class Enemy extends GameObject {
 
         // Draw poison indicator
         if (this.poisonTicks > 0) {
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
-            ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10);
+            ctx.fillStyle = 'rgba(0, 200, 0, 0.8)';
+            ctx.beginPath();
+            ctx.arc(this.x + this.width - 4, this.y + this.height - 4, 3, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
 

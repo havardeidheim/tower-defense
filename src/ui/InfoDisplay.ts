@@ -14,10 +14,10 @@ export class InfoDisplay {
         const x = this.x;
         let y = this.y;
 
-        ctx.font = 'bold 16px Times New Roman';
+        ctx.font = 'bold 18px Arial';
 
         // Gold
-        ctx.fillStyle = '#FFA500';
+        ctx.fillStyle = '#FFD54F';
         ctx.fillText(`Gold: ${gold}`, x, y);
         y += 25;
 
@@ -32,7 +32,7 @@ export class InfoDisplay {
         y += 25;
 
         // Wave
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = '#DDD';
         ctx.fillText(`Wave: ${wave + 1}/${totalWaves}`, x, y);
     }
 
@@ -47,13 +47,13 @@ export class InfoDisplay {
         const panelHeight = 80;
         this.drawInfoPanel(ctx, panelX, panelY, panelWidth, panelHeight);
 
-        ctx.font = 'bold 14px Times New Roman';
-        ctx.fillStyle = '#FFA500';
+        ctx.font = 'bold 15px Arial';
+        ctx.fillStyle = '#FFD54F';
         ctx.fillText(`${tower.getType()} Tower (Lv ${tower.level + 1})`, x, y);
         y += 20;
 
-        ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'black';
+        ctx.font = '13px Arial';
+        ctx.fillStyle = '#DDD';
         ctx.fillText(`Damage: ${tower.damage}`, x, y);
         y += 16;
         ctx.fillText(`Range: ${tower.range}`, x, y);

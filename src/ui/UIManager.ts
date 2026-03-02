@@ -27,7 +27,7 @@ const TOWER_DESCRIPTIONS: Record<TowerType, ShopItemInfo> = {
             'Increased range',
         ],
         priceLabel: `Price: ${TOWER_COSTS['Normal']}`,
-        priceColor: '#FFA500',
+        priceColor: '#FFD54F',
     },
     Area: {
         name: 'Tower of Frostshock',
@@ -43,7 +43,7 @@ const TOWER_DESCRIPTIONS: Record<TowerType, ShopItemInfo> = {
             'Increased range',
         ],
         priceLabel: `Price: ${TOWER_COSTS['Area']}`,
-        priceColor: '#FFA500',
+        priceColor: '#FFD54F',
     },
     Spread: {
         name: 'Tower of Scatterflames',
@@ -60,7 +60,7 @@ const TOWER_DESCRIPTIONS: Record<TowerType, ShopItemInfo> = {
             'strike two targets',
         ],
         priceLabel: `Price: ${TOWER_COSTS['Spread']}`,
-        priceColor: '#FFA500',
+        priceColor: '#FFD54F',
     },
     Poison: {
         name: 'Tower of Poisoning',
@@ -77,7 +77,7 @@ const TOWER_DESCRIPTIONS: Record<TowerType, ShopItemInfo> = {
             'Increased duration',
         ],
         priceLabel: `Price: ${TOWER_COSTS['Poison']}`,
-        priceColor: '#FFA500',
+        priceColor: '#FFD54F',
     },
 };
 
@@ -315,21 +315,21 @@ export class UIManager {
         let y = panelY + 16;
 
         // Title
-        ctx.font = 'bold 14px Times New Roman';
-        ctx.fillStyle = '#FFA500';
+        ctx.font = 'bold 15px Arial';
+        ctx.fillStyle = '#FFD54F';
         ctx.textAlign = 'left';
         ctx.fillText(info.name, textX, y);
         y += 18;
 
         // Price
-        ctx.font = 'bold 12px Times New Roman';
+        ctx.font = 'bold 14px Arial';
         ctx.fillStyle = info.priceColor;
         ctx.fillText(info.priceLabel, textX, y);
         y += 18;
 
         // Description
-        ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'black';
+        ctx.font = '13px Arial';
+        ctx.fillStyle = '#DDD';
         for (const line of info.description) {
             if (line !== '') {
                 ctx.fillText(line, textX, y);

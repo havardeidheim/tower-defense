@@ -30,13 +30,13 @@ export class GameButton extends Button {
         ctx.fillStyle = this.active ? '#887755' : '#554433';
         ctx.fillRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
 
-        ctx.strokeStyle = this.hovered ? '#FFA500' : '#333';
+        ctx.strokeStyle = this.hovered ? '#FFD54F' : '#333';
         ctx.lineWidth = 1;
         ctx.strokeRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
 
         // Draw label
-        ctx.fillStyle = this.enabled ? '#FFA500' : '#666';
-        ctx.font = 'bold 12px Times New Roman';
+        ctx.fillStyle = this.enabled ? '#FFD54F' : '#666';
+        ctx.font = 'bold 13px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(this.label, this.bounds.centerX, this.bounds.centerY);

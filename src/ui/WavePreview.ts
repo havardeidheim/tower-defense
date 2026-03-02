@@ -135,8 +135,8 @@ export class WavePreview {
         if (!this.visible) return;
 
         // Header
-        ctx.font = 'bold 14px Times New Roman';
-        ctx.fillStyle = 'black';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillStyle = '#DDD';
         ctx.textAlign = 'left';
         ctx.fillText('Next Wave:', GAME_WIDTH + 20, this.headerY);
 
@@ -153,14 +153,14 @@ export class WavePreview {
             }
 
             // Draw count to the right
-            ctx.font = 'bold 12px Times New Roman';
-            ctx.fillStyle = count > 0 ? 'black' : '#999';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillStyle = count > 0 ? '#E0E0E0' : '#777';
             ctx.textAlign = 'left';
             ctx.fillText(`×${count}`, icon.bounds.right + 3, icon.bounds.y + 18);
 
             // Hover border
             if (icon.hovered) {
-                ctx.strokeStyle = '#FFA500';
+                ctx.strokeStyle = '#FFD54F';
                 ctx.lineWidth = 2;
                 ctx.strokeRect(icon.bounds.x - 1, icon.bounds.y - 1, icon.bounds.width + 2, icon.bounds.height + 2);
             }
@@ -191,15 +191,15 @@ export class WavePreview {
         ctx.strokeRect(panelX + 2, panelY + 2, panelWidth - 4, panelHeight - 4);
 
         // Title
-        ctx.font = 'bold 14px Times New Roman';
-        ctx.fillStyle = '#FFA500';
+        ctx.font = 'bold 15px Arial';
+        ctx.fillStyle = '#FFD54F';
         ctx.textAlign = 'left';
         ctx.fillText(hovered.displayName, x, y);
         y += 18;
 
         // Description
-        ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'black';
+        ctx.font = '13px Arial';
+        ctx.fillStyle = '#DDD';
         for (const line of hovered.description) {
             ctx.fillText(line, x, y);
             y += 15;

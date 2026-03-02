@@ -38,7 +38,7 @@ export class SpellButton extends Button {
         // Draw cost below
         const cost = SPELL_COSTS[this.spellType];
         ctx.fillStyle = this.enabled ? '#4169E1' : '#888';
-        ctx.font = 'bold 12px Times New Roman';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(`${cost}`, this.bounds.centerX, this.bounds.bottom + 14);
         ctx.textAlign = 'left';

@@ -25,8 +25,8 @@ export class UpgradeButton extends Button {
         this.drawImage(ctx, 'upgradeknapp');
 
         // Draw cost
-        ctx.fillStyle = this.enabled ? '#FFA500' : '#888';
-        ctx.font = 'bold 12px Times New Roman';
+        ctx.fillStyle = this.enabled ? '#FFD54F' : '#888';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(`${this.cost}`, this.bounds.centerX, this.bounds.bottom + 14);
         ctx.textAlign = 'left';
@@ -74,7 +74,7 @@ export class SellButton extends Button {
 
         // Draw value
         ctx.fillStyle = '#32CD32';
-        ctx.font = 'bold 12px Times New Roman';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(`+${this.value}`, this.bounds.centerX, this.bounds.bottom + 14);
         ctx.textAlign = 'left';

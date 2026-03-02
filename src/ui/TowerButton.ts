@@ -31,8 +31,8 @@ export class TowerButton extends Button {
 
         // Draw cost below
         const cost = TOWER_COSTS[this.towerType];
-        ctx.fillStyle = this.enabled ? '#FFA500' : '#888';
-        ctx.font = 'bold 12px Times New Roman';
+        ctx.fillStyle = this.enabled ? '#FFD54F' : '#888';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(`${cost}`, this.bounds.centerX, this.bounds.bottom + 14);
         ctx.textAlign = 'left';
@@ -45,7 +45,7 @@ export class TowerButton extends Button {
 
         // Highlight if hovered
         if (this.hovered && this.enabled) {
-            ctx.strokeStyle = '#FFA500';
+            ctx.strokeStyle = '#FFD54F';
             ctx.lineWidth = 2;
             ctx.strokeRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
         }
