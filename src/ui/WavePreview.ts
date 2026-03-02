@@ -64,7 +64,7 @@ const ENEMY_DATA: EnemyIconData[] = [
         description: [
             'Low health',
             'Fast movement',
-            'Immune to slow',
+            '50% chance to resist slow',
             '50% chance to dodge attacks',
             'Mitigates damage every hit'
         ]

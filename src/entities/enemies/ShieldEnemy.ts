@@ -13,7 +13,7 @@ export class ShieldEnemy extends Enemy {
     }
 
     getBaseHealth(): number {
-        return 150;
+        return 130;
     }
 
     getBaseSpeed(): number {

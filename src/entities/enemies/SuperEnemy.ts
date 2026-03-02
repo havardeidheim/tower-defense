@@ -12,16 +12,16 @@ export class SuperEnemy extends Enemy {
     }
 
     getBaseHealth(): number {
-        return 500;
+        return 70;
     }
 
     getBaseSpeed(): number {
-        return 40;
+        return 65;
     }
 
     // Super enemy has all abilities
     canDodge(): boolean {
-        return Math.random() < 0.25; // 25% dodge chance (less than DodgeEnemy)
+        return Math.random() < 0.5; // 50% dodge chance (same as DodgeEnemy)
     }
 
     hasShield(): boolean {
@@ -34,6 +34,13 @@ export class SuperEnemy extends Enemy {
 
     canBlockSlow(): boolean {
         return true;
+    }
+
+    // 50% chance to resist slow effects (original Java behavior)
+    applySlow(amount: number, duration: number): void {
+        if (Math.random() > 0.5) {
+            super.applySlow(amount, duration);
+        }
     }
 
     // 50% chance to dodge poison application (original Java behavior)

@@ -21,6 +21,14 @@ export class NoslowEnemy extends Enemy {
         return 65;
     }
 
+    // Noslow uses a different health scaling: 120 + 100*level (not 120 + 120*level)
+    protected initStats(): void {
+        this.maxHealth = 120 + 100 * this.healthLevel;
+        this.health = this.maxHealth;
+        this.maxSpeed = this.getBaseSpeed();
+        this.speed = this.maxSpeed;
+    }
+
     // Override takeDamage - blocks consume attacks
     takeDamage(amount: number): boolean {
         if (this.blocksRemaining > 0) {

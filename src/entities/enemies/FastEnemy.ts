@@ -12,7 +12,7 @@ export class FastEnemy extends Enemy {
     }
 
     getBaseHealth(): number {
-        return 60;
+        return 100;
     }
 
     getBaseSpeed(): number {

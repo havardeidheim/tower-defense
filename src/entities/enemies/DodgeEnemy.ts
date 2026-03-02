@@ -14,7 +14,7 @@ export class DodgeEnemy extends Enemy {
     }
 
     getBaseHealth(): number {
-        return 80;
+        return 70;
     }
 
     getBaseSpeed(): number {
