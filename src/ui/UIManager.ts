@@ -5,7 +5,105 @@ import { UpgradeButton, SellButton } from './ActionButton';
 import { GameButton, GameButtonType } from './GameButton';
 import { InfoDisplay } from './InfoDisplay';
 import { WavePreview } from './WavePreview';
-import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT } from '../game/constants';
+import { resources } from '../resources/ResourceLoader';
+import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT, TOWER_COSTS, SPELL_COSTS } from '../game/constants';
+
+interface ShopItemInfo {
+    name: string;
+    description: string[];
+    priceLabel: string;
+    priceColor: string;
+}
+
+const TOWER_DESCRIPTIONS: Record<TowerType, ShopItemInfo> = {
+    Normal: {
+        name: 'Tower of Stonehurling',
+        description: [
+            'Hurls stones at the enemy',
+            '',
+            'Levelup:',
+            'Increased speed',
+            'Increased damage',
+            'Increased range',
+        ],
+        priceLabel: `Price: ${TOWER_COSTS['Normal']}`,
+        priceColor: '#FFA500',
+    },
+    Area: {
+        name: 'Tower of Frostshock',
+        description: [
+            'Damages and slows all',
+            'enemies in range',
+            '',
+            'Levelup:',
+            'Increased slow',
+            'Increased damage',
+            '',
+            'Level 4:',
+            'Increased range',
+        ],
+        priceLabel: `Price: ${TOWER_COSTS['Area']}`,
+        priceColor: '#FFA500',
+    },
+    Spread: {
+        name: 'Tower of Scatterflames',
+        description: [
+            'Fires heatseeking fireballs',
+            'at multiple enemies',
+            '',
+            'Levelup:',
+            'Extra fireballs',
+            'Increased damage',
+            '',
+            'Level 4:',
+            'Fireballs now',
+            'strike two targets',
+        ],
+        priceLabel: `Price: ${TOWER_COSTS['Spread']}`,
+        priceColor: '#FFA500',
+    },
+    Poison: {
+        name: 'Tower of Poisoning',
+        description: [
+            'Poisons the enemy causing',
+            'damage every second.',
+            'Hits on already poisoned',
+            'enemies will increase the',
+            'duration of the poison.',
+            'Prioritizes nonpoisoned',
+            'enemies',
+            '',
+            'Levelup:',
+            'Increased duration',
+        ],
+        priceLabel: `Price: ${TOWER_COSTS['Poison']}`,
+        priceColor: '#FFA500',
+    },
+};
+
+const SPELL_DESCRIPTIONS: Record<SpellType, ShopItemInfo> = {
+    Lightning: {
+        name: 'Lightningbolt',
+        description: [
+            'Stuns and damages a',
+            'single enemy.',
+            'Kills normal enemies',
+            'outright.',
+            "Can't be dodged",
+        ],
+        priceLabel: `Mana: ${SPELL_COSTS['Lightning']}`,
+        priceColor: '#4169E1',
+    },
+    Runestone: {
+        name: 'Place foundation',
+        description: [
+            'Places a foundation to',
+            'build towers on',
+        ],
+        priceLabel: `Mana: ${SPELL_COSTS['Runestone']}`,
+        priceColor: '#4169E1',
+    },
+};
 
 export class UIManager {
     private buttons: Button[] = [];
@@ -132,8 +230,8 @@ export class UIManager {
     }
 
     render(ctx: CanvasRenderingContext2D): void {
-        // Draw UI background
-        ctx.fillStyle = '#1a1a2e';
+        // Draw UI background (olive/brown matching original game)
+        ctx.fillStyle = '#666444';
         ctx.fillRect(GAME_WIDTH, 0, UI_WIDTH, CANVAS_HEIGHT);
 
         // Draw all buttons
@@ -168,5 +266,75 @@ export class UIManager {
 
     hasHoveredEnemy(): boolean {
         return this.wavePreview.getHoveredEnemy() !== null;
+    }
+
+    getHoveredShopInfo(): ShopItemInfo | null {
+        for (const btn of this.towerButtons) {
+            if (btn.hovered && btn.visible) {
+                return TOWER_DESCRIPTIONS[btn.towerType];
+            }
+        }
+        for (const btn of this.spellButtons) {
+            if (btn.hovered && btn.visible) {
+                return SPELL_DESCRIPTIONS[btn.spellType];
+            }
+        }
+        return null;
+    }
+
+    hasHoveredShopButton(): boolean {
+        return this.getHoveredShopInfo() !== null;
+    }
+
+    renderShopHoverInfo(ctx: CanvasRenderingContext2D): void {
+        const info = this.getHoveredShopInfo();
+        if (!info) return;
+
+        const panelX = GAME_WIDTH + 5;
+        const panelY = 155;
+        const panelWidth = UI_WIDTH - 10;
+        const lineHeight = 15;
+        const panelHeight = 22 + 18 + info.description.length * lineHeight + 8;
+        const textX = GAME_WIDTH + 20;
+
+        // Background
+        const bgImg = resources.imageCache.get('helpback');
+        if (bgImg) {
+            ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
+        } else {
+            ctx.fillStyle = '#777755';
+            ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
+        }
+
+        // Double border
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
+        ctx.strokeRect(panelX + 2, panelY + 2, panelWidth - 4, panelHeight - 4);
+
+        let y = panelY + 16;
+
+        // Title
+        ctx.font = 'bold 14px Times New Roman';
+        ctx.fillStyle = '#FFA500';
+        ctx.textAlign = 'left';
+        ctx.fillText(info.name, textX, y);
+        y += 18;
+
+        // Price
+        ctx.font = 'bold 12px Times New Roman';
+        ctx.fillStyle = info.priceColor;
+        ctx.fillText(info.priceLabel, textX, y);
+        y += 18;
+
+        // Description
+        ctx.font = '12px Times New Roman';
+        ctx.fillStyle = 'black';
+        for (const line of info.description) {
+            if (line !== '') {
+                ctx.fillText(line, textX, y);
+            }
+            y += lineHeight;
+        }
     }
 }

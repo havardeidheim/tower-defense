@@ -532,9 +532,11 @@ export class GameScene extends Scene {
             this.ui.hideWavePreview();
         }
 
-        // Hover info priority: enemy hover > tower info
+        // Hover info priority: enemy hover > shop hover > tower info
         if (this.ui.hasHoveredEnemy()) {
             this.ui.renderEnemyHoverInfo(ctx);
+        } else if (this.ui.hasHoveredShopButton()) {
+            this.ui.renderShopHoverInfo(ctx);
         } else if (this.selectedTower) {
             this.ui.renderTowerInfo(ctx, this.selectedTower);
         }

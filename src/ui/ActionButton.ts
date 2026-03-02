@@ -25,7 +25,7 @@ export class UpgradeButton extends Button {
         this.drawImage(ctx, 'upgradeknapp');
 
         // Draw cost
-        ctx.fillStyle = this.enabled ? '#FFD700' : '#888';
+        ctx.fillStyle = this.enabled ? '#FFA500' : '#888';
         ctx.font = 'bold 12px Times New Roman';
         ctx.textAlign = 'center';
         ctx.fillText(`${this.cost}`, this.bounds.centerX, this.bounds.bottom + 14);

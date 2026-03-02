@@ -3,7 +3,7 @@ import { resources } from '../resources/ResourceLoader';
 import {
     ENEMY_NORMAL, ENEMY_FAST, ENEMY_SHIELD,
     ENEMY_DODGE, ENEMY_NOSLOW, ENEMY_SUPER,
-    GAME_WIDTH
+    GAME_WIDTH, UI_WIDTH
 } from '../game/constants';
 
 interface EnemyIconData {
@@ -136,7 +136,7 @@ export class WavePreview {
 
         // Header
         ctx.font = 'bold 14px Times New Roman';
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = 'black';
         ctx.textAlign = 'left';
         ctx.fillText('Next Wave:', GAME_WIDTH + 20, this.headerY);
 
@@ -154,13 +154,13 @@ export class WavePreview {
 
             // Draw count to the right
             ctx.font = 'bold 12px Times New Roman';
-            ctx.fillStyle = count > 0 ? 'white' : '#666';
+            ctx.fillStyle = count > 0 ? 'black' : '#999';
             ctx.textAlign = 'left';
             ctx.fillText(`×${count}`, icon.bounds.right + 3, icon.bounds.y + 18);
 
             // Hover border
             if (icon.hovered) {
-                ctx.strokeStyle = '#FFD700';
+                ctx.strokeStyle = '#FFA500';
                 ctx.lineWidth = 2;
                 ctx.strokeRect(icon.bounds.x - 1, icon.bounds.y - 1, icon.bounds.width + 2, icon.bounds.height + 2);
             }
@@ -171,14 +171,35 @@ export class WavePreview {
         const hovered = this.getHoveredEnemy();
         if (!hovered) return;
 
+        // Draw info panel background with double border
+        const panelX = GAME_WIDTH + 5;
+        const panelY = y - 16;
+        const panelWidth = UI_WIDTH - 10;
+        const panelHeight = 22 + hovered.description.length * 15 + 8;
+
+        const bgImg = resources.imageCache.get('helpback');
+        if (bgImg) {
+            ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
+        } else {
+            ctx.fillStyle = '#777755';
+            ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
+        }
+
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
+        ctx.strokeRect(panelX + 2, panelY + 2, panelWidth - 4, panelHeight - 4);
+
+        // Title
         ctx.font = 'bold 14px Times New Roman';
-        ctx.fillStyle = '#FFD700';
+        ctx.fillStyle = '#FFA500';
         ctx.textAlign = 'left';
         ctx.fillText(hovered.displayName, x, y);
         y += 18;
 
+        // Description
         ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = 'black';
         for (const line of hovered.description) {
             ctx.fillText(line, x, y);
             y += 15;
