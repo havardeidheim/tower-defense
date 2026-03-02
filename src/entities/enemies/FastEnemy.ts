@@ -7,12 +7,15 @@ export class FastEnemy extends Enemy {
         this.goldReward = ENEMY_GOLD_REWARD;
     }
 
-    getSpriteName(): string {
-        return 'scout';
+    protected initStats(): void {
+        this.maxHealth = 100 + 100 * this.healthLevel;
+        this.health = this.maxHealth;
+        this.maxSpeed = this.getBaseSpeed();
+        this.speed = this.maxSpeed;
     }
 
-    getBaseHealth(): number {
-        return 100;
+    getSpriteName(): string {
+        return 'scout';
     }
 
     getBaseSpeed(): number {

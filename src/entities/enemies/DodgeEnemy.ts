@@ -9,12 +9,15 @@ export class DodgeEnemy extends Enemy {
         this.goldReward = Math.floor(ENEMY_GOLD_REWARD * 1.5);
     }
 
-    getSpriteName(): string {
-        return 'assassin';
+    protected initStats(): void {
+        this.maxHealth = 70 + 70 * this.healthLevel;
+        this.health = this.maxHealth;
+        this.maxSpeed = this.getBaseSpeed();
+        this.speed = this.maxSpeed;
     }
 
-    getBaseHealth(): number {
-        return 70;
+    getSpriteName(): string {
+        return 'assassin';
     }
 
     getBaseSpeed(): number {

@@ -13,10 +13,6 @@ export class NoslowEnemy extends Enemy {
         return 'vanguard';
     }
 
-    getBaseHealth(): number {
-        return 120;
-    }
-
     getBaseSpeed(): number {
         return 65;
     }

@@ -8,12 +8,15 @@ export class ShieldEnemy extends Enemy {
         this.blockedHits = 3;
     }
 
-    getSpriteName(): string {
-        return 'solider';
+    protected initStats(): void {
+        this.maxHealth = 130 + 130 * this.healthLevel;
+        this.health = this.maxHealth;
+        this.maxSpeed = this.getBaseSpeed();
+        this.speed = this.maxSpeed;
     }
 
-    getBaseHealth(): number {
-        return 130;
+    getSpriteName(): string {
+        return 'solider';
     }
 
     getBaseSpeed(): number {

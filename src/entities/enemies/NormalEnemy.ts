@@ -7,12 +7,15 @@ export class NormalEnemy extends Enemy {
         this.goldReward = ENEMY_GOLD_REWARD;
     }
 
-    getSpriteName(): string {
-        return 'peasant';
+    protected initStats(): void {
+        this.maxHealth = 100 + 100 * this.healthLevel;
+        this.health = this.maxHealth;
+        this.maxSpeed = this.getBaseSpeed();
+        this.speed = this.maxSpeed;
     }
 
-    getBaseHealth(): number {
-        return 100;
+    getSpriteName(): string {
+        return 'peasant';
     }
 
     getBaseSpeed(): number {

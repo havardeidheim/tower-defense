@@ -7,12 +7,15 @@ export class SuperEnemy extends Enemy {
         this.goldReward = Math.floor(ENEMY_GOLD_REWARD * 5);
     }
 
-    getSpriteName(): string {
-        return 'paragon';
+    protected initStats(): void {
+        this.maxHealth = 70 + 70 * this.healthLevel;
+        this.health = this.maxHealth;
+        this.maxSpeed = this.getBaseSpeed();
+        this.speed = this.maxSpeed;
     }
 
-    getBaseHealth(): number {
-        return 70;
+    getSpriteName(): string {
+        return 'paragon';
     }
 
     getBaseSpeed(): number {

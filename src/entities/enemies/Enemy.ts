@@ -21,8 +21,8 @@ export abstract class Enemy extends GameObject {
     blockedHits: number = 0;
 
     abstract getSpriteName(): string;
-    abstract getBaseHealth(): number;
     abstract getBaseSpeed(): number;
+    protected abstract initStats(): void;
 
     constructor(x: number, y: number, healthLevel: number = 0) {
         super();
@@ -30,13 +30,6 @@ export abstract class Enemy extends GameObject {
         this.y = y;
         this.healthLevel = healthLevel;
         this.initStats();
-    }
-
-    protected initStats(): void {
-        this.maxHealth = this.getBaseHealth() + this.getBaseHealth() * this.healthLevel;
-        this.health = this.maxHealth;
-        this.maxSpeed = this.getBaseSpeed();
-        this.speed = this.maxSpeed;
     }
 
     update(deltaTime: number): void {
