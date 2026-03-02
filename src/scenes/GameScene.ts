@@ -524,12 +524,19 @@ export class GameScene extends Scene {
         this.ui.renderStats(ctx, this.gold, this.mana, MAX_MANA, this.lives,
             this.waveManager.getCurrentWave(), this.waveManager.getTotalWaves());
 
-        if (this.selectedTower) {
-            this.ui.renderTowerInfo(ctx, this.selectedTower);
+        // Update and render wave preview
+        if (!this.waveManager.isAllWavesComplete()) {
+            this.ui.updateWavePreview(this.waveManager.getNextWaveInfo());
+            this.ui.renderWavePreview(ctx);
+        } else {
+            this.ui.hideWavePreview();
         }
 
-        if (!this.waveManager.isAllWavesComplete()) {
-            this.ui.renderWaveInfo(ctx, this.waveManager.getNextWaveInfo());
+        // Hover info priority: enemy hover > tower info
+        if (this.ui.hasHoveredEnemy()) {
+            this.ui.renderEnemyHoverInfo(ctx);
+        } else if (this.selectedTower) {
+            this.ui.renderTowerInfo(ctx, this.selectedTower);
         }
 
         // Draw game over overlay

@@ -4,6 +4,7 @@ import { SpellButton, SpellType } from './SpellButton';
 import { UpgradeButton, SellButton } from './ActionButton';
 import { GameButton, GameButtonType } from './GameButton';
 import { InfoDisplay } from './InfoDisplay';
+import { WavePreview } from './WavePreview';
 import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT } from '../game/constants';
 
 export class UIManager {
@@ -14,6 +15,7 @@ export class UIManager {
     sellButton!: SellButton;
     gameButtons: GameButton[] = [];
     infoDisplay: InfoDisplay;
+    wavePreview: WavePreview;
 
     private onTowerSelect: (type: TowerType) => void;
     private onSpellSelect: (type: SpellType) => void;
@@ -36,6 +38,7 @@ export class UIManager {
 
         this.createButtons();
         this.infoDisplay = new InfoDisplay(GAME_WIDTH + 20, 180);
+        this.wavePreview = new WavePreview();
     }
 
     private createButtons(): void {
@@ -92,6 +95,7 @@ export class UIManager {
         for (const button of this.buttons) {
             button.setHovered(button.visible && button.containsPoint(x, y));
         }
+        this.wavePreview.handleMouseMove(x, y);
     }
 
     updateButtonStates(gold: number, mana: number): void {
@@ -146,7 +150,23 @@ export class UIManager {
         this.infoDisplay.renderTowerInfo(ctx, tower);
     }
 
-    renderWaveInfo(ctx: CanvasRenderingContext2D, enemyCounts: Map<string, number>): void {
-        this.infoDisplay.renderWaveInfo(ctx, enemyCounts);
+    updateWavePreview(enemyCounts: Map<string, number>): void {
+        this.wavePreview.updateCounts(enemyCounts);
+    }
+
+    hideWavePreview(): void {
+        this.wavePreview.hide();
+    }
+
+    renderWavePreview(ctx: CanvasRenderingContext2D): void {
+        this.wavePreview.render(ctx);
+    }
+
+    renderEnemyHoverInfo(ctx: CanvasRenderingContext2D): void {
+        this.wavePreview.renderHoverInfo(ctx, GAME_WIDTH + 20, 285);
+    }
+
+    hasHoveredEnemy(): boolean {
+        return this.wavePreview.getHoveredEnemy() !== null;
     }
 }

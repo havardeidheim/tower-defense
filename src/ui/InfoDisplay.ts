@@ -1,5 +1,3 @@
-import { ENEMY_NORMAL, ENEMY_FAST, ENEMY_SHIELD, ENEMY_DODGE, ENEMY_NOSLOW, ENEMY_SUPER } from '../game/constants';
-
 export class InfoDisplay {
     x: number;
     y: number;
@@ -53,32 +51,4 @@ export class InfoDisplay {
         ctx.fillText(`Speed: ${tower.attackSpeed.toFixed(1)}s`, x, y);
     }
 
-    renderWaveInfo(ctx: CanvasRenderingContext2D, enemyCounts: Map<string, number>): void {
-        if (enemyCounts.size === 0) return;
-
-        const x = this.x;
-        let y = this.y + 280;
-
-        ctx.font = 'bold 14px Times New Roman';
-        ctx.fillStyle = 'white';
-        ctx.fillText('Next Wave:', x, y);
-        y += 20;
-
-        ctx.font = '12px Times New Roman';
-
-        const enemyNames: Record<string, string> = {
-            [ENEMY_NORMAL]: 'Normal',
-            [ENEMY_FAST]: 'Fast',
-            [ENEMY_SHIELD]: 'Shield',
-            [ENEMY_DODGE]: 'Dodge',
-            [ENEMY_NOSLOW]: 'Noslow',
-            [ENEMY_SUPER]: 'Super'
-        };
-
-        for (const [type, count] of enemyCounts) {
-            const name = enemyNames[type] || type;
-            ctx.fillText(`${name}: ${count}`, x, y);
-            y += 14;
-        }
-    }
 }
