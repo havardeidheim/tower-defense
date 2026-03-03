@@ -3,19 +3,21 @@ import { resources } from '../resources/ResourceLoader';
 
 export abstract class Button {
     bounds: Rectangle;
+    hoverBounds: Rectangle;
     enabled: boolean = true;
     visible: boolean = true;
     hovered: boolean = false;
 
     constructor(x: number, y: number, width: number, height: number) {
         this.bounds = new Rectangle(x, y, width, height);
+        this.hoverBounds = this.bounds;
     }
 
     abstract render(ctx: CanvasRenderingContext2D): void;
     abstract onClick(): void;
 
     containsPoint(x: number, y: number): boolean {
-        return this.bounds.contains(x, y);
+        return this.hoverBounds.contains(x, y);
     }
 
     setHovered(hovered: boolean): void {

@@ -26,14 +26,8 @@ export class SpellButton extends Button {
     render(ctx: CanvasRenderingContext2D): void {
         if (!this.visible) return;
 
-        // Draw blank button background
-        this.drawImage(ctx, 'blancknapp');
-
         // Draw spell icon
-        const iconImg = resources.imageCache.get(this.imageKey);
-        if (iconImg) {
-            ctx.drawImage(iconImg, this.bounds.x + 4, this.bounds.y + 4, 32, 32);
-        }
+        this.drawImage(ctx, this.imageKey);
 
         // Draw cost below
         const cost = SPELL_COSTS[this.spellType];

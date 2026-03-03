@@ -5,6 +5,7 @@ import { UpgradeButton, SellButton } from './ActionButton';
 import { GameButton, GameButtonType } from './GameButton';
 import { InfoDisplay } from './InfoDisplay';
 import { WavePreview } from './WavePreview';
+import { Rectangle } from '../core/Rectangle';
 import { resources } from '../resources/ResourceLoader';
 import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT, TOWER_COSTS, SPELL_COSTS } from '../game/constants';
 
@@ -142,11 +143,14 @@ export class UIManager {
     private createButtons(): void {
         // Center tower buttons: 4 × 40px + 3 × 10px gaps = 190px, centered in 220px
         const towerStartX = GAME_WIDTH + 15;  // 15px margin each side
+        const spacing = 50;
 
         // Tower buttons (row at y=16, centered in box 1: 0-150)
         const towerTypes: TowerType[] = ['Normal', 'Area', 'Spread', 'Poison'];
         towerTypes.forEach((type, i) => {
-            const btn = new TowerButton(towerStartX + i * 50, 16, type, this.onTowerSelect);
+            const btn = new TowerButton(towerStartX + i * spacing, 16, type, this.onTowerSelect);
+            // Expand hover zone to fill cell: edge-to-edge horizontally, down to spell row vertically
+            btn.hoverBounds = new Rectangle(towerStartX + i * spacing, 0, spacing, 70);
             this.towerButtons.push(btn);
             this.buttons.push(btn);
         });
@@ -154,7 +158,9 @@ export class UIManager {
         // Spell buttons (row at y=80, centered in box 1: 0-150)
         const spellTypes: SpellType[] = ['Lightning', 'Runestone'];
         spellTypes.forEach((type, i) => {
-            const btn = new SpellButton(towerStartX + i * 50, 80, type, this.onSpellSelect);
+            const btn = new SpellButton(towerStartX + i * spacing, 80, type, this.onSpellSelect);
+            // Expand hover zone to fill cell: edge-to-edge horizontally, up to tower row vertically
+            btn.hoverBounds = new Rectangle(towerStartX + i * spacing, 70, spacing, 80);
             this.spellButtons.push(btn);
             this.buttons.push(btn);
         });
@@ -308,14 +314,14 @@ export class UIManager {
         const info = this.getHoveredShopInfo();
         if (!info) return;
 
-        const panelX = GAME_WIDTH + 5;
-        const panelY = 155;
-        const panelWidth = UI_WIDTH - 10;
+        const panelX = GAME_WIDTH;
+        const panelY = 150;
+        const panelWidth = UI_WIDTH;
+        const panelHeight = 200;
         const lineHeight = 15;
-        const panelHeight = 22 + 18 + info.description.length * lineHeight + 8;
         const textX = GAME_WIDTH + 20;
 
-        // Background
+        // Background - fill Zone 2 down past "Next Wave:" header
         const bgImg = resources.imageCache.get('helpback');
         if (bgImg) {
             ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
@@ -324,13 +330,12 @@ export class UIManager {
             ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
         }
 
-        // Double border
+        // Border matching panel divider lines
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 1;
         ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
-        ctx.strokeRect(panelX + 2, panelY + 2, panelWidth - 4, panelHeight - 4);
 
-        let y = panelY + 16;
+        let y = panelY + 28;
 
         // Title
         ctx.font = 'bold 15px Arial';

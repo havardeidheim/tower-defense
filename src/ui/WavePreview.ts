@@ -73,6 +73,7 @@ const ENEMY_DATA: EnemyIconData[] = [
 
 class EnemyIcon {
     bounds: Rectangle;
+    hoverBounds: Rectangle;
     enemyType: string;
     spriteKey: string;
     displayName: string;
@@ -81,6 +82,7 @@ class EnemyIcon {
 
     constructor(x: number, y: number, data: EnemyIconData) {
         this.bounds = new Rectangle(x, y, 28, 28);
+        this.hoverBounds = this.bounds;
         this.enemyType = data.enemyType;
         this.spriteKey = data.spriteKey;
         this.displayName = data.displayName;
@@ -100,14 +102,26 @@ export class WavePreview {
         this.headerY = 342;
         const row1Y = 360;
         const row2Y = 393;
+        const rowSplit = 390; // Midpoint between row bottoms
+
+        // x-division between columns: midpoint between count text end (~53px) and next icon (67px)
+        const colDivOffset = 60;
 
         // Row 1: Peasant, Scout, Solider
         for (let i = 0; i < 3; i++) {
-            this.icons.push(new EnemyIcon(startX + i * colSpacing, row1Y, ENEMY_DATA[i]));
+            const icon = new EnemyIcon(startX + i * colSpacing, row1Y, ENEMY_DATA[i]);
+            const hoverLeft = i === 0 ? startX : startX + (i - 1) * colSpacing + colDivOffset;
+            const hoverRight = i === 2 ? startX + 2 * colSpacing + colSpacing : startX + i * colSpacing + colDivOffset;
+            icon.hoverBounds = new Rectangle(hoverLeft, this.headerY, hoverRight - hoverLeft, rowSplit - this.headerY);
+            this.icons.push(icon);
         }
         // Row 2: Assassin, Vanguard, Paragon
         for (let i = 0; i < 3; i++) {
-            this.icons.push(new EnemyIcon(startX + i * colSpacing, row2Y, ENEMY_DATA[i + 3]));
+            const icon = new EnemyIcon(startX + i * colSpacing, row2Y, ENEMY_DATA[i + 3]);
+            const hoverLeft = i === 0 ? startX : startX + (i - 1) * colSpacing + colDivOffset;
+            const hoverRight = i === 2 ? startX + 2 * colSpacing + colSpacing : startX + i * colSpacing + colDivOffset;
+            icon.hoverBounds = new Rectangle(hoverLeft, rowSplit, hoverRight - hoverLeft, row2Y + 28 + 15 - rowSplit);
+            this.icons.push(icon);
         }
     }
 
@@ -122,7 +136,7 @@ export class WavePreview {
 
     handleMouseMove(x: number, y: number): void {
         for (const icon of this.icons) {
-            icon.hovered = this.visible && icon.bounds.contains(x, y);
+            icon.hovered = this.visible && icon.hoverBounds.contains(x, y);
         }
     }
 
@@ -169,15 +183,15 @@ export class WavePreview {
         }
     }
 
-    renderHoverInfo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
+    renderHoverInfo(ctx: CanvasRenderingContext2D, x: number, _y: number): void {
         const hovered = this.getHoveredEnemy();
         if (!hovered) return;
 
-        // Draw info panel background with double border
-        const panelX = GAME_WIDTH + 5;
-        const panelY = y - 16;
-        const panelWidth = UI_WIDTH - 10;
-        const panelHeight = 22 + hovered.description.length * 15 + 8;
+        // Fill Zone 2 down past "Next Wave:" header
+        const panelX = GAME_WIDTH;
+        const panelY = 150;
+        const panelWidth = UI_WIDTH;
+        const panelHeight = 200;
 
         const bgImg = resources.imageCache.get('helpback');
         if (bgImg) {
@@ -187,12 +201,13 @@ export class WavePreview {
             ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
         }
 
+        // Border matching panel divider lines
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 1;
         ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
-        ctx.strokeRect(panelX + 2, panelY + 2, panelWidth - 4, panelHeight - 4);
 
         // Title
+        let y = panelY + 28;
         ctx.font = 'bold 15px Arial';
         ctx.fillStyle = '#FFD54F';
         ctx.textAlign = 'left';
