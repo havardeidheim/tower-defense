@@ -1,1 +1,0 @@
-export { AreaShot } from './AreaShot';
