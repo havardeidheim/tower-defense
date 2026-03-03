@@ -39,10 +39,6 @@ export class LoadingScene extends Scene {
         ctx.textAlign = 'center';
         ctx.fillText('Road Defender', CANVAS_WIDTH / 2, 150);
 
-        ctx.fillStyle = '#888';
-        ctx.font = '18px Times New Roman';
-        ctx.fillText('Revenge of the Road', CANVAS_WIDTH / 2, 180);
-
         // Progress bar background
         const barWidth = 400;
         const barHeight = 30;

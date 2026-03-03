@@ -92,7 +92,7 @@ const SPELL_DESCRIPTIONS: Record<SpellType, ShopItemInfo> = {
             "Can't be dodged",
         ],
         priceLabel: `Mana: ${SPELL_COSTS['Lightning']}`,
-        priceColor: '#4169E1',
+        priceColor: '#66BBFF',
     },
     Runestone: {
         name: 'Place foundation',
@@ -101,7 +101,7 @@ const SPELL_DESCRIPTIONS: Record<SpellType, ShopItemInfo> = {
             'build towers on',
         ],
         priceLabel: `Mana: ${SPELL_COSTS['Runestone']}`,
-        priceColor: '#4169E1',
+        priceColor: '#66BBFF',
     },
 };
 

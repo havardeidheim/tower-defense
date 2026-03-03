@@ -22,7 +22,7 @@ export class InfoDisplay {
         y += 25;
 
         // Mana
-        ctx.fillStyle = '#4488FF';
+        ctx.fillStyle = '#66BBFF';
         ctx.fillText(`Mana: ${mana}/${maxMana}`, x, y);
         y += 25;
 

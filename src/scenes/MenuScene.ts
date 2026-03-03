@@ -1,7 +1,7 @@
 import { Scene } from './Scene';
 import { resources } from '../resources/ResourceLoader';
 import { SaveManager } from '../save/SaveManager';
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../game/constants';
+import { CANVAS_WIDTH, CANVAS_HEIGHT, TILE_PATH, TILE_TARGET, TILE_SPAWN } from '../game/constants';
 import { GameScene } from './GameScene';
 import { Rectangle } from '../core/Rectangle';
 
@@ -11,7 +11,13 @@ interface LevelButton {
     name: string;
     unlocked: boolean;
     stars: number;
+    map: string[][];
 }
+
+const TILE_PX = 8;
+const LEVEL_SPACING = 200;
+const LEVEL_START_X = 50;
+const MAP_Y = 300;
 
 export class MenuScene extends Scene {
     private levelButtons: LevelButton[] = [];
@@ -28,24 +34,22 @@ export class MenuScene extends Scene {
         const levels = resources.levelLoader.getAllLevels();
         const saveData = this.saveManager.load();
 
-        const buttonHeight = 50;
-        const spacing = 15;
-        // Center buttons vertically: title ends ~130, leave margin at bottom
-        const totalHeight = levels.length * buttonHeight + (levels.length - 1) * spacing;
-        const startY = 140 + (CANVAS_HEIGHT - 140 - totalHeight) / 2;
-
         levels.forEach((level, index) => {
+            const mapWidth = (level.map[0]?.length || 16) * TILE_PX;
+            const mapHeight = level.map.length * TILE_PX;
+
             this.levelButtons.push({
                 bounds: new Rectangle(
-                    CANVAS_WIDTH / 2 - 150,
-                    startY + index * (buttonHeight + spacing),
-                    300,
-                    buttonHeight
+                    LEVEL_START_X + index * LEVEL_SPACING,
+                    MAP_Y,
+                    mapWidth,
+                    mapHeight
                 ),
                 levelIndex: index,
                 name: level.name,
                 unlocked: saveData.levelsUnlocked[index] || index === 0,
-                stars: saveData.starsEarned[index] || 0
+                stars: saveData.starsEarned[index] || 0,
+                map: level.map
             });
         });
     }
@@ -75,7 +79,6 @@ export class MenuScene extends Scene {
     private startLevel(levelIndex: number): void {
         const level = resources.levelLoader.getLevel(levelIndex);
         if (level) {
-            // Play level start sound
             const sounds = ['endiscoming', 'forseevictory', 'noonealive', 'letsgo'];
             if (sounds[levelIndex]) {
                 resources.soundManager.play(sounds[levelIndex]);
@@ -90,73 +93,80 @@ export class MenuScene extends Scene {
         if (bgImg) {
             ctx.drawImage(bgImg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         } else {
-            ctx.fillStyle = '#1a1a2e';
+            ctx.fillStyle = '#666444';
             ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }
 
-        // Semi-transparent overlay
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
         // Title
-        ctx.fillStyle = '#FFD700';
-        ctx.font = 'bold 36px Times New Roman';
+        ctx.fillStyle = 'black';
+        ctx.font = 'bold 48px Times New Roman';
         ctx.textAlign = 'center';
-        ctx.fillText('Road Defender', CANVAS_WIDTH / 2, 80);
+        ctx.fillText('Road Defender', CANVAS_WIDTH / 2, 150);
 
-        ctx.fillStyle = '#888';
-        ctx.font = '20px Times New Roman';
-        ctx.fillText('Select Level', CANVAS_WIDTH / 2, 120);
-
-        // Level buttons
+        // Level previews
         for (const button of this.levelButtons) {
-            this.renderLevelButton(ctx, button);
+            this.renderLevelPreview(ctx, button);
         }
 
+        // Attribution
+        ctx.fillStyle = 'black';
+        ctx.font = 'bold 16px Times New Roman';
+        ctx.textAlign = 'right';
+        ctx.fillText('Laget av Håvard Eidheim. Lyd fra Empire Earth.', CANVAS_WIDTH - 10, CANVAS_HEIGHT - 4);
         ctx.textAlign = 'left';
     }
 
-    private renderLevelButton(ctx: CanvasRenderingContext2D, button: LevelButton): void {
-        const { bounds, name, unlocked, stars, levelIndex } = button;
-        const hovered = this.hoveredLevel === levelIndex;
+    private renderLevelPreview(ctx: CanvasRenderingContext2D, button: LevelButton): void {
+        const { bounds, name, unlocked, stars, map } = button;
+        const baseX = bounds.x;
+        const baseY = bounds.y;
+        const hovered = this.hoveredLevel === button.levelIndex;
 
-        // Button background
-        ctx.fillStyle = unlocked
-            ? (hovered ? '#3a3a5a' : '#2a2a4a')
-            : '#1a1a2a';
-        ctx.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-
-        // Border
-        ctx.strokeStyle = hovered && unlocked ? '#FFD700' : '#444';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
-
-        // Level name
-        ctx.fillStyle = unlocked ? 'white' : '#666';
+        // Level name above map
+        ctx.fillStyle = 'black';
         ctx.font = 'bold 16px Times New Roman';
         ctx.textAlign = 'left';
-        ctx.fillText(`${levelIndex + 1}. ${name}`, bounds.x + 15, bounds.y + 20);
+        ctx.fillText(name, baseX, baseY - 5);
 
-        // Stars
-        if (unlocked && stars > 0) {
-            ctx.fillStyle = '#FFD700';
-            ctx.font = '18px Times New Roman';
-            const starStr = '\u2605'.repeat(stars) + '\u2606'.repeat(5 - stars);
-            ctx.textAlign = 'right';
-            ctx.fillText(starStr, bounds.right - 15, bounds.y + 20);
+        // Draw map preview — small colored tiles
+        for (let row = 0; row < map.length; row++) {
+            for (let col = 0; col < (map[row]?.length || 0); col++) {
+                const char = map[row][col];
+                if (char === TILE_PATH || char === TILE_TARGET) {
+                    ctx.fillStyle = '#404040';
+                } else if (char === TILE_SPAWN) {
+                    ctx.fillStyle = '#732888';
+                } else {
+                    ctx.fillStyle = '#808080';
+                }
+                ctx.fillRect(baseX + TILE_PX * col, baseY + TILE_PX * row, TILE_PX, TILE_PX);
+            }
         }
 
-        // Locked indicator
+        // Locked overlay
         if (!unlocked) {
-            ctx.fillStyle = '#666';
-            ctx.font = '12px Times New Roman';
-            ctx.textAlign = 'center';
-            ctx.fillText('Locked', bounds.centerX, bounds.y + 38);
-        } else {
-            ctx.fillStyle = '#888';
-            ctx.font = '11px Times New Roman';
-            ctx.textAlign = 'left';
-            ctx.fillText('Click to play', bounds.x + 15, bounds.y + 38);
+            const mapcross = resources.imageCache.get('mapcross');
+            if (mapcross) {
+                ctx.drawImage(mapcross, baseX, baseY);
+            }
+        }
+
+        // Stars below map
+        const mapWidth = (map[0]?.length || 16) * TILE_PX;
+        const starSpacing = mapWidth / 5;
+        const starY = baseY + map.length * TILE_PX + 28;
+        ctx.font = `${starSpacing}px Times New Roman`;
+        ctx.textAlign = 'center';
+        for (let i = 0; i < 5; i++) {
+            ctx.fillStyle = i < stars ? '#FFD700' : '#404040';
+            ctx.fillText('\u2605', baseX + starSpacing * i + starSpacing / 2, starY);
+        }
+
+        // Hover highlight for unlocked levels
+        if (hovered && unlocked) {
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(baseX - 2, baseY - 2, bounds.width + 4, bounds.height + 4);
         }
     }
 }

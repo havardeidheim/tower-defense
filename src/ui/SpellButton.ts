@@ -37,7 +37,7 @@ export class SpellButton extends Button {
 
         // Draw cost below
         const cost = SPELL_COSTS[this.spellType];
-        ctx.fillStyle = this.enabled ? '#4169E1' : '#888';
+        ctx.fillStyle = this.enabled ? '#FFD54F' : '#888';
         ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(`${cost}`, this.bounds.centerX, this.bounds.bottom + 14);
@@ -51,7 +51,7 @@ export class SpellButton extends Button {
 
         // Highlight if hovered
         if (this.hovered && this.enabled) {
-            ctx.strokeStyle = '#4169E1';
+            ctx.strokeStyle = '#FFD54F';
             ctx.lineWidth = 2;
             ctx.strokeRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
         }
