@@ -60,9 +60,8 @@ export const STARTING_LIVES = 5;
 
 // Timing (in ms)
 export const ENEMY_SPAWN_INTERVAL = 1000;
-export const ENEMY_SPAWN_INTERVAL_FAST = 500;
 export const POISON_TICK_INTERVAL = 700;
-export const POISON_TICK_INTERVAL_FAST = 350;
+export const MANA_GRANT_INTERVAL = 1400;
 export const SLOW_DURATION = 1600;
 
 // Combat

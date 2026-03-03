@@ -22,7 +22,7 @@ import { MenuScene } from './MenuScene';
 import {
     TILE_SIZE, GAME_WIDTH, GAME_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT,
     STARTING_GOLD, STARTING_MANA, STARTING_MANA_LEVEL3, MAX_MANA, STARTING_LIVES,
-    TOWER_COSTS, POISON_DAMAGE_PER_TICK, POISON_TICK_INTERVAL, POISON_TICK_INTERVAL_FAST
+    TOWER_COSTS, MANA_GRANT_INTERVAL
 } from '../game/constants';
 
 type GameState = 'waiting' | 'playing' | 'paused' | 'won' | 'lost';
@@ -48,8 +48,7 @@ export class GameScene extends Scene {
     private placingTower: TowerType | null = null;
     private castingSpell: Spell | null = null;
 
-    private poisonTimer: number = 0;
-    private manaAccumulator: number = 0;
+    private manaTimer: number = 0;
 
     private ui!: UIManager;
     private saveManager: SaveManager = new SaveManager();
@@ -111,7 +110,7 @@ export class GameScene extends Scene {
         }
 
         // Update wave spawning
-        const newEnemy = this.waveManager.update(deltaTime, this.fastMode);
+        const newEnemy = this.waveManager.update(deltaTime);
         if (newEnemy) {
             this.enemies.push(newEnemy);
         }
@@ -129,8 +128,8 @@ export class GameScene extends Scene {
             }
         }
 
-        // Update poison damage and mana
-        this.updatePoison(deltaTime);
+        // Update mana
+        this.updateMana(deltaTime);
 
         // Update towers
         for (const tower of this.towers) {
@@ -196,27 +195,12 @@ export class GameScene extends Scene {
         this.ui.updateButtonStates(this.gold, this.mana);
     }
 
-    private updatePoison(deltaTime: number): void {
-        const interval = this.fastMode ? POISON_TICK_INTERVAL_FAST : POISON_TICK_INTERVAL;
-        this.poisonTimer += deltaTime;
-
-        if (this.poisonTimer >= interval) {
-            this.poisonTimer = 0;
-
-            for (const enemy of this.enemies) {
-                if (enemy.active && enemy.poisonTicks > 0) {
-                    enemy.takeDamage(POISON_DAMAGE_PER_TICK);
-                    enemy.poisonTicks--;
-                    this.manaAccumulator++;
-                    this.checkEnemyDeath(enemy);
-                }
-            }
-
-            // Grant mana every 2 poison ticks
-            if (this.manaAccumulator >= 2) {
-                this.mana = Math.min(this.mana + 1, MAX_MANA);
-                this.manaAccumulator = 0;
-            }
+    private updateMana(deltaTime: number): void {
+        // Grant 1 mana every interval
+        this.manaTimer += deltaTime;
+        if (this.manaTimer >= MANA_GRANT_INTERVAL) {
+            this.manaTimer -= MANA_GRANT_INTERVAL;
+            this.mana = Math.min(this.mana + 1, MAX_MANA);
         }
     }
 

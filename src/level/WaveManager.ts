@@ -10,7 +10,7 @@ import {
     TILE_SIZE,
     ENEMY_NORMAL, ENEMY_FAST, ENEMY_SHIELD,
     ENEMY_DODGE, ENEMY_NOSLOW, ENEMY_SUPER,
-    ENEMY_SPAWN_INTERVAL, ENEMY_SPAWN_INTERVAL_FAST
+    ENEMY_SPAWN_INTERVAL
 } from '../game/constants';
 
 export class WaveManager {
@@ -36,7 +36,7 @@ export class WaveManager {
         return true;
     }
 
-    update(deltaTime: number, fastMode: boolean): Enemy | null {
+    update(deltaTime: number): Enemy | null {
         if (this.waveComplete) return null;
 
         const wave = this.level.waves[this.currentWave];
@@ -45,10 +45,9 @@ export class WaveManager {
             return null;
         }
 
-        const interval = fastMode ? ENEMY_SPAWN_INTERVAL_FAST : ENEMY_SPAWN_INTERVAL;
         this.spawnTimer += deltaTime;
 
-        if (this.spawnTimer >= interval) {
+        if (this.spawnTimer >= ENEMY_SPAWN_INTERVAL) {
             this.spawnTimer = 0;
             return this.spawnNextEnemy(wave);
         }
