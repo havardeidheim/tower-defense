@@ -97,9 +97,9 @@ export class WavePreview {
     constructor() {
         const startX = GAME_WIDTH + 15;
         const colSpacing = 67;
-        this.headerY = 305;
-        const row1Y = 322;
-        const row2Y = 355;
+        this.headerY = 342;
+        const row1Y = 360;
+        const row2Y = 393;
 
         // Row 1: Peasant, Scout, Solider
         for (let i = 0; i < 3; i++) {
@@ -154,9 +154,11 @@ export class WavePreview {
 
             // Draw count to the right
             ctx.font = 'bold 14px Arial';
-            ctx.fillStyle = count > 0 ? '#E0E0E0' : '#777';
+            ctx.fillStyle = '#E0E0E0';
+            if (count === 0) ctx.globalAlpha = 0.4;
             ctx.textAlign = 'left';
             ctx.fillText(`×${count}`, icon.bounds.right + 3, icon.bounds.y + 18);
+            ctx.globalAlpha = 1.0;
 
             // Hover border
             if (icon.hovered) {

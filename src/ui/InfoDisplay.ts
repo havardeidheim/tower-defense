@@ -38,13 +38,13 @@ export class InfoDisplay {
 
     renderTowerInfo(ctx: CanvasRenderingContext2D, tower: { getType: () => string; damage: number; range: number; attackSpeed: number; level: number; maxLevel: number }): void {
         const x = this.x;
-        let y = this.y + 120;
+        let y = this.y;
 
-        // Draw info panel background
+        // Draw info panel background (covers stats area in box 2)
         const panelX = GAME_WIDTH + 5;
         const panelY = y - 16;
         const panelWidth = UI_WIDTH - 10;
-        const panelHeight = 80;
+        const panelHeight = 100;
         this.drawInfoPanel(ctx, panelX, panelY, panelWidth, panelHeight);
 
         ctx.font = 'bold 15px Arial';

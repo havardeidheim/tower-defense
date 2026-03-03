@@ -20,7 +20,7 @@ import { resources } from '../resources/ResourceLoader';
 import { SaveManager } from '../save/SaveManager';
 import { MenuScene } from './MenuScene';
 import {
-    TILE_SIZE, GAME_WIDTH, GAME_HEIGHT,
+    TILE_SIZE, GAME_WIDTH, GAME_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT,
     STARTING_GOLD, STARTING_MANA, STARTING_MANA_LEVEL3, MAX_MANA, STARTING_LIVES,
     TOWER_COSTS, POISON_DAMAGE_PER_TICK, POISON_TICK_INTERVAL, POISON_TICK_INTERVAL_FAST
 } from '../game/constants';
@@ -466,10 +466,10 @@ export class GameScene extends Scene {
     }
 
     render(ctx: CanvasRenderingContext2D): void {
-        // Draw background
+        // Draw background across entire canvas (game area + UI panel)
         const bgImg = resources.imageCache.get('background');
         if (bgImg) {
-            ctx.drawImage(bgImg, 0, 0, GAME_WIDTH, GAME_HEIGHT);
+            ctx.drawImage(bgImg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }
 
         // Draw level tiles

@@ -135,7 +135,7 @@ export class UIManager {
         this.onGameAction = onGameAction;
 
         this.createButtons();
-        this.infoDisplay = new InfoDisplay(GAME_WIDTH + 20, 180);
+        this.infoDisplay = new InfoDisplay(GAME_WIDTH + 20, 192);
         this.wavePreview = new WavePreview();
     }
 
@@ -143,25 +143,25 @@ export class UIManager {
         // Center tower buttons: 4 × 40px + 3 × 10px gaps = 190px, centered in 220px
         const towerStartX = GAME_WIDTH + 15;  // 15px margin each side
 
-        // Tower buttons (row at y=35)
+        // Tower buttons (row at y=16, centered in box 1: 0-150)
         const towerTypes: TowerType[] = ['Normal', 'Area', 'Spread', 'Poison'];
         towerTypes.forEach((type, i) => {
-            const btn = new TowerButton(towerStartX + i * 50, 35, type, this.onTowerSelect);
+            const btn = new TowerButton(towerStartX + i * 50, 16, type, this.onTowerSelect);
             this.towerButtons.push(btn);
             this.buttons.push(btn);
         });
 
-        // Spell buttons (row at y=105) - aligned with first two tower buttons
+        // Spell buttons (row at y=80, centered in box 1: 0-150)
         const spellTypes: SpellType[] = ['Lightning', 'Runestone'];
         spellTypes.forEach((type, i) => {
-            const btn = new SpellButton(towerStartX + i * 50, 105, type, this.onSpellSelect);
+            const btn = new SpellButton(towerStartX + i * 50, 80, type, this.onSpellSelect);
             this.spellButtons.push(btn);
             this.buttons.push(btn);
         });
 
-        // Upgrade and Sell buttons
-        this.upgradeButton = new UpgradeButton(towerStartX, 380, this.onUpgrade);
-        this.sellButton = new SellButton(towerStartX + 60, 380, this.onSell);
+        // Upgrade and Sell buttons (in box 2, below stats)
+        this.upgradeButton = new UpgradeButton(towerStartX, 255, this.onUpgrade);
+        this.sellButton = new SellButton(towerStartX + 60, 255, this.onSell);
         this.buttons.push(this.upgradeButton);
         this.buttons.push(this.sellButton);
 
@@ -173,7 +173,7 @@ export class UIManager {
             { type: 'menu', label: 'Menu' }
         ];
         gameButtonConfigs.forEach((config, i) => {
-            const btn = new GameButton(gameStartX + i * 72, 450, config.type, config.label, this.onGameAction);
+            const btn = new GameButton(gameStartX + i * 72, 452, config.type, config.label, this.onGameAction);
             this.gameButtons.push(btn);
             this.buttons.push(btn);
         });
@@ -230,9 +230,27 @@ export class UIManager {
     }
 
     render(ctx: CanvasRenderingContext2D): void {
-        // Draw UI background (olive/brown matching original game)
-        ctx.fillStyle = '#666444';
-        ctx.fillRect(GAME_WIDTH, 0, UI_WIDTH, CANVAS_HEIGHT);
+        // Draw black divider lines matching original game
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+
+        // Vertical line separating game area from panel
+        ctx.beginPath();
+        ctx.moveTo(GAME_WIDTH, 0);
+        ctx.lineTo(GAME_WIDTH, CANVAS_HEIGHT);
+        ctx.stroke();
+
+        // Horizontal line below tower/spell buttons
+        ctx.beginPath();
+        ctx.moveTo(GAME_WIDTH, 150);
+        ctx.lineTo(GAME_WIDTH + UI_WIDTH, 150);
+        ctx.stroke();
+
+        // Horizontal line above wave preview
+        ctx.beginPath();
+        ctx.moveTo(GAME_WIDTH, 300);
+        ctx.lineTo(GAME_WIDTH + UI_WIDTH, 300);
+        ctx.stroke();
 
         // Draw all buttons
         for (const button of this.buttons) {
@@ -261,7 +279,7 @@ export class UIManager {
     }
 
     renderEnemyHoverInfo(ctx: CanvasRenderingContext2D): void {
-        this.wavePreview.renderHoverInfo(ctx, GAME_WIDTH + 20, 285);
+        this.wavePreview.renderHoverInfo(ctx, GAME_WIDTH + 20, 168);
     }
 
     hasHoveredEnemy(): boolean {
