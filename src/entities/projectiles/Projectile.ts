@@ -1,8 +1,8 @@
-import { GameObject } from '../../core/GameObject';
+import { TowerAttack } from '../attacks/TowerAttack';
 import { Enemy } from '../enemies/Enemy';
 import { resources } from '../../resources/ResourceLoader';
 
-export abstract class Projectile extends GameObject {
+export abstract class Projectile extends TowerAttack {
     target: Enemy;
     damage: number;
     speed: number = 6;

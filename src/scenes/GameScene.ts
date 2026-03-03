@@ -7,8 +7,7 @@ import { NormalTower } from '../entities/towers/NormalTower';
 import { AreaTower } from '../entities/towers/AreaTower';
 import { SpreadTower } from '../entities/towers/SpreadTower';
 import { PoisonTower } from '../entities/towers/PoisonTower';
-import { Projectile } from '../entities/projectiles/Projectile';
-import { AreaShot } from '../entities/effects/AreaShot';
+import { TowerAttack } from '../entities/attacks/TowerAttack';
 import { Lightning } from '../spells/Lightning';
 import { Runestone } from '../spells/Runestone';
 import { Spell, SpellContext } from '../spells/Spell';
@@ -34,8 +33,7 @@ export class GameScene extends Scene {
 
     private enemies: Enemy[] = [];
     private towers: Tower[] = [];
-    private projectiles: Projectile[] = [];
-    private areaEffects: AreaShot[] = [];
+    private attacks: TowerAttack[] = [];
 
     private gold: number = STARTING_GOLD;
     private mana: number = STARTING_MANA;
@@ -131,51 +129,24 @@ export class GameScene extends Scene {
         // Update mana
         this.updateMana(deltaTime);
 
-        // Update towers
+        // Update towers and collect attacks
         for (const tower of this.towers) {
             tower.update(deltaTime);
-            tower.scan(this.enemies.filter(e => e.active && !e.isDead()));
+            const aliveEnemies = this.enemies.filter(e => e.active && !e.isDead());
+            const newAttacks = tower.shoot(aliveEnemies);
+            this.attacks.push(...newAttacks);
+        }
 
-            if (tower instanceof AreaTower) {
-                const hits = tower.fireArea(this.enemies.filter(e => e.active && !e.isDead()));
-                if (hits.length > 0) {
-                    // Create area effect at tower position
-                    this.areaEffects.push(new AreaShot(tower.centerX, tower.centerY));
-                    for (const hit of hits) {
-                        hit.enemy.takeDamage(hit.damage);
-                        this.checkEnemyDeath(hit.enemy);
-                    }
-                }
-            } else if (tower instanceof SpreadTower) {
-                const projectiles = tower.fireMultiple(this.enemies.filter(e => e.active && !e.isDead()));
-                this.projectiles.push(...projectiles);
-            } else {
-                const projectile = tower.fire();
-                if (projectile) {
-                    this.projectiles.push(projectile);
-                }
+        // Update all attacks
+        for (const attack of this.attacks) {
+            if (attack.active) {
+                attack.update(deltaTime);
             }
         }
 
-        // Update projectiles
-        for (const projectile of this.projectiles) {
-            if (projectile.active) {
-                projectile.update(deltaTime);
-                if (!projectile.active && projectile.target) {
-                    this.checkEnemyDeath(projectile.target);
-                }
-            }
-        }
-
-        // Check for any enemies that died but weren't caught by projectile death checks
-        // (e.g., from bouncing SpreadProjectiles that null their target before dying)
+        // Check all enemy deaths (awards gold)
         for (const enemy of this.enemies) {
             this.checkEnemyDeath(enemy);
-        }
-
-        // Update area effects
-        for (const effect of this.areaEffects) {
-            effect.update(deltaTime);
         }
 
         // Update spells (for visual effects)
@@ -185,8 +156,7 @@ export class GameScene extends Scene {
 
         // Cleanup inactive objects
         this.enemies = this.enemies.filter(e => e.active);
-        this.projectiles = this.projectiles.filter(p => p.active);
-        this.areaEffects = this.areaEffects.filter(e => e.active);
+        this.attacks = this.attacks.filter(a => a.active);
 
         // Check win/lose conditions
         this.checkGameEnd();
@@ -476,16 +446,11 @@ export class GameScene extends Scene {
             }
         }
 
-        // Draw projectiles
-        for (const projectile of this.projectiles) {
-            if (projectile.active) {
-                projectile.render(ctx);
+        // Draw attacks (projectiles, area effects, etc.)
+        for (const attack of this.attacks) {
+            if (attack.active) {
+                attack.render(ctx);
             }
-        }
-
-        // Draw area effects
-        for (const effect of this.areaEffects) {
-            effect.render(ctx);
         }
 
         // Draw spell effects

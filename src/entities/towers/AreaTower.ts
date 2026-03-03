@@ -1,6 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
-import { Projectile } from '../projectiles/Projectile';
+import { TowerAttack } from '../attacks/TowerAttack';
+import { AreaAttack } from '../attacks/AreaAttack';
 import { TOWER_AREA } from '../../game/constants';
 import { resources } from '../../resources/ResourceLoader';
 
@@ -31,32 +32,20 @@ export class AreaTower extends Tower {
         }
     }
 
-    // Area tower doesn't use projectiles, it hits all in range directly
-    createProjectile(_target: Enemy): Projectile {
-        // Return a dummy - area tower handles damage differently
-        return null as unknown as Projectile;
-    }
-
-    // Override fire to hit all enemies in range
-    fireArea(enemies: Enemy[]): { enemy: Enemy; damage: number }[] {
+    shoot(enemies: Enemy[]): TowerAttack[] {
         if (this.cooldownTimer > 0) return [];
 
-        const hits: { enemy: Enemy; damage: number }[] = [];
+        // Check if any enemy is in range before firing
+        const hasTarget = enemies.some(e => !e.isDead() && e.active && this.isInRange(e));
+        if (!hasTarget) return [];
 
-        for (const enemy of enemies) {
-            if (enemy.isDead() || !enemy.active) continue;
-            if (this.isInRange(enemy)) {
-                hits.push({ enemy, damage: this.damage });
-                // Apply slow
-                enemy.applySlow(this.slowPercent, 1600);
-            }
-        }
+        this.cooldownTimer = this.attackSpeed * 1000;
+        resources.soundManager.play(this.getSoundKey());
 
-        if (hits.length > 0) {
-            this.cooldownTimer = this.attackSpeed * 1000;
-            resources.soundManager.play(this.getSoundKey());
-        }
-
-        return hits;
+        return [new AreaAttack(
+            this.centerX, this.centerY,
+            enemies, this.damage, this.range,
+            this.slowPercent, 1600
+        )];
     }
 }

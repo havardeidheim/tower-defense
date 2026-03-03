@@ -1,7 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
+import { TowerAttack } from '../attacks/TowerAttack';
 import { SpreadProjectile } from '../projectiles/SpreadProjectile';
-import { Projectile } from '../projectiles/Projectile';
 import { TOWER_SPREAD } from '../../game/constants';
 import { resources } from '../../resources/ResourceLoader';
 
@@ -42,44 +42,29 @@ export class SpreadTower extends Tower {
         }
     }
 
-    // Override scan to find multiple targets
-    scanMultiple(enemies: Enemy[]): Enemy[] {
-        const targets: Enemy[] = [];
+    private scanMultiple(enemies: Enemy[]): Enemy[] {
         const sorted = [...enemies]
             .filter(e => !e.isDead() && e.active && this.isInRange(e))
             .sort((a, b) => b.pixelsTraveled - a.pixelsTraveled);
 
-        for (let i = 0; i < Math.min(this.targetCount, sorted.length); i++) {
-            targets.push(sorted[i]);
-        }
-
-        return targets;
+        return sorted.slice(0, this.targetCount);
     }
 
-    createProjectile(target: Enemy): Projectile {
-        return new SpreadProjectile(this.centerX, this.centerY, target, this.damage, this.canBounce);
-    }
-
-    // Fire at multiple targets
-    fireMultiple(enemies: Enemy[]): Projectile[] {
+    shoot(enemies: Enemy[]): TowerAttack[] {
         if (this.cooldownTimer > 0) return [];
 
         const targets = this.scanMultiple(enemies);
         if (targets.length === 0) return [];
 
         this.cooldownTimer = this.attackSpeed * 1000;
+        resources.soundManager.play(this.getSoundKey());
 
-        const projectiles: Projectile[] = [];
+        const attacks: TowerAttack[] = [];
         for (const target of targets) {
             const proj = new SpreadProjectile(this.centerX, this.centerY, target, this.damage, this.canBounce);
             proj.allEnemies = enemies; // For bounce targeting
-            projectiles.push(proj);
+            attacks.push(proj);
         }
-
-        if (projectiles.length > 0) {
-            resources.soundManager.play(this.getSoundKey());
-        }
-
-        return projectiles;
+        return attacks;
     }
 }

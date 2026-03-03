@@ -1,7 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
+import { TowerAttack } from '../attacks/TowerAttack';
 import { NormalProjectile } from '../projectiles/NormalProjectile';
-import { Projectile } from '../projectiles/Projectile';
 import { TOWER_NORMAL } from '../../game/constants';
 
 export class NormalTower extends Tower {
@@ -25,7 +25,10 @@ export class NormalTower extends Tower {
         this.attackSpeed = this.getBaseSpeed() - this.level * 0.1;
     }
 
-    createProjectile(target: Enemy): Projectile {
-        return new NormalProjectile(this.centerX, this.centerY, target, this.damage);
+    shoot(enemies: Enemy[]): TowerAttack[] {
+        this.scan(enemies);
+        return this.fireAtTarget(() =>
+            new NormalProjectile(this.centerX, this.centerY, this.target!, this.damage)
+        );
     }
 }

@@ -1,7 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
+import { TowerAttack } from '../attacks/TowerAttack';
 import { PoisonProjectile } from '../projectiles/PoisonProjectile';
-import { Projectile } from '../projectiles/Projectile';
 import { TOWER_POISON } from '../../game/constants';
 
 export class PoisonTower extends Tower {
@@ -54,8 +54,10 @@ export class PoisonTower extends Tower {
         this.target = bestTarget;
     }
 
-    createProjectile(target: Enemy): Projectile {
-        // damage = number of poison ticks to apply
-        return new PoisonProjectile(this.centerX, this.centerY, target, this.damage);
+    shoot(enemies: Enemy[]): TowerAttack[] {
+        this.scan(enemies);
+        return this.fireAtTarget(() =>
+            new PoisonProjectile(this.centerX, this.centerY, this.target!, this.damage)
+        );
     }
 }

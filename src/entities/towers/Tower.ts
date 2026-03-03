@@ -1,6 +1,6 @@
 import { GameObject } from '../../core/GameObject';
 import { Enemy } from '../enemies/Enemy';
-import { Projectile } from '../projectiles/Projectile';
+import { TowerAttack } from '../attacks/TowerAttack';
 import { resources } from '../../resources/ResourceLoader';
 import { TILE_SIZE } from '../../game/constants';
 
@@ -22,7 +22,7 @@ export abstract class Tower extends GameObject {
     abstract getType(): string;
     abstract getImageKey(): string;
     abstract getSoundKey(): string;
-    abstract createProjectile(target: Enemy): Projectile;
+    abstract shoot(enemies: Enemy[]): TowerAttack[];
 
     constructor(x: number, y: number) {
         super();
@@ -76,15 +76,13 @@ export abstract class Tower extends GameObject {
         return this.cooldownTimer <= 0 && this.target !== null && this.target.active && !this.target.isDead();
     }
 
-    fire(): Projectile | null {
-        if (!this.canFire() || !this.target) return null;
+    protected fireAtTarget(createFn: () => TowerAttack): TowerAttack[] {
+        if (!this.canFire() || !this.target) return [];
 
         this.cooldownTimer = this.attackSpeed * 1000; // Convert to ms
-
-        // Play sound
         resources.soundManager.play(this.getSoundKey());
 
-        return this.createProjectile(this.target);
+        return [createFn()];
     }
 
     upgrade(): boolean {
