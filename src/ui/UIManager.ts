@@ -171,8 +171,8 @@ export class UIManager {
         this.buttons.push(this.upgradeButton);
         this.buttons.push(this.sellButton);
 
-        // Game control buttons: 3 × 70px + 2 × 5px gaps = 220px
-        const gameStartX = GAME_WIDTH + 5;  // 5px margin
+        // Game control buttons: 3 × 70px + 2 × 2px gaps = 214px, centered in 220px panel
+        const gameStartX = GAME_WIDTH + 3;  // 3px margin
         const gameButtonConfigs: { type: GameButtonType; label: string }[] = [
             { type: 'start', label: 'Start' },
             { type: 'fast', label: 'Fast' },
@@ -270,6 +270,9 @@ export class UIManager {
 
     renderTowerInfo(ctx: CanvasRenderingContext2D, tower: { getType: () => string; damage: number; range: number; attackSpeed: number; level: number; maxLevel: number }): void {
         this.infoDisplay.renderTowerInfo(ctx, tower);
+        // Re-render upgrade/sell buttons on top of the info panel
+        this.upgradeButton.render(ctx);
+        this.sellButton.render(ctx);
     }
 
     updateWavePreview(enemyCounts: Map<string, number>): void {

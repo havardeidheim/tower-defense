@@ -37,45 +37,43 @@ export class InfoDisplay {
     }
 
     renderTowerInfo(ctx: CanvasRenderingContext2D, tower: { getType: () => string; damage: number; range: number; attackSpeed: number; level: number; maxLevel: number }): void {
-        const x = this.x;
-        let y = this.y;
+        // Render in the middle panel zone, matching shop hover info style
+        const panelX = GAME_WIDTH;
+        const panelY = 150;
+        const panelWidth = UI_WIDTH;
+        const panelHeight = 200;
 
-        // Draw info panel background (covers stats area in box 2)
-        const panelX = GAME_WIDTH + 5;
-        const panelY = y - 16;
-        const panelWidth = UI_WIDTH - 10;
-        const panelHeight = 100;
-        this.drawInfoPanel(ctx, panelX, panelY, panelWidth, panelHeight);
+        // Background - same as shop hover info
+        const bgImg = resources.imageCache.get('helpback');
+        if (bgImg) {
+            ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
+        } else {
+            ctx.fillStyle = '#777755';
+            ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
+        }
+
+        // Single border - matching shop hover info
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
+
+        const textX = GAME_WIDTH + 20;
+        let y = panelY + 28;
 
         ctx.font = 'bold 15px Arial';
         ctx.fillStyle = '#FFD54F';
-        ctx.fillText(`${tower.getType()} Tower (Lv ${tower.level + 1})`, x, y);
+        ctx.textAlign = 'left';
+        ctx.fillText(`${tower.getType()} Tower (Lv ${tower.level + 1})`, textX, y);
         y += 20;
 
         ctx.font = '13px Arial';
         ctx.fillStyle = '#DDD';
-        ctx.fillText(`Damage: ${tower.damage}`, x, y);
+        ctx.fillText(`Damage: ${tower.damage}`, textX, y);
         y += 16;
-        ctx.fillText(`Range: ${tower.range}`, x, y);
+        ctx.fillText(`Range: ${tower.range}`, textX, y);
         y += 16;
-        ctx.fillText(`Speed: ${tower.attackSpeed.toFixed(1)}s`, x, y);
+        ctx.fillText(`Speed: ${tower.attackSpeed.toFixed(1)}s`, textX, y);
     }
 
-    private drawInfoPanel(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void {
-        // Draw helpback pattern or solid fallback
-        const bgImg = resources.imageCache.get('helpback');
-        if (bgImg) {
-            ctx.drawImage(bgImg, x, y, width, height);
-        } else {
-            ctx.fillStyle = '#777755';
-            ctx.fillRect(x, y, width, height);
-        }
-
-        // Double black border (matching original help screen style)
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(x, y, width, height);
-        ctx.strokeRect(x + 2, y + 2, width - 4, height - 4);
-    }
 
 }
