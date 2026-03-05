@@ -28,7 +28,7 @@ export const TOWER_STATS: Record<TowerType, TowerStatsDefinition> = {
     },
     Area: {
         name: 'Tower of Frostshock',
-        flavorText: 'Damages and slows all enemies in range',
+        flavorText: 'Damage and slow enemies',
         cost: TOWER_COSTS['Area'],
         statLines: [
             { label: 'Damage', values: ['20', '26', '32', '38'] },
@@ -39,19 +39,19 @@ export const TOWER_STATS: Record<TowerType, TowerStatsDefinition> = {
     },
     Spread: {
         name: 'Tower of Scatterflames',
-        flavorText: 'Fires heatseeking fireballs at multiple enemies',
+        flavorText: 'Fires multiple fireballs',
         cost: TOWER_COSTS['Spread'],
         statLines: [
-            { label: 'Damage', values: ['16', '18', '22', '22'] },
+            { label: 'Damage', values: ['16', '18', '22', '22 x2'] },
             { label: 'Range', values: ['140', '140', '140', '140'] },
             { label: 'Speed', values: ['1.5', '1.5', '1.5', '1.5'], suffix: 's' },
             { label: 'Targets', values: ['2', '3', '4', '4'] },
         ],
-        specialNotes: ['Lv4: Fireballs bounce to a second target'],
+        specialNotes: ['Lv4: Fireballs spread'],
     },
     Poison: {
         name: 'Tower of Poisoning',
-        flavorText: 'Poisons enemy, dealing 18 dmg per tick',
+        flavorText: 'Poisons enemies',
         cost: TOWER_COSTS['Poison'],
         statLines: [
             { label: 'Ticks', values: ['2', '3', '4', '6'] },
