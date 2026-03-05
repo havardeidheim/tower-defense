@@ -1,6 +1,6 @@
 import { Button } from './Button';
 import { resources } from '../resources/ResourceLoader';
-import { COLOR_GOLD, COLOR_TEXT_DISABLED, COLOR_SELL_GREEN, COLOR_DISABLED_OVERLAY, FONT_LABEL_SM } from '../game/theme';
+import { COLOR_GOLD, COLOR_TEXT_DISABLED, COLOR_SELL_GREEN } from '../game/theme';
 
 export class UpgradeButton extends Button {
     cost: number = 0;
@@ -24,18 +24,8 @@ export class UpgradeButton extends Button {
         if (!this.visible) return;
 
         this.drawImage(ctx, 'upgradeknapp');
-
-        // Draw cost
-        ctx.fillStyle = this.enabled ? COLOR_GOLD : COLOR_TEXT_DISABLED;
-        ctx.font = FONT_LABEL_SM;
-        ctx.textAlign = 'center';
-        ctx.fillText(`${this.cost}`, this.bounds.centerX, this.bounds.bottom + 14);
-        ctx.textAlign = 'left';
-
-        if (!this.enabled) {
-            ctx.fillStyle = COLOR_DISABLED_OVERLAY;
-            ctx.fillRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
-        }
+        this.drawCostLabel(ctx, `${this.cost}`, this.enabled ? COLOR_GOLD : COLOR_TEXT_DISABLED);
+        this.drawDisabledOverlay(ctx);
     }
 
     setCost(cost: number): void {
@@ -72,13 +62,7 @@ export class SellButton extends Button {
         if (!this.visible) return;
 
         this.drawImage(ctx, 'sellknapp');
-
-        // Draw value
-        ctx.fillStyle = COLOR_SELL_GREEN;
-        ctx.font = FONT_LABEL_SM;
-        ctx.textAlign = 'center';
-        ctx.fillText(`+${this.value}`, this.bounds.centerX, this.bounds.bottom + 14);
-        ctx.textAlign = 'left';
+        this.drawCostLabel(ctx, `+${this.value}`, COLOR_SELL_GREEN);
     }
 
     setValue(value: number): void {

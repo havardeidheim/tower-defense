@@ -1,6 +1,6 @@
 import { Rectangle } from '../core/Rectangle';
 import { resources } from '../resources/ResourceLoader';
-import { FONT_LABEL_SM, COLOR_TEXT_WHITE } from '../game/theme';
+import { FONT_LABEL_SM, COLOR_TEXT_WHITE, COLOR_GOLD, COLOR_DISABLED_OVERLAY } from '../game/theme';
 
 export abstract class Button {
     bounds: Rectangle;
@@ -40,5 +40,28 @@ export abstract class Button {
         ctx.fillStyle = color;
         ctx.font = FONT_LABEL_SM;
         ctx.fillText(text, x, y);
+    }
+
+    protected drawCostLabel(ctx: CanvasRenderingContext2D, text: string, color: string): void {
+        ctx.fillStyle = color;
+        ctx.font = FONT_LABEL_SM;
+        ctx.textAlign = 'center';
+        ctx.fillText(text, this.bounds.centerX, this.bounds.bottom + 14);
+        ctx.textAlign = 'left';
+    }
+
+    protected drawDisabledOverlay(ctx: CanvasRenderingContext2D): void {
+        if (!this.enabled) {
+            ctx.fillStyle = COLOR_DISABLED_OVERLAY;
+            ctx.fillRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
+        }
+    }
+
+    protected drawHoverHighlight(ctx: CanvasRenderingContext2D): void {
+        if (this.hovered && this.enabled) {
+            ctx.strokeStyle = COLOR_GOLD;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
+        }
     }
 }
