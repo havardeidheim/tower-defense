@@ -271,7 +271,7 @@ export class UIManager {
         const panelX = GAME_WIDTH;
         const panelY = 150;
         const panelWidth = UI_WIDTH;
-        const panelHeight = 170;
+        const panelHeight = 200;
 
         const bgImg = resources.imageCache.get('helpback');
         if (bgImg) {
