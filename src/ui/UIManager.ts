@@ -101,9 +101,11 @@ export class UIManager {
             this.buttons.push(btn);
         });
 
-        // Upgrade and Sell buttons (in box 2, below stats)
-        this.upgradeButton = new UpgradeButton(towerStartX, 260, this.onUpgrade);
-        this.sellButton = new SellButton(towerStartX + 60, 260, this.onSell);
+        // Upgrade and Sell buttons (in box 2, anchored at bottom of info panel)
+        const actionLeftX = GAME_WIDTH + 20;  // match text left margin
+        const actionY = 278;                  // visually balanced bottom margin (text baseline makes top appear smaller)
+        this.upgradeButton = new UpgradeButton(actionLeftX, actionY, this.onUpgrade);
+        this.sellButton = new SellButton(actionLeftX + 60, actionY, this.onSell);
         this.buttons.push(this.upgradeButton);
         this.buttons.push(this.sellButton);
 
