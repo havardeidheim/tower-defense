@@ -1,6 +1,9 @@
 import { GameObject } from '../../core/GameObject';
 import { Level, Direction } from '../../level/Level';
 import { TILE_SIZE, POISON_TICK_INTERVAL, POISON_DAMAGE_PER_TICK, ENEMY_GOLD_REWARD } from '../../game/constants';
+import {
+    COLOR_POISON_INDICATOR, COLOR_HEALTH_BG, COLOR_HEALTH_HIGH, COLOR_HEALTH_MID, COLOR_HEALTH_LOW, COLOR_ENEMY_FALLBACK,
+} from '../../game/theme';
 import { resources } from '../../resources/ResourceLoader';
 
 export abstract class Enemy extends GameObject {
@@ -135,7 +138,7 @@ export abstract class Enemy extends GameObject {
 
         // Draw poison indicator
         if (this.poisonTicks > 0) {
-            ctx.fillStyle = 'rgba(0, 200, 0, 0.8)';
+            ctx.fillStyle = COLOR_POISON_INDICATOR;
             ctx.beginPath();
             ctx.arc(this.x + this.width - 4, this.y + this.height - 4, 3, 0, Math.PI * 2);
             ctx.fill();
@@ -149,17 +152,17 @@ export abstract class Enemy extends GameObject {
         const barY = this.y - 8;
 
         // Background
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = COLOR_HEALTH_BG;
         ctx.fillRect(barX, barY, barWidth, barHeight);
 
         // Health
         const healthPercent = this.health / this.maxHealth;
-        ctx.fillStyle = healthPercent > 0.5 ? '#0f0' : healthPercent > 0.25 ? '#ff0' : '#f00';
+        ctx.fillStyle = healthPercent > 0.5 ? COLOR_HEALTH_HIGH : healthPercent > 0.25 ? COLOR_HEALTH_MID : COLOR_HEALTH_LOW;
         ctx.fillRect(barX, barY, barWidth * healthPercent, barHeight);
     }
 
     protected getFallbackColor(): string {
-        return '#888';
+        return COLOR_ENEMY_FALLBACK;
     }
 
     takeDamage(amount: number): boolean {

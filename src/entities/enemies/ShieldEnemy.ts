@@ -1,5 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
+import { COLOR_ENEMY_SHIELD, COLOR_SHIELD_AURA, COLOR_TEXT_WHITE, FONT_SHIELD_COUNT } from '../../game/theme';
 
 export class ShieldEnemy extends Enemy {
     constructor(x: number, y: number, healthLevel: number = 0) {
@@ -44,7 +45,7 @@ export class ShieldEnemy extends Enemy {
     }
 
     protected getFallbackColor(): string {
-        return '#4169E1'; // Royal blue for soldier (shield)
+        return COLOR_ENEMY_SHIELD;
     }
 
     render(ctx: CanvasRenderingContext2D): void {
@@ -52,14 +53,14 @@ export class ShieldEnemy extends Enemy {
 
         // Draw shield indicator
         if (this.blockedHits > 0) {
-            ctx.fillStyle = 'rgba(100, 149, 237, 0.5)';
+            ctx.fillStyle = COLOR_SHIELD_AURA;
             ctx.beginPath();
             ctx.arc(this.centerX, this.centerY, this.width / 2 + 2, 0, Math.PI * 2);
             ctx.fill();
 
             // Draw shield count
-            ctx.fillStyle = '#fff';
-            ctx.font = '10px Arial';
+            ctx.fillStyle = COLOR_TEXT_WHITE;
+            ctx.font = FONT_SHIELD_COUNT;
             ctx.textAlign = 'center';
             ctx.fillText(String(this.blockedHits), this.centerX, this.y + this.height + 10);
         }

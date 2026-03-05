@@ -2,6 +2,12 @@ import { resources } from '../resources/ResourceLoader';
 import { GAME_WIDTH, UI_WIDTH } from '../game/constants';
 import { TOWER_STATS, renderStatLine } from '../entities/towers/TowerStatsConfig';
 import { TowerType } from './TowerButton';
+import {
+    COLOR_GOLD, COLOR_MANA_BLUE, COLOR_TEXT, COLOR_TEXT_SUBTLE,
+    COLOR_LIVES_DANGER, COLOR_LIVES_SAFE,
+    COLOR_PANEL_BG, COLOR_BORDER,
+    FONT_HEADING, FONT_LABEL_SM, FONT_NOTE,
+} from '../game/theme';
 
 export class InfoDisplay {
     x: number;
@@ -16,25 +22,25 @@ export class InfoDisplay {
         const x = this.x;
         let y = this.y;
 
-        ctx.font = 'bold 18px Arial';
+        ctx.font = FONT_HEADING;
 
         // Gold
-        ctx.fillStyle = '#FFD54F';
+        ctx.fillStyle = COLOR_GOLD;
         ctx.fillText(`Gold: ${gold}`, x, y);
         y += 25;
 
         // Mana
-        ctx.fillStyle = '#66BBFF';
+        ctx.fillStyle = COLOR_MANA_BLUE;
         ctx.fillText(`Mana: ${mana}/${maxMana}`, x, y);
         y += 25;
 
         // Lives
-        ctx.fillStyle = lives <= 2 ? '#FF4444' : '#44CC44';
+        ctx.fillStyle = lives <= 2 ? COLOR_LIVES_DANGER : COLOR_LIVES_SAFE;
         ctx.fillText(`Lives: ${lives}`, x, y);
         y += 25;
 
         // Wave
-        ctx.fillStyle = '#DDD';
+        ctx.fillStyle = COLOR_TEXT;
         ctx.fillText(`Wave: ${wave + 1}/${totalWaves}`, x, y);
     }
 
@@ -49,11 +55,11 @@ export class InfoDisplay {
         if (bgImg) {
             ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
         } else {
-            ctx.fillStyle = '#777755';
+            ctx.fillStyle = COLOR_PANEL_BG;
             ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
         }
 
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = COLOR_BORDER;
         ctx.lineWidth = 1;
         ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
 
@@ -65,8 +71,8 @@ export class InfoDisplay {
         if (!stats) return;
 
         // Title: tower name + level
-        ctx.font = 'bold 14px Arial';
-        ctx.fillStyle = '#FFD54F';
+        ctx.font = FONT_LABEL_SM;
+        ctx.fillStyle = COLOR_GOLD;
         ctx.textAlign = 'left';
         ctx.fillText(`${stats.name} (Lv ${tower.level + 1})`, textX, y);
         y += 20;
@@ -80,8 +86,8 @@ export class InfoDisplay {
         // Special notes
         if (stats.specialNotes) {
             y += 2;
-            ctx.font = 'italic 11px Arial';
-            ctx.fillStyle = '#BBB';
+            ctx.font = FONT_NOTE;
+            ctx.fillStyle = COLOR_TEXT_SUBTLE;
             for (const note of stats.specialNotes) {
                 ctx.fillText(note, textX, y);
                 y += 13;

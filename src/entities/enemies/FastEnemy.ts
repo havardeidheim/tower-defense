@@ -1,5 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD } from '../../game/constants';
+import { COLOR_ENEMY_FAST } from '../../game/theme';
 
 export class FastEnemy extends Enemy {
     constructor(x: number, y: number, healthLevel: number = 0) {
@@ -23,6 +24,6 @@ export class FastEnemy extends Enemy {
     }
 
     protected getFallbackColor(): string {
-        return '#00FF00'; // Green for scout (fast)
+        return COLOR_ENEMY_FAST;
     }
 }

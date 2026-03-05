@@ -1,5 +1,9 @@
 import { TowerType } from '../../ui/TowerButton';
 import { TOWER_COSTS } from '../../game/constants';
+import {
+    COLOR_STAT_LABEL, COLOR_TEXT, COLOR_TEXT_WHITE, COLOR_STAT_SEPARATOR,
+    FONT_BODY_SM, FONT_BODY_SM_BOLD,
+} from '../../game/theme';
 
 export interface TowerStatLine {
     label: string;
@@ -74,11 +78,11 @@ export function renderStatLine(
     stat: TowerStatLine,
     currentLevel?: number
 ): void {
-    const normalFont = '12px Arial';
-    const boldFont = 'bold 12px Arial';
-    const labelColor = '#AAA';
-    const valueColor = '#DDD';
-    const activeColor = '#FFF';
+    const normalFont = FONT_BODY_SM;
+    const boldFont = FONT_BODY_SM_BOLD;
+    const labelColor = COLOR_STAT_LABEL;
+    const valueColor = COLOR_TEXT;
+    const activeColor = COLOR_TEXT_WHITE;
 
     // Draw label
     ctx.font = normalFont;
@@ -106,7 +110,7 @@ export function renderStatLine(
 
             if (i < stat.values.length - 1) {
                 ctx.font = normalFont;
-                ctx.fillStyle = '#888';
+                ctx.fillStyle = COLOR_STAT_SEPARATOR;
                 const sep = ' / ';
                 ctx.fillText(sep, cursorX, y);
                 cursorX += ctx.measureText(sep).width;

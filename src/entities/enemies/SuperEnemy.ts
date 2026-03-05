@@ -1,5 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
+import { COLOR_ENEMY_SUPER } from '../../game/theme';
 
 export class SuperEnemy extends Enemy {
     constructor(x: number, y: number, healthLevel: number = 0) {
@@ -61,6 +62,6 @@ export class SuperEnemy extends Enemy {
     }
 
     protected getFallbackColor(): string {
-        return '#FF0000';
+        return COLOR_ENEMY_SUPER;
     }
 }

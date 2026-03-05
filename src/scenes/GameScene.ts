@@ -23,6 +23,10 @@ import {
     STARTING_GOLD, STARTING_MANA, STARTING_MANA_LEVEL3, MAX_MANA, STARTING_LIVES,
     TOWER_COSTS, MANA_GRANT_INTERVAL
 } from '../game/constants';
+import {
+    COLOR_GOLD, COLOR_LIVES_DANGER, COLOR_GAMEOVER_OVERLAY,
+    FONT_TITLE_LG, FONT_STARS, FONT_GAMEOVER_BODY,
+} from '../game/theme';
 
 type GameState = 'waiting' | 'playing' | 'paused' | 'won' | 'lost';
 
@@ -550,27 +554,27 @@ export class GameScene extends Scene {
     }
 
     private renderGameOver(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillStyle = COLOR_GAMEOVER_OVERLAY;
         ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
         ctx.textAlign = 'center';
 
         if (this.gameState === 'won') {
-            ctx.fillStyle = '#FFD700';
-            ctx.font = 'bold 48px Times New Roman';
+            ctx.fillStyle = COLOR_GOLD;
+            ctx.font = FONT_TITLE_LG;
             ctx.fillText('Victory!', GAME_WIDTH / 2, GAME_HEIGHT / 2 - 30);
 
             const stars = this.lives;
-            ctx.font = '36px Times New Roman';
+            ctx.font = FONT_STARS;
             ctx.fillText('\u2605'.repeat(stars) + '\u2606'.repeat(5 - stars), GAME_WIDTH / 2, GAME_HEIGHT / 2 + 20);
         } else {
-            ctx.fillStyle = '#FF4444';
-            ctx.font = 'bold 48px Times New Roman';
+            ctx.fillStyle = COLOR_LIVES_DANGER;
+            ctx.font = FONT_TITLE_LG;
             ctx.fillText('Defeat', GAME_WIDTH / 2, GAME_HEIGHT / 2 - 30);
         }
 
         ctx.fillStyle = 'white';
-        ctx.font = '18px Times New Roman';
+        ctx.font = FONT_GAMEOVER_BODY;
         ctx.fillText('Click Menu to return', GAME_WIDTH / 2, GAME_HEIGHT / 2 + 70);
 
         ctx.textAlign = 'left';

@@ -1,5 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, NOSLOW_BLOCK_COUNT } from '../../game/constants';
+import { COLOR_ENEMY_NOSLOW } from '../../game/theme';
 
 export class NoslowEnemy extends Enemy {
     private blocksRemaining: number = NOSLOW_BLOCK_COUNT;
@@ -59,6 +60,6 @@ export class NoslowEnemy extends Enemy {
     }
 
     protected getFallbackColor(): string {
-        return '#FFD700';
+        return COLOR_ENEMY_NOSLOW;
     }
 }

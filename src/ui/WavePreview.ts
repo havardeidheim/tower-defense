@@ -5,6 +5,10 @@ import {
     ENEMY_DODGE, ENEMY_NOSLOW, ENEMY_SUPER,
     GAME_WIDTH, UI_WIDTH
 } from '../game/constants';
+import {
+    COLOR_GOLD, COLOR_TEXT, COLOR_PANEL_BG, COLOR_BORDER,
+    FONT_HEADING_SM, FONT_LABEL, FONT_LABEL_SM, FONT_BODY,
+} from '../game/theme';
 
 interface EnemyIconData {
     enemyType: string;
@@ -149,8 +153,8 @@ export class WavePreview {
         if (!this.visible) return;
 
         // Header
-        ctx.font = 'bold 16px Arial';
-        ctx.fillStyle = '#DDD';
+        ctx.font = FONT_HEADING_SM;
+        ctx.fillStyle = COLOR_TEXT;
         ctx.textAlign = 'left';
         ctx.fillText('Next Wave:', GAME_WIDTH + 20, this.headerY);
 
@@ -167,8 +171,8 @@ export class WavePreview {
             }
 
             // Draw count to the right
-            ctx.font = 'bold 14px Arial';
-            ctx.fillStyle = '#E0E0E0';
+            ctx.font = FONT_LABEL_SM;
+            ctx.fillStyle = COLOR_TEXT;
             if (count === 0) ctx.globalAlpha = 0.4;
             ctx.textAlign = 'left';
             ctx.fillText(`×${count}`, icon.bounds.right + 3, icon.bounds.y + 18);
@@ -176,7 +180,7 @@ export class WavePreview {
 
             // Hover border
             if (icon.hovered) {
-                ctx.strokeStyle = '#FFD54F';
+                ctx.strokeStyle = COLOR_GOLD;
                 ctx.lineWidth = 2;
                 ctx.strokeRect(icon.bounds.x - 1, icon.bounds.y - 1, icon.bounds.width + 2, icon.bounds.height + 2);
             }
@@ -197,26 +201,26 @@ export class WavePreview {
         if (bgImg) {
             ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
         } else {
-            ctx.fillStyle = '#777755';
+            ctx.fillStyle = COLOR_PANEL_BG;
             ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
         }
 
         // Border matching panel divider lines
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = COLOR_BORDER;
         ctx.lineWidth = 1;
         ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
 
         // Title
         let y = panelY + 28;
-        ctx.font = 'bold 15px Arial';
-        ctx.fillStyle = '#FFD54F';
+        ctx.font = FONT_LABEL;
+        ctx.fillStyle = COLOR_GOLD;
         ctx.textAlign = 'left';
         ctx.fillText(hovered.displayName, x, y);
         y += 18;
 
         // Description
-        ctx.font = '13px Arial';
-        ctx.fillStyle = '#DDD';
+        ctx.font = FONT_BODY;
+        ctx.fillStyle = COLOR_TEXT;
         for (const line of hovered.description) {
             ctx.fillText(line, x, y);
             y += 15;

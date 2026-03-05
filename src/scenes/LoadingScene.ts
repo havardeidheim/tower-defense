@@ -2,6 +2,10 @@ import { Scene } from './Scene';
 import { resources } from '../resources/ResourceLoader';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../game/constants';
 import { MenuScene } from './MenuScene';
+import {
+    COLOR_GOLD, COLOR_MANA_BLUE, COLOR_TEXT_DISABLED, COLOR_LOADING_BG, COLOR_HEALTH_BG, COLOR_BORDER_LIGHT,
+    FONT_TITLE, FONT_PROGRESS, FONT_STATUS,
+} from '../game/theme';
 
 export class LoadingScene extends Scene {
     private progress: number = 0;
@@ -30,12 +34,12 @@ export class LoadingScene extends Scene {
 
     render(ctx: CanvasRenderingContext2D): void {
         // Dark background
-        ctx.fillStyle = '#1a1a2e';
+        ctx.fillStyle = COLOR_LOADING_BG;
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         // Title
-        ctx.fillStyle = '#FFD700';
-        ctx.font = 'bold 32px Times New Roman';
+        ctx.fillStyle = COLOR_GOLD;
+        ctx.font = FONT_TITLE;
         ctx.textAlign = 'center';
         ctx.fillText('Road Defender', CANVAS_WIDTH / 2, 150);
 
@@ -45,26 +49,26 @@ export class LoadingScene extends Scene {
         const barX = (CANVAS_WIDTH - barWidth) / 2;
         const barY = CANVAS_HEIGHT / 2;
 
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = COLOR_HEALTH_BG;
         ctx.fillRect(barX, barY, barWidth, barHeight);
 
         // Progress bar fill
-        ctx.fillStyle = '#4a9eff';
+        ctx.fillStyle = COLOR_MANA_BLUE;
         ctx.fillRect(barX, barY, barWidth * this.progress, barHeight);
 
         // Progress bar border
-        ctx.strokeStyle = '#666';
+        ctx.strokeStyle = COLOR_BORDER_LIGHT;
         ctx.lineWidth = 2;
         ctx.strokeRect(barX, barY, barWidth, barHeight);
 
         // Progress text
         ctx.fillStyle = 'white';
-        ctx.font = '16px Times New Roman';
+        ctx.font = FONT_PROGRESS;
         ctx.fillText(`${Math.floor(this.progress * 100)}%`, CANVAS_WIDTH / 2, barY + 20);
 
         // Status message
-        ctx.fillStyle = '#888';
-        ctx.font = '14px Times New Roman';
+        ctx.fillStyle = COLOR_TEXT_DISABLED;
+        ctx.font = FONT_STATUS;
         ctx.fillText(this.message, CANVAS_WIDTH / 2, barY + 60);
 
         ctx.textAlign = 'left';

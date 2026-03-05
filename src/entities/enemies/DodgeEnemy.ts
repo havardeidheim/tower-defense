@@ -1,5 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, DODGE_CHANCE } from '../../game/constants';
+import { COLOR_ENEMY_DODGE, COLOR_DODGE_AURA } from '../../game/theme';
 
 export class DodgeEnemy extends Enemy {
     private dodgeChance: number = DODGE_CHANCE;
@@ -46,14 +47,14 @@ export class DodgeEnemy extends Enemy {
     }
 
     protected getFallbackColor(): string {
-        return '#800080'; // Purple for assassin (dodge)
+        return COLOR_ENEMY_DODGE;
     }
 
     render(ctx: CanvasRenderingContext2D): void {
         super.render(ctx);
 
         // Draw dodge indicator (semi-transparent)
-        ctx.fillStyle = 'rgba(128, 0, 128, 0.2)';
+        ctx.fillStyle = COLOR_DODGE_AURA;
         ctx.beginPath();
         ctx.arc(this.centerX, this.centerY, this.width / 2 + 4, 0, Math.PI * 2);
         ctx.fill();

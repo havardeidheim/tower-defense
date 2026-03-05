@@ -1,5 +1,6 @@
 import { Button } from './Button';
 import { resources } from '../resources/ResourceLoader';
+import { COLOR_GOLD, COLOR_TEXT_DARK_DISABLED, COLOR_BORDER_DARK, COLOR_BTN_ACTIVE_BG, COLOR_BTN_INACTIVE_BG, FONT_LABEL_XS } from '../game/theme';
 
 export type GameButtonType = 'start' | 'pause' | 'fast' | 'menu' | 'help';
 
@@ -27,16 +28,16 @@ export class GameButton extends Button {
         if (!this.visible) return;
 
         // Draw button background
-        ctx.fillStyle = this.active ? '#887755' : '#554433';
+        ctx.fillStyle = this.active ? COLOR_BTN_ACTIVE_BG : COLOR_BTN_INACTIVE_BG;
         ctx.fillRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
 
-        ctx.strokeStyle = this.hovered ? '#FFD54F' : '#333';
+        ctx.strokeStyle = this.hovered ? COLOR_GOLD : COLOR_BORDER_DARK;
         ctx.lineWidth = 1;
         ctx.strokeRect(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
 
         // Draw label
-        ctx.fillStyle = this.enabled ? '#FFD54F' : '#666';
-        ctx.font = 'bold 13px Arial';
+        ctx.fillStyle = this.enabled ? COLOR_GOLD : COLOR_TEXT_DARK_DISABLED;
+        ctx.font = FONT_LABEL_XS;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(this.label, this.bounds.centerX, this.bounds.centerY);

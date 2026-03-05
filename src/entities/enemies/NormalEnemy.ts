@@ -1,5 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD } from '../../game/constants';
+import { COLOR_ENEMY_NORMAL } from '../../game/theme';
 
 export class NormalEnemy extends Enemy {
     constructor(x: number, y: number, healthLevel: number = 0) {
@@ -23,6 +24,6 @@ export class NormalEnemy extends Enemy {
     }
 
     protected getFallbackColor(): string {
-        return '#8B4513'; // Brown for peasant
+        return COLOR_ENEMY_NORMAL;
     }
 }

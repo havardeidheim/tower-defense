@@ -9,6 +9,11 @@ import { Rectangle } from '../core/Rectangle';
 import { resources } from '../resources/ResourceLoader';
 import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT, SPELL_COSTS } from '../game/constants';
 import { TOWER_STATS, renderStatLine } from '../entities/towers/TowerStatsConfig';
+import {
+    COLOR_GOLD, COLOR_MANA_BLUE, COLOR_TEXT, COLOR_TEXT_SUBTLE,
+    COLOR_PANEL_BG, COLOR_BORDER,
+    FONT_LABEL, FONT_LABEL_SM, FONT_LABEL_XS, FONT_BODY, FONT_BODY_SM, FONT_NOTE,
+} from '../game/theme';
 
 interface SpellInfo {
     name: string;
@@ -29,7 +34,7 @@ const SPELL_DESCRIPTIONS: Record<SpellType, SpellInfo> = {
             "Can't be dodged",
         ],
         priceLabel: `Mana: ${SPELL_COSTS['Lightning']}`,
-        priceColor: '#66BBFF',
+        priceColor: COLOR_MANA_BLUE,
     },
     Runestone: {
         name: 'Place foundation',
@@ -38,7 +43,7 @@ const SPELL_DESCRIPTIONS: Record<SpellType, SpellInfo> = {
             'towers can be built',
         ],
         priceLabel: `Mana: ${SPELL_COSTS['Runestone']}`,
-        priceColor: '#66BBFF',
+        priceColor: COLOR_MANA_BLUE,
     },
 };
 
@@ -175,7 +180,7 @@ export class UIManager {
 
     render(ctx: CanvasRenderingContext2D): void {
         // Draw black divider lines matching original game
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = COLOR_BORDER;
         ctx.lineWidth = 1;
 
         // Vertical line separating game area from panel
@@ -277,11 +282,11 @@ export class UIManager {
         if (bgImg) {
             ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
         } else {
-            ctx.fillStyle = '#777755';
+            ctx.fillStyle = COLOR_PANEL_BG;
             ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
         }
 
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = COLOR_BORDER;
         ctx.lineWidth = 1;
         ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
     }
@@ -296,21 +301,21 @@ export class UIManager {
         let y = 150 + 28;
 
         // Title
-        ctx.font = 'bold 14px Arial';
-        ctx.fillStyle = '#FFD54F';
+        ctx.font = FONT_LABEL_SM;
+        ctx.fillStyle = COLOR_GOLD;
         ctx.textAlign = 'left';
         ctx.fillText(stats.name, textX, y);
         y += 18;
 
         // Price
-        ctx.font = 'bold 13px Arial';
-        ctx.fillStyle = '#FFD54F';
+        ctx.font = FONT_LABEL_XS;
+        ctx.fillStyle = COLOR_GOLD;
         ctx.fillText(`Price: ${stats.cost}`, textX, y);
         y += 16;
 
         // Flavor text
-        ctx.font = '12px Arial';
-        ctx.fillStyle = '#DDD';
+        ctx.font = FONT_BODY_SM;
+        ctx.fillStyle = COLOR_TEXT;
         ctx.fillText(stats.flavorText, textX, y);
         y += 16;
 
@@ -323,8 +328,8 @@ export class UIManager {
         // Special notes
         if (stats.specialNotes) {
             y += 2;
-            ctx.font = 'italic 11px Arial';
-            ctx.fillStyle = '#BBB';
+            ctx.font = FONT_NOTE;
+            ctx.fillStyle = COLOR_TEXT_SUBTLE;
             for (const note of stats.specialNotes) {
                 ctx.fillText(note, textX, y);
                 y += 13;
@@ -339,21 +344,21 @@ export class UIManager {
         let y = 150 + 28;
 
         // Title
-        ctx.font = 'bold 15px Arial';
-        ctx.fillStyle = '#FFD54F';
+        ctx.font = FONT_LABEL;
+        ctx.fillStyle = COLOR_GOLD;
         ctx.textAlign = 'left';
         ctx.fillText(info.name, textX, y);
         y += 18;
 
         // Price
-        ctx.font = 'bold 14px Arial';
+        ctx.font = FONT_LABEL_SM;
         ctx.fillStyle = info.priceColor;
         ctx.fillText(info.priceLabel, textX, y);
         y += 18;
 
         // Description
-        ctx.font = '13px Arial';
-        ctx.fillStyle = '#DDD';
+        ctx.font = FONT_BODY;
+        ctx.fillStyle = COLOR_TEXT;
         for (const line of info.description) {
             if (line !== '') {
                 ctx.fillText(line, textX, y);
