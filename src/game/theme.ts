@@ -14,6 +14,7 @@ export const COLOR_TEXT_SUBTLE = '#BBB';
 export const COLOR_TEXT_DISABLED = '#888';
 export const COLOR_TEXT_DARK_DISABLED = '#666';
 export const COLOR_TEXT_WHITE = '#FFF';
+export const COLOR_TEXT_BLACK = '#000';
 
 // --- Status colors ---
 export const COLOR_LIVES_DANGER = '#FF4444';

@@ -24,7 +24,7 @@ import {
     TOWER_COSTS, MANA_GRANT_INTERVAL
 } from '../game/constants';
 import {
-    COLOR_GOLD, COLOR_LIVES_DANGER, COLOR_GAMEOVER_OVERLAY,
+    COLOR_GOLD, COLOR_TEXT_WHITE, COLOR_LIVES_DANGER, COLOR_GAMEOVER_OVERLAY,
     FONT_TITLE_LG, FONT_STARS, FONT_GAMEOVER_BODY,
 } from '../game/theme';
 
@@ -573,7 +573,7 @@ export class GameScene extends Scene {
             ctx.fillText('Defeat', GAME_WIDTH / 2, GAME_HEIGHT / 2 - 30);
         }
 
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = COLOR_TEXT_WHITE;
         ctx.font = FONT_GAMEOVER_BODY;
         ctx.fillText('Click Menu to return', GAME_WIDTH / 2, GAME_HEIGHT / 2 + 70);
 

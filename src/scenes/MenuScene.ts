@@ -5,7 +5,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT, TILE_PATH, TILE_TARGET, TILE_SPAWN } from 
 import { GameScene } from './GameScene';
 import { Rectangle } from '../core/Rectangle';
 import {
-    COLOR_GOLD, COLOR_MENU_BG, COLOR_MAP_PATH, COLOR_MAP_SPAWN, COLOR_MAP_TILE,
+    COLOR_GOLD, COLOR_TEXT_BLACK, COLOR_MENU_BG, COLOR_MAP_PATH, COLOR_MAP_SPAWN, COLOR_MAP_TILE,
     FONT_TITLE_LG, FONT_MENU_LABEL,
 } from '../game/theme';
 
@@ -102,7 +102,7 @@ export class MenuScene extends Scene {
         }
 
         // Title
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = COLOR_TEXT_BLACK;
         ctx.font = FONT_TITLE_LG;
         ctx.textAlign = 'center';
         ctx.fillText('Road Defender', CANVAS_WIDTH / 2, 150);
@@ -113,7 +113,7 @@ export class MenuScene extends Scene {
         }
 
         // Attribution
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = COLOR_TEXT_BLACK;
         ctx.font = FONT_MENU_LABEL;
         ctx.textAlign = 'right';
         ctx.fillText('Laget av Håvard Eidheim. Lyd fra Empire Earth.', CANVAS_WIDTH - 10, CANVAS_HEIGHT - 4);
@@ -127,7 +127,7 @@ export class MenuScene extends Scene {
         const hovered = this.hoveredLevel === button.levelIndex;
 
         // Level name above map
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = COLOR_TEXT_BLACK;
         ctx.font = FONT_MENU_LABEL;
         ctx.textAlign = 'left';
         ctx.fillText(name, baseX, baseY - 5);

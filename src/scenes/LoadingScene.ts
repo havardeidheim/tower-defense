@@ -3,7 +3,7 @@ import { resources } from '../resources/ResourceLoader';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../game/constants';
 import { MenuScene } from './MenuScene';
 import {
-    COLOR_GOLD, COLOR_MANA_BLUE, COLOR_TEXT_DISABLED, COLOR_LOADING_BG, COLOR_HEALTH_BG, COLOR_BORDER_LIGHT,
+    COLOR_GOLD, COLOR_MANA_BLUE, COLOR_TEXT_DISABLED, COLOR_TEXT_WHITE, COLOR_LOADING_BG, COLOR_HEALTH_BG, COLOR_BORDER_LIGHT,
     FONT_TITLE, FONT_PROGRESS, FONT_STATUS,
 } from '../game/theme';
 
@@ -62,7 +62,7 @@ export class LoadingScene extends Scene {
         ctx.strokeRect(barX, barY, barWidth, barHeight);
 
         // Progress text
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = COLOR_TEXT_WHITE;
         ctx.font = FONT_PROGRESS;
         ctx.fillText(`${Math.floor(this.progress * 100)}%`, CANVAS_WIDTH / 2, barY + 20);
 

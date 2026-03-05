@@ -1,6 +1,6 @@
 import { Rectangle } from '../core/Rectangle';
 import { resources } from '../resources/ResourceLoader';
-import { FONT_LABEL_SM } from '../game/theme';
+import { FONT_LABEL_SM, COLOR_TEXT_WHITE } from '../game/theme';
 
 export abstract class Button {
     bounds: Rectangle;
@@ -36,7 +36,7 @@ export abstract class Button {
         }
     }
 
-    protected drawText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, color: string = 'white'): void {
+    protected drawText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, color: string = COLOR_TEXT_WHITE): void {
         ctx.fillStyle = color;
         ctx.font = FONT_LABEL_SM;
         ctx.fillText(text, x, y);
