@@ -7,80 +7,17 @@ import { InfoDisplay } from './InfoDisplay';
 import { WavePreview } from './WavePreview';
 import { Rectangle } from '../core/Rectangle';
 import { resources } from '../resources/ResourceLoader';
-import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT, TOWER_COSTS, SPELL_COSTS } from '../game/constants';
+import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT, SPELL_COSTS } from '../game/constants';
+import { TOWER_STATS, renderStatLine } from '../entities/towers/TowerStatsConfig';
 
-interface ShopItemInfo {
+interface SpellInfo {
     name: string;
     description: string[];
     priceLabel: string;
     priceColor: string;
 }
 
-const TOWER_DESCRIPTIONS: Record<TowerType, ShopItemInfo> = {
-    Normal: {
-        name: 'Tower of Stonehurling',
-        description: [
-            'Hurls stones at the enemy',
-            '',
-            'Levelup:',
-            'Increased speed',
-            'Increased damage',
-            'Increased range',
-        ],
-        priceLabel: `Price: ${TOWER_COSTS['Normal']}`,
-        priceColor: '#FFD54F',
-    },
-    Area: {
-        name: 'Tower of Frostshock',
-        description: [
-            'Damages and slows all',
-            'enemies in range',
-            '',
-            'Levelup:',
-            'Increased slow',
-            'Increased damage',
-            '',
-            'Level 4:',
-            'Increased range',
-        ],
-        priceLabel: `Price: ${TOWER_COSTS['Area']}`,
-        priceColor: '#FFD54F',
-    },
-    Spread: {
-        name: 'Tower of Scatterflames',
-        description: [
-            'Fires heatseeking fireballs',
-            'at multiple enemies',
-            '',
-            'Levelup:',
-            'Extra fireballs',
-            'Increased damage',
-            '',
-            'Level 4:',
-            'Fireballs now strike two targets',
-        ],
-        priceLabel: `Price: ${TOWER_COSTS['Spread']}`,
-        priceColor: '#FFD54F',
-    },
-    Poison: {
-        name: 'Tower of Poisoning',
-        description: [
-            'Poisons the enemy causing',
-            'damage over time.',
-            'Hits on already poisoned',
-            'enemies will increase the',
-            'duration of the poison.',
-            'Prioritizes targets with no poison',
-            '',
-            'Levelup:',
-            'Increased duration',
-        ],
-        priceLabel: `Price: ${TOWER_COSTS['Poison']}`,
-        priceColor: '#FFD54F',
-    },
-};
-
-const SPELL_DESCRIPTIONS: Record<SpellType, ShopItemInfo> = {
+const SPELL_DESCRIPTIONS: Record<SpellType, SpellInfo> = {
     Lightning: {
         name: 'Lightningbolt',
         description: [
@@ -165,8 +102,8 @@ export class UIManager {
         });
 
         // Upgrade and Sell buttons (in box 2, below stats)
-        this.upgradeButton = new UpgradeButton(towerStartX, 255, this.onUpgrade);
-        this.sellButton = new SellButton(towerStartX + 60, 255, this.onSell);
+        this.upgradeButton = new UpgradeButton(towerStartX, 260, this.onUpgrade);
+        this.sellButton = new SellButton(towerStartX + 60, 260, this.onSell);
         this.buttons.push(this.upgradeButton);
         this.buttons.push(this.sellButton);
 
@@ -253,8 +190,8 @@ export class UIManager {
 
         // Horizontal line above wave preview
         ctx.beginPath();
-        ctx.moveTo(GAME_WIDTH, 300);
-        ctx.lineTo(GAME_WIDTH + UI_WIDTH, 300);
+        ctx.moveTo(GAME_WIDTH, 320);
+        ctx.lineTo(GAME_WIDTH + UI_WIDTH, 320);
         ctx.stroke();
 
         // Draw all buttons
@@ -294,12 +231,16 @@ export class UIManager {
         return this.wavePreview.getHoveredEnemy() !== null;
     }
 
-    getHoveredShopInfo(): ShopItemInfo | null {
+    private getHoveredTowerType(): TowerType | null {
         for (const btn of this.towerButtons) {
             if (btn.hovered && btn.visible) {
-                return TOWER_DESCRIPTIONS[btn.towerType];
+                return btn.towerType;
             }
         }
+        return null;
+    }
+
+    private getHoveredSpellInfo(): SpellInfo | null {
         for (const btn of this.spellButtons) {
             if (btn.hovered && btn.visible) {
                 return SPELL_DESCRIPTIONS[btn.spellType];
@@ -309,21 +250,27 @@ export class UIManager {
     }
 
     hasHoveredShopButton(): boolean {
-        return this.getHoveredShopInfo() !== null;
+        return this.getHoveredTowerType() !== null || this.getHoveredSpellInfo() !== null;
     }
 
     renderShopHoverInfo(ctx: CanvasRenderingContext2D): void {
-        const info = this.getHoveredShopInfo();
-        if (!info) return;
+        const hoveredTower = this.getHoveredTowerType();
+        if (hoveredTower) {
+            this.renderTowerShopInfo(ctx, hoveredTower);
+            return;
+        }
+        const spellInfo = this.getHoveredSpellInfo();
+        if (spellInfo) {
+            this.renderSpellShopInfo(ctx, spellInfo);
+        }
+    }
 
+    private renderInfoBackground(ctx: CanvasRenderingContext2D): void {
         const panelX = GAME_WIDTH;
         const panelY = 150;
         const panelWidth = UI_WIDTH;
-        const panelHeight = 200;
-        const lineHeight = 15;
-        const textX = GAME_WIDTH + 20;
+        const panelHeight = 170;
 
-        // Background - fill Zone 2 down past "Next Wave:" header
         const bgImg = resources.imageCache.get('helpback');
         if (bgImg) {
             ctx.drawImage(bgImg, panelX, panelY, panelWidth, panelHeight);
@@ -332,12 +279,62 @@ export class UIManager {
             ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
         }
 
-        // Border matching panel divider lines
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 1;
         ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
+    }
 
-        let y = panelY + 28;
+    private renderTowerShopInfo(ctx: CanvasRenderingContext2D, towerType: TowerType): void {
+        const stats = TOWER_STATS[towerType];
+        if (!stats) return;
+
+        this.renderInfoBackground(ctx);
+
+        const textX = GAME_WIDTH + 20;
+        let y = 150 + 28;
+
+        // Title
+        ctx.font = 'bold 14px Arial';
+        ctx.fillStyle = '#FFD54F';
+        ctx.textAlign = 'left';
+        ctx.fillText(stats.name, textX, y);
+        y += 18;
+
+        // Price
+        ctx.font = 'bold 13px Arial';
+        ctx.fillStyle = '#FFD54F';
+        ctx.fillText(`Price: ${stats.cost}`, textX, y);
+        y += 16;
+
+        // Flavor text
+        ctx.font = '12px Arial';
+        ctx.fillStyle = '#DDD';
+        ctx.fillText(stats.flavorText, textX, y);
+        y += 16;
+
+        // Stat lines (no current level = no bolding)
+        for (const stat of stats.statLines) {
+            renderStatLine(ctx, textX, y, stat);
+            y += 14;
+        }
+
+        // Special notes
+        if (stats.specialNotes) {
+            y += 2;
+            ctx.font = 'italic 11px Arial';
+            ctx.fillStyle = '#BBB';
+            for (const note of stats.specialNotes) {
+                ctx.fillText(note, textX, y);
+                y += 13;
+            }
+        }
+    }
+
+    private renderSpellShopInfo(ctx: CanvasRenderingContext2D, info: SpellInfo): void {
+        this.renderInfoBackground(ctx);
+
+        const textX = GAME_WIDTH + 20;
+        let y = 150 + 28;
 
         // Title
         ctx.font = 'bold 15px Arial';
@@ -359,7 +356,7 @@ export class UIManager {
             if (line !== '') {
                 ctx.fillText(line, textX, y);
             }
-            y += lineHeight;
+            y += 15;
         }
     }
 }
