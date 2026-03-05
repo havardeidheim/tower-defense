@@ -66,10 +66,7 @@ export abstract class Tower extends GameObject {
     }
 
     isInRange(enemy: Enemy): boolean {
-        const dx = this.centerX - enemy.centerX;
-        const dy = this.centerY - enemy.centerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        return distance <= this.range;
+        return this.distanceTo(enemy) <= this.range;
     }
 
     canFire(): boolean {

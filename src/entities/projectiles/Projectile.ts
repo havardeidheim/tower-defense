@@ -25,13 +25,12 @@ export abstract class Projectile extends TowerAttack {
     }
 
     protected calculateVelocity(): void {
-        const dx = this.target.centerX - this.centerX;
-        const dy = this.target.centerY - this.centerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const direction = this.target.center.subtract(this.center);
+        const distance = direction.magnitude();
 
         if (distance > 0) {
-            this.vx = (dx / distance) * this.speed;
-            this.vy = (dy / distance) * this.speed;
+            this.vx = (direction.x / distance) * this.speed;
+            this.vy = (direction.y / distance) * this.speed;
         }
     }
 
@@ -59,10 +58,7 @@ export abstract class Projectile extends TowerAttack {
     }
 
     protected hitTest(): boolean {
-        const dx = this.centerX - this.target.centerX;
-        const dy = this.centerY - this.target.centerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        return distance < this.hitRadius + this.target.width / 2;
+        return this.distanceTo(this.target) < this.hitRadius + this.target.width / 2;
     }
 
     render(ctx: CanvasRenderingContext2D): void {

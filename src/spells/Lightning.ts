@@ -1,5 +1,6 @@
 import { Spell, SpellContext } from './Spell';
 import { Enemy } from '../entities/enemies/Enemy';
+import { Vector2 } from '../core/Vector2';
 import { resources } from '../resources/ResourceLoader';
 import { SPELL_LIGHTNING, TILE_SIZE } from '../game/constants';
 
@@ -29,14 +30,11 @@ export class Lightning extends Spell {
         if (context.mana < this.manaCost) return false;
 
         // Check if there's an enemy at this position
+        const point = new Vector2(x, y);
         for (const enemy of context.enemies) {
             if (enemy.isDead() || !enemy.active) continue;
 
-            const dx = x - enemy.centerX;
-            const dy = y - enemy.centerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < TILE_SIZE / 2) {
+            if (point.distanceTo(enemy.center) < TILE_SIZE / 2) {
                 return true;
             }
         }
@@ -48,13 +46,12 @@ export class Lightning extends Spell {
         // Find enemy at position
         let targetEnemy: Enemy | null = null;
         let closestDistance = TILE_SIZE / 2;
+        const point = new Vector2(x, y);
 
         for (const enemy of context.enemies) {
             if (enemy.isDead() || !enemy.active) continue;
 
-            const dx = x - enemy.centerX;
-            const dy = y - enemy.centerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const distance = point.distanceTo(enemy.center);
 
             if (distance < closestDistance) {
                 closestDistance = distance;

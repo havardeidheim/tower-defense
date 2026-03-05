@@ -109,9 +109,7 @@ export class SpreadProjectile extends Projectile {
             if (this.usedTarget && enemy === this.usedTarget) continue;
 
             // Check if enemy is within bounce range
-            const dx = enemy.centerX - this.centerX;
-            const dy = enemy.centerY - this.centerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const distance = this.distanceTo(enemy);
 
             if (distance <= this.bounceRange && enemy.pixelsTraveled > highestProgress) {
                 highestProgress = enemy.pixelsTraveled;
