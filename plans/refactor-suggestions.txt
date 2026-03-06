@@ -21,7 +21,6 @@ Suggestion: Create a single config-driven stats system. Define all base stats, u
 Examples:
 
 UI layout positions throughout UIManager.ts and WavePreview.ts
-Animation frames (80ms, 6 frames)
 Health bar dimensions (barWidth - 10, barHeight = 4, barY = y - 8)
 Suggestion: Extract to constants.ts or create focused config files (UILayout.ts, ColorScheme.ts). This is the single most impactful change for AI development — named constants make intent clear.
 
@@ -35,11 +34,6 @@ Suggestion: Define an ITowerInfo interface and use it consistently. This makes t
 GameScene.ts:338-344 has a switch on tower type strings. If TowerType is extended, the compiler won't catch the missing case.
 
 Suggestion: Create a TowerFactory with a Record<TowerType, (x, y) => Tower> map. Exhaustive by construction.
-
-9. SpreadProjectile Breaks Projectile Contract
-SpreadProjectile.ts completely overrides update() without calling super, duplicates shield/dodge logic from NormalProjectile, and uses unsafe this.target = null!.
-
-Suggestion: Refactor Projectile base to support bouncing behavior through hooks rather than full override. Extract shared damage application logic.
 
 
 Priority Ranking for AI-Friendliness
