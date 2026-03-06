@@ -33,13 +33,4 @@ export class DodgeEnemy extends Enemy {
         this.health -= amount;
         return this.health <= 0;
     }
-
-    // 50% chance to dodge poison application (original Java behavior)
-    applyPoison(ticks: number): void {
-        if (Math.random() > DODGE_CHANCE) {
-            super.applyPoison(ticks);
-        }
-        // else: dodged the poison
-    }
-
 }

@@ -17,9 +17,13 @@ export class PoisonProjectile extends Projectile {
     onHit(): void {
         if (!this.target || this.target.isDead()) return;
 
+        // Check if target can dodge (DodgeEnemy, SuperEnemy)
+        if (this.target.canDodge && this.target.canDodge()) {
+            return; // Dodged!
+        }
+
         // Apply poison effect only (no immediate damage)
-        // The enemy's applyPoison handles dodge chance for DodgeEnemy/SuperEnemy
-        // Each tick will deal POISON_DAMAGE_PER_TICK (18) damage
+        // Each tick will deal damage
         this.target.applyPoison(this.damage); // damage = number of ticks
     }
 }

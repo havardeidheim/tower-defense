@@ -19,7 +19,6 @@ export class ShieldEnemy extends Enemy {
         return 'solider';
     }
 
-
     takeDamage(amount: number): boolean {
         amount = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
         this.health -= amount;
@@ -31,5 +30,4 @@ export class ShieldEnemy extends Enemy {
         const reducedDamage = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
         this.health -= reducedDamage;
     }
-
 }

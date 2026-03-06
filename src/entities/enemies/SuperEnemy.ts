@@ -19,30 +19,27 @@ export class SuperEnemy extends Enemy {
         return 'paragon';
     }
 
-    // Super enemy has all abilities
+    // Shield reduces normal hit damage (same as ShieldEnemy)
+    takeDamage(amount: number): boolean {
+        amount = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
+        this.health -= amount;
+        return this.health <= 0;
+    }
+
     canDodge(): boolean {
         return Math.random() < 0.5; // 50% dodge chance (same as DodgeEnemy)
-    }
-
-    // 50% chance to resist slow effects (original Java behavior)
-    applySlow(amount: number, duration: number): void {
-        if (Math.random() > 0.5) {
-            super.applySlow(amount, duration);
-        }
-    }
-
-    // 50% chance to dodge poison application (original Java behavior)
-    applyPoison(ticks: number): void {
-        if (Math.random() > 0.5) {
-            super.applyPoison(ticks);
-        }
-        // else: dodged the poison
     }
 
     // Shield reduces poison tick damage (original Java behavior)
     takePoisonDamage(amount: number): void {
         const reducedDamage = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
         this.health -= reducedDamage;
+    }
+
+    // Override applySlow - NEVER apply slow effect (permanently immune to slowing)
+    applySlow(_amount: number, _duration: number): void {
+        // NoslowEnemy is completely immune to slow effects
+        // The slow portion is always ignored (speed reduction never applied)
     }
 
 }

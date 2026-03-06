@@ -170,19 +170,13 @@ export abstract class Enemy extends GameObject {
     }
 
     applySlow(amount: number, duration: number): void {
-        if (this.canBeSlow()) {
-            this.slowAmount = amount;
-            this.slowTimer = duration;
-            this.speed = this.maxSpeed * (1 - amount);
-        }
-    }
-
-    canBeSlow(): boolean {
-        return true; // Override in NoslowEnemy
+        this.slowAmount = amount;
+        this.slowTimer = duration;
+        this.speed = this.maxSpeed * (1 - amount);
     }
 
     canDodge(): boolean {
-        return false; // Override in DodgeEnemy
+        return false;
     }
 
     // Spell damage bypasses dodge and shield

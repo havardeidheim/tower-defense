@@ -36,9 +36,8 @@ const ENEMY_DATA: EnemyIconData[] = [
         displayName: 'Solider',
         description: [
             'High health',
-            'Mitigates a certain amount of',
-            'damage every hit, also works',
-            'on poison damage'
+            'Mitigates damage every hit',
+            '- also works on poison tick'
         ]
     },
     {
@@ -68,9 +67,10 @@ const ENEMY_DATA: EnemyIconData[] = [
         description: [
             'Low health',
             'Fast movement',
-            '50% chance to resist slow',
+            'Immune to slow',
             '50% chance to dodge attacks',
-            'Mitigates damage every hit'
+            'Mitigates damage every hit',
+            '- also works on poison tick'
         ]
     }
 ];

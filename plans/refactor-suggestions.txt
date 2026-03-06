@@ -21,30 +21,12 @@ Suggestion: Create a single config-driven stats system. Define all base stats, u
 Examples:
 
 UI layout positions throughout UIManager.ts and WavePreview.ts
-Projectile speeds (6, 3), hit radii (10), animation frames (80ms, 6 frames)
+Animation frames (80ms, 6 frames)
 Health bar dimensions (barWidth - 10, barHeight = 4, barY = y - 8)
-Health color thresholds (0.5, 0.25)
-Colors like '#FFD54F', '#FFD700', 'rgba(0, 200, 0, 0.8)' repeated inconsistently
 Suggestion: Extract to constants.ts or create focused config files (UILayout.ts, ColorScheme.ts). This is the single most impactful change for AI development — named constants make intent clear.
-
-4. Button Rendering Duplication
-TowerButton.ts, SpellButton.ts, and ActionButton.ts all have nearly identical render methods — same disabled overlay, same hover highlight, same cost text rendering. The base Button.ts has a drawText() helper that's never actually used.
-
-Suggestion: Move shared rendering (disabled overlay, hover, cost label) into the base Button class.
-
-5. AreaTower/SpreadTower Bypass Base Class
-NormalTower and PoisonTower properly use fireAtTarget() from Tower.ts. But AreaTower and SpreadTower duplicate cooldown management, sound playing, and target handling manually in their shoot() methods.
-
-Suggestion: Refactor fireAtTarget() or add a hook so all towers use the base class pattern.
-
-6. Distance Calculation Repeated 8+ Times
-Math.sqrt(dx * dx + dy * dy) appears in GameObject.distanceTo(), Vector2.distanceTo(), Tower.isInRange(), Lightning.canCastAt(), Projectile.hitTest(), etc. Some use the existing utility, others inline it.
-
-Suggestion: Consistently use Vector2.distanceTo() or GameObject.distanceTo() everywhere.
 
 7. Structural Types Instead of Interfaces
 Both UIManager.ts and InfoDisplay.ts use anonymous structural types for tower info:
-
 
 tower: { getType: () => string; damage: number; range: number; ... }
 Suggestion: Define an ITowerInfo interface and use it consistently. This makes the contract explicit and helps AI understand the expected shape.
@@ -59,10 +41,6 @@ SpreadProjectile.ts completely overrides update() without calling super, duplica
 
 Suggestion: Refactor Projectile base to support bouncing behavior through hooks rather than full override. Extract shared damage application logic.
 
-10. No Color/Font Constants
-The codebase uses two different "gold" colors (#FFD54F and #FFD700), inconsistent blue values (#66BBFF vs #4a9eff), and mixes Times New Roman with Arial across files with no pattern.
-
-Suggestion: Define a palette and typography constants.
 
 Priority Ranking for AI-Friendliness
 Priority	Refactoring	Impact
@@ -70,6 +48,5 @@ Priority	Refactoring	Impact
 2	Consolidate entity stats into config	Single source of truth; fewer files to touch
 3	Split GameScene into focused classes	Reduces context needed for any change
 4	Create TowerFactory + ITowerInfo interface	Type safety catches errors at compile time
-5	Unify button rendering in base class	Less duplication, fewer places to update
-6	Fix SpreadProjectile/tower shoot() patterns	Consistent base class usage
+
 The codebase is well-structured at the directory level and uses good patterns (template method, abstract base classes, scene management). The main issues are about consolidation — pulling scattered magic values, duplicated logic, and implicit contracts into explicit, centralized, well-typed constructs. These changes would dramatically reduce the context an AI needs to safely make modifications.
