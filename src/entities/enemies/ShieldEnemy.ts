@@ -23,9 +23,6 @@ export class ShieldEnemy extends Enemy {
         return 50;
     }
 
-    hasShield(): boolean {
-        return true;
-    }
 
     takeDamage(amount: number): boolean {
         amount = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);

@@ -195,10 +195,6 @@ export abstract class Enemy extends GameObject {
         return false; // Override in DodgeEnemy
     }
 
-    hasShield(): boolean {
-        return false; // Override in ShieldEnemy
-    }
-
     canBlockHit(): boolean {
         return false; // Override in NoslowEnemy, SuperEnemy
     }
