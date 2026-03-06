@@ -70,5 +70,8 @@ export const SHIELD_DAMAGE_REDUCTION = 10;
 export const DODGE_CHANCE = 0.5;
 export const NOSLOW_BLOCK_COUNT = 3;
 
+// Projectile
+export const PROJECTILE_BASE_SPEED = 6;
+
 // Gold rewards per enemy type (base)
 export const ENEMY_GOLD_REWARD = 10;

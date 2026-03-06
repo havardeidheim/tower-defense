@@ -1,14 +1,14 @@
 import { TowerAttack } from './TowerAttack';
 import { Enemy } from '../enemies/Enemy';
 import { resources } from '../../resources/ResourceLoader';
+import { PROJECTILE_BASE_SPEED } from '../../game/constants';
 
 export abstract class Projectile extends TowerAttack {
     target: Enemy;
     damage: number;
-    speed: number = 6;
+    speed: number = PROJECTILE_BASE_SPEED;
     vx: number = 0;
     vy: number = 0;
-    hitRadius: number = 10;
 
     abstract getImageKey(): string;
     abstract onHit(): void;
@@ -58,7 +58,7 @@ export abstract class Projectile extends TowerAttack {
     }
 
     protected hitTest(): boolean {
-        return this.distanceTo(this.target) < this.hitRadius + this.target.width / 2;
+        return this.distanceTo(this.target) < this.width / 2 + this.target.width / 2;
     }
 
     render(ctx: CanvasRenderingContext2D): void {
