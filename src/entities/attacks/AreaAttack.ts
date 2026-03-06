@@ -6,7 +6,7 @@ import { resources } from '../../resources/ResourceLoader';
 export class AreaAttack extends TowerAttack {
     private frame: number = 0;
     private frameTimer: number = 0;
-    private readonly frameDelay: number = 80; // ms per frame
+    private readonly frameDuration: number = 80; // ms per frame
     private readonly totalFrames: number = 6;
     private hasHit: boolean = false;
 
@@ -59,7 +59,7 @@ export class AreaAttack extends TowerAttack {
         }
 
         this.frameTimer += deltaTime;
-        if (this.frameTimer >= this.frameDelay) {
+        if (this.frameTimer >= this.frameDuration) {
             this.frameTimer = 0;
             this.frame++;
             if (this.frame >= this.totalFrames) {
