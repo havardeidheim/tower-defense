@@ -14,15 +14,11 @@ export class NoslowEnemy extends Enemy {
         return 'vanguard';
     }
 
-    getBaseSpeed(): number {
-        return 65;
-    }
-
     // Noslow uses a different health scaling: 120 + 100*level (not 120 + 120*level)
     protected initStats(): void {
         this.maxHealth = 120 + 100 * this.healthLevel;
         this.health = this.maxHealth;
-        this.maxSpeed = this.getBaseSpeed();
+        this.maxSpeed = 65;
         this.speed = this.maxSpeed;
     }
 

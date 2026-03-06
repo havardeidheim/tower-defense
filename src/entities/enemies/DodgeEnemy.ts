@@ -1,6 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, DODGE_CHANCE } from '../../game/constants';
-import { COLOR_ENEMY_DODGE, COLOR_DODGE_AURA } from '../../game/theme';
+import { COLOR_ENEMY_DODGE } from '../../game/theme';
 
 export class DodgeEnemy extends Enemy {
     private dodgeChance: number = DODGE_CHANCE;
@@ -13,16 +13,12 @@ export class DodgeEnemy extends Enemy {
     protected initStats(): void {
         this.maxHealth = 70 + 70 * this.healthLevel;
         this.health = this.maxHealth;
-        this.maxSpeed = this.getBaseSpeed();
+        this.maxSpeed = 70;
         this.speed = this.maxSpeed;
     }
 
     getSpriteName(): string {
         return 'assassin';
-    }
-
-    getBaseSpeed(): number {
-        return 70;
     }
 
     canDodge(): boolean {
@@ -50,13 +46,4 @@ export class DodgeEnemy extends Enemy {
         return COLOR_ENEMY_DODGE;
     }
 
-    render(ctx: CanvasRenderingContext2D): void {
-        super.render(ctx);
-
-        // Draw dodge indicator (semi-transparent)
-        ctx.fillStyle = COLOR_DODGE_AURA;
-        ctx.beginPath();
-        ctx.arc(this.centerX, this.centerY, this.width / 2 + 4, 0, Math.PI * 2);
-        ctx.fill();
-    }
 }

@@ -11,16 +11,12 @@ export class ShieldEnemy extends Enemy {
     protected initStats(): void {
         this.maxHealth = 130 + 130 * this.healthLevel;
         this.health = this.maxHealth;
-        this.maxSpeed = this.getBaseSpeed();
+        this.maxSpeed = 50;
         this.speed = this.maxSpeed;
     }
 
     getSpriteName(): string {
         return 'solider';
-    }
-
-    getBaseSpeed(): number {
-        return 50;
     }
 
 

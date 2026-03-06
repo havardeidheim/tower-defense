@@ -49,8 +49,6 @@ export const COLOR_MAP_TILE = '#808080';
 
 // --- Enemy indicators ---
 export const COLOR_POISON_INDICATOR = 'rgba(0, 200, 0, 0.8)';
-export const COLOR_SHIELD_AURA = 'rgba(100, 149, 237, 0.5)';
-export const COLOR_DODGE_AURA = 'rgba(128, 0, 128, 0.2)';
 
 // --- Enemy fallback colors (when sprites fail to load) ---
 export const COLOR_ENEMY_NORMAL = '#8B4513';

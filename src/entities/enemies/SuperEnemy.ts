@@ -11,16 +11,12 @@ export class SuperEnemy extends Enemy {
     protected initStats(): void {
         this.maxHealth = 70 + 70 * this.healthLevel;
         this.health = this.maxHealth;
-        this.maxSpeed = this.getBaseSpeed();
+        this.maxSpeed = 65;
         this.speed = this.maxSpeed;
     }
 
     getSpriteName(): string {
         return 'paragon';
-    }
-
-    getBaseSpeed(): number {
-        return 65;
     }
 
     // Super enemy has all abilities

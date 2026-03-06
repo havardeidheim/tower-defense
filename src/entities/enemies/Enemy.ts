@@ -24,7 +24,6 @@ export abstract class Enemy extends GameObject {
     blockedHits: number = 0;
 
     abstract getSpriteName(): string;
-    abstract getBaseSpeed(): number;
     protected abstract initStats(): void;
 
     constructor(x: number, y: number, healthLevel: number = 0) {
