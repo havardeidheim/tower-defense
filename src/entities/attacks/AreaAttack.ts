@@ -45,6 +45,7 @@ export class AreaAttack extends TowerAttack {
         for (const enemy of this.enemies) {
             if (enemy.isDead() || !enemy.active) continue;
             if (this.origin.distanceTo(enemy.center) <= this.range) {
+                if (enemy.tryDodge()) continue;
                 enemy.takeDamage(this.damage);
                 enemy.applySlow(this.slowPercent, this.slowDuration);
             }
