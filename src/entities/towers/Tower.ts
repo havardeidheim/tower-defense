@@ -5,7 +5,6 @@ import { resources } from '../../resources/ResourceLoader';
 import { TILE_SIZE } from '../../game/constants';
 
 export abstract class Tower extends GameObject {
-    target: Enemy | null = null;
     damage: number = 20;
     range: number = 140;
     attackSpeed: number = 1.2; // seconds between attacks
@@ -22,7 +21,7 @@ export abstract class Tower extends GameObject {
     abstract getType(): string;
     abstract getImageKey(): string;
     abstract getSoundKey(): string;
-    abstract shoot(enemies: Enemy[]): TowerAttack[];
+    abstract createAttacks(targets: Enemy[], allEnemies: Enemy[]): TowerAttack[];
 
     constructor(x: number, y: number) {
         super();
@@ -46,40 +45,26 @@ export abstract class Tower extends GameObject {
         }
     }
 
-    // Find target among enemies
-    scan(enemies: Enemy[]): void {
-        // Find enemy with most pixels traveled that's in range
-        let bestTarget: Enemy | null = null;
-        let bestDistance = -1;
-
-        for (const enemy of enemies) {
-            if (enemy.isDead() || !enemy.active) continue;
-            if (this.isInRange(enemy)) {
-                if (enemy.pixelsTraveled > bestDistance) {
-                    bestDistance = enemy.pixelsTraveled;
-                    bestTarget = enemy;
-                }
-            }
-        }
-
-        this.target = bestTarget;
+    findTargets(enemies: Enemy[]): Enemy[] {
+        return enemies
+            .filter(e => !e.isDead() && e.active && this.isInRange(e))
+            .sort((a, b) => b.pixelsTraveled - a.pixelsTraveled);
     }
 
     isInRange(enemy: Enemy): boolean {
         return this.distanceTo(enemy) <= this.range;
     }
 
-    canFire(): boolean {
-        return this.cooldownTimer <= 0 && this.target !== null && this.target.active && !this.target.isDead();
-    }
+    shoot(enemies: Enemy[]): TowerAttack[] {
+        if (this.cooldownTimer > 0) return [];
 
-    protected fireAtTarget(createFn: () => TowerAttack): TowerAttack[] {
-        if (!this.canFire() || !this.target) return [];
+        const targets = this.findTargets(enemies);
+        if (targets.length === 0) return [];
 
         this.cooldownTimer = this.attackSpeed * 1000; // Convert to ms
         resources.soundManager.play(this.getSoundKey());
 
-        return [createFn()];
+        return this.createAttacks(targets, enemies);
     }
 
     upgrade(): boolean {

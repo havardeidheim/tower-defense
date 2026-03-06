@@ -1,9 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
-import { TowerAttack } from '../attacks/TowerAttack';
 import { AreaAttack } from '../attacks/AreaAttack';
 import { TOWER_AREA } from '../../game/constants';
-import { resources } from '../../resources/ResourceLoader';
 
 export class AreaTower extends Tower {
     slowPercent: number = 0.3; // 30% slow
@@ -32,19 +30,10 @@ export class AreaTower extends Tower {
         }
     }
 
-    shoot(enemies: Enemy[]): TowerAttack[] {
-        if (this.cooldownTimer > 0) return [];
-
-        // Check if any enemy is in range before firing
-        const hasTarget = enemies.some(e => !e.isDead() && e.active && this.isInRange(e));
-        if (!hasTarget) return [];
-
-        this.cooldownTimer = this.attackSpeed * 1000;
-        resources.soundManager.play(this.getSoundKey());
-
+    createAttacks(_targets: Enemy[], allEnemies: Enemy[]) {
         return [new AreaAttack(
             this.centerX, this.centerY,
-            enemies, this.damage, this.range,
+            allEnemies, this.damage, this.range,
             this.slowPercent, 1600
         )];
     }

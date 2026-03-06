@@ -1,6 +1,5 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
-import { TowerAttack } from '../attacks/TowerAttack';
 import { PoisonProjectile } from '../attacks/PoisonProjectile';
 import { TOWER_POISON } from '../../game/constants';
 
@@ -30,34 +29,17 @@ export class PoisonTower extends Tower {
         }
     }
 
-    // Override scan to prioritize enemies with least poison (original Java behavior)
-    scan(enemies: Enemy[]): void {
-        let bestTarget: Enemy | null = null;
-        let lowestPoison = Infinity;
-        let bestProgress = -1;
-
-        for (const enemy of enemies) {
-            if (enemy.isDead() || !enemy.active) continue;
-            if (!this.isInRange(enemy)) continue;
-
-            // Primary: fewer poison ticks. Secondary: most progress (original Java logic)
-            if (enemy.poisonTicks < lowestPoison) {
-                lowestPoison = enemy.poisonTicks;
-                bestProgress = enemy.pixelsTraveled;
-                bestTarget = enemy;
-            } else if (enemy.poisonTicks === lowestPoison && enemy.pixelsTraveled > bestProgress) {
-                bestProgress = enemy.pixelsTraveled;
-                bestTarget = enemy;
-            }
-        }
-
-        this.target = bestTarget;
+    // Override to prioritize enemies with least poison (original Java behavior)
+    findTargets(enemies: Enemy[]): Enemy[] {
+        return enemies
+            .filter(e => !e.isDead() && e.active && this.isInRange(e))
+            .sort((a, b) => {
+                if (a.poisonTicks !== b.poisonTicks) return a.poisonTicks - b.poisonTicks;
+                return b.pixelsTraveled - a.pixelsTraveled;
+            });
     }
 
-    shoot(enemies: Enemy[]): TowerAttack[] {
-        this.scan(enemies);
-        return this.fireAtTarget(() =>
-            new PoisonProjectile(this.centerX, this.centerY, this.target!, this.damage)
-        );
+    createAttacks([target]: Enemy[]) {
+        return [new PoisonProjectile(this.centerX, this.centerY, target, this.damage)];
     }
 }

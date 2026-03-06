@@ -1,10 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
-import { TowerAttack } from '../attacks/TowerAttack';
 import { SpreadProjectile } from '../attacks/SpreadProjectile';
 import { TOWER_SPREAD } from '../../game/constants';
-import { resources } from '../../resources/ResourceLoader';
-
 export class SpreadTower extends Tower {
     targetCount: number = 2;
     canBounce: boolean = false;
@@ -42,29 +39,15 @@ export class SpreadTower extends Tower {
         }
     }
 
-    private scanMultiple(enemies: Enemy[]): Enemy[] {
-        const sorted = [...enemies]
-            .filter(e => !e.isDead() && e.active && this.isInRange(e))
-            .sort((a, b) => b.pixelsTraveled - a.pixelsTraveled);
-
-        return sorted.slice(0, this.targetCount);
+    findTargets(enemies: Enemy[]): Enemy[] {
+        return super.findTargets(enemies).slice(0, this.targetCount);
     }
 
-    shoot(enemies: Enemy[]): TowerAttack[] {
-        if (this.cooldownTimer > 0) return [];
-
-        const targets = this.scanMultiple(enemies);
-        if (targets.length === 0) return [];
-
-        this.cooldownTimer = this.attackSpeed * 1000;
-        resources.soundManager.play(this.getSoundKey());
-
-        const attacks: TowerAttack[] = [];
-        for (const target of targets) {
-            const proj = new SpreadProjectile(this.centerX, this.centerY, target, this.damage, this.canBounce);
-            proj.allEnemies = enemies; // For bounce targeting
-            attacks.push(proj);
-        }
-        return attacks;
+    createAttacks(targets: Enemy[], allEnemies: Enemy[]) {
+        return targets.map(t => {
+            const proj = new SpreadProjectile(this.centerX, this.centerY, t, this.damage, this.canBounce);
+            proj.allEnemies = allEnemies; // For bounce targeting
+            return proj;
+        });
     }
 }
