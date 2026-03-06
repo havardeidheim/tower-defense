@@ -14,9 +14,8 @@ export class NormalProjectile extends Projectile {
     onHit(): void {
         if (!this.target || this.target.isDead()) return;
 
-        // Check if target can dodge (DodgeEnemy, SuperEnemy)
-        if (this.target.canDodge && this.target.canDodge()) {
-            return; // Dodged!
+        if (this.target.tryDodge()) {
+            return;
         }
 
         this.target.takeDamage(this.damage);

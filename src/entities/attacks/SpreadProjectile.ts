@@ -40,7 +40,7 @@ export class SpreadProjectile extends Projectile {
     }
 
     onHit(): void {
-        if (this.target.canDodge && this.target.canDodge()) {
+        if (this.target.tryDodge()) {
             if (!this.tryBounce()) this.active = false;
             return;
         }

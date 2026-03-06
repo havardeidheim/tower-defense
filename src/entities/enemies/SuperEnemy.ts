@@ -33,7 +33,7 @@ export class SuperEnemy extends Enemy {
         this.health -= reducedDamage;
     }
 
-    canDodge(): boolean {
+    tryDodge(): boolean {
         return Math.random() < this.dodgeChance;
     }
 

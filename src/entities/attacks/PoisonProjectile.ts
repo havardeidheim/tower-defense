@@ -17,9 +17,8 @@ export class PoisonProjectile extends Projectile {
     onHit(): void {
         if (!this.target || this.target.isDead()) return;
 
-        // Check if target can dodge (DodgeEnemy, SuperEnemy)
-        if (this.target.canDodge && this.target.canDodge()) {
-            return; // Dodged!
+        if (this.target.tryDodge()) {
+            return;
         }
 
         // Apply poison effect only (no immediate damage)

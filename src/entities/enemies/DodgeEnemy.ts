@@ -20,7 +20,7 @@ export class DodgeEnemy extends Enemy {
         return 'assassin';
     }
 
-    canDodge(): boolean {
+    tryDodge(): boolean {
         return Math.random() < this.dodgeChance;
     }
 }

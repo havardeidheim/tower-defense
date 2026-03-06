@@ -176,7 +176,7 @@ export abstract class Enemy extends GameObject {
         this.speed = this.maxSpeed * (1 - amount);
     }
 
-    canDodge(): boolean {
+    tryDodge(): boolean {
         return false;
     }
 
