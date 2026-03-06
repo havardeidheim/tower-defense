@@ -28,10 +28,6 @@ export class SuperEnemy extends Enemy {
         return Math.random() < 0.5; // 50% dodge chance (same as DodgeEnemy)
     }
 
-    canBlockHit(): boolean {
-        return true;
-    }
-
     canBlockSlow(): boolean {
         return true;
     }

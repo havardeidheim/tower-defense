@@ -50,11 +50,6 @@ export class NoslowEnemy extends Enemy {
         // The slow portion is always ignored (speed reduction never applied)
     }
 
-    // These are not used for blocking logic anymore
-    canBlockHit(): boolean {
-        return false; // Blocking is handled in takeDamage override
-    }
-
     canBlockSlow(): boolean {
         return true; // Always immune to slow
     }
