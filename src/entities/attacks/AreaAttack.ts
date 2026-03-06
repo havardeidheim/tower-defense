@@ -8,6 +8,14 @@ export class AreaAttack extends TowerAttack {
     private frameTimer: number = 0;
     private readonly frameDelay: number = 80; // ms per frame
     private readonly totalFrames: number = 6;
+    private hasHit: boolean = false;
+
+    private readonly enemies: Enemy[];
+    private readonly damage: number;
+    private readonly range: number;
+    private readonly slowPercent: number;
+    private readonly slowDuration: number;
+    private readonly origin: Vector2;
 
     constructor(
         x: number,
@@ -25,18 +33,30 @@ export class AreaAttack extends TowerAttack {
         this.width = 80;
         this.height = 80;
 
-        // Apply damage + slow immediately (matching original instant-damage behavior)
-        const origin = new Vector2(x, y);
-        for (const enemy of enemies) {
+        this.origin = new Vector2(x, y);
+        this.enemies = enemies;
+        this.damage = damage;
+        this.range = range;
+        this.slowPercent = slowPercent;
+        this.slowDuration = slowDuration;
+    }
+
+    private onHit(): void {
+        for (const enemy of this.enemies) {
             if (enemy.isDead() || !enemy.active) continue;
-            if (origin.distanceTo(enemy.center) <= range) {
-                enemy.takeDamage(damage);
-                enemy.applySlow(slowPercent, slowDuration);
+            if (this.origin.distanceTo(enemy.center) <= this.range) {
+                enemy.takeDamage(this.damage);
+                enemy.applySlow(this.slowPercent, this.slowDuration);
             }
         }
     }
 
     update(deltaTime: number): void {
+        if (!this.hasHit) {
+            this.hasHit = true;
+            this.onHit();
+        }
+
         this.frameTimer += deltaTime;
         if (this.frameTimer >= this.frameDelay) {
             this.frameTimer = 0;

@@ -37,18 +37,18 @@ export abstract class Projectile extends TowerAttack {
     update(_deltaTime: number): void {
         if (!this.active) return;
 
+        // Check if target is dead or inactive
+        if (!this.target || this.target.isDead() || !this.target.active) {
+            this.active = false;
+            return;
+        }
+
         // Update velocity to track target (heat-seeking)
         this.calculateVelocity();
 
         // Move projectile
         this.x += this.vx;
         this.y += this.vy;
-
-        // Check if target is dead or inactive
-        if (!this.target || this.target.isDead() || !this.target.active) {
-            this.active = false;
-            return;
-        }
 
         // Check collision with target
         if (this.hitTest()) {
@@ -58,7 +58,8 @@ export abstract class Projectile extends TowerAttack {
     }
 
     protected hitTest(): boolean {
-        return this.distanceTo(this.target) < this.width / 2 + this.target.width / 2;
+        // dont collide in edge, overlap slightly with enemy before hitting
+        return this.distanceTo(this.target) < this.target.width / 3; 
     }
 
     render(ctx: CanvasRenderingContext2D): void {
