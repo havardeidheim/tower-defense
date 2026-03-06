@@ -21,7 +21,6 @@ export abstract class Enemy extends GameObject {
     pixelsTraveled: number = 0;
     level: Level | null = null;
     goldReward: number = ENEMY_GOLD_REWARD;
-    blockedHits: number = 0;
 
     abstract getSpriteName(): string;
     protected abstract initStats(): void;
