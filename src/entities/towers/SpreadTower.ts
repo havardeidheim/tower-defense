@@ -44,10 +44,6 @@ export class SpreadTower extends Tower {
     }
 
     createAttacks(targets: Enemy[], allEnemies: Enemy[]) {
-        return targets.map(t => {
-            const proj = new SpreadProjectile(this.centerX, this.centerY, t, this.damage, this.canBounce);
-            proj.allEnemies = allEnemies; // For bounce targeting
-            return proj;
-        });
+        return targets.map(t => new SpreadProjectile(this.centerX, this.centerY, t, this.damage, this.canBounce, allEnemies));
     }
 }

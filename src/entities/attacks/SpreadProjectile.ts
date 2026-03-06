@@ -8,10 +8,11 @@ export class SpreadProjectile extends Projectile {
     allEnemies: Enemy[] = [];
     bounceRange: number = 80;
 
-    constructor(x: number, y: number, target: Enemy, damage: number, canBounce: boolean = false) {
+    constructor(x: number, y: number, target: Enemy, damage: number, canBounce: boolean = false, allEnemies: Enemy[] = []) {
         super(x, y, target, damage);
         this.speed = 3; // Slower projectile
         this.canBounce = canBounce;
+        this.allEnemies = allEnemies;
     }
 
     getImageKey(): string {
