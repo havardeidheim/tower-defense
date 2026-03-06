@@ -1,6 +1,5 @@
 import { Projectile } from './Projectile';
 import { Enemy } from '../enemies/Enemy';
-import { SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 export class NormalProjectile extends Projectile {
     constructor(x: number, y: number, target: Enemy, damage: number) {
@@ -20,13 +19,6 @@ export class NormalProjectile extends Projectile {
             return; // Dodged!
         }
 
-        // Calculate damage (shield enemies reduce damage)
-        let finalDamage = this.damage;
-        if (this.target.hasShield && this.target.hasShield()) {
-            finalDamage = Math.max(0, finalDamage - SHIELD_DAMAGE_REDUCTION);
-        }
-
-        // Apply damage - blocking is handled by enemy's takeDamage method
-        this.target.takeDamage(finalDamage);
+        this.target.takeDamage(this.damage);
     }
 }

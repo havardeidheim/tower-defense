@@ -1,6 +1,5 @@
 import { Projectile } from './Projectile';
 import { Enemy } from '../enemies/Enemy';
-import { SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 export class SpreadProjectile extends Projectile {
     canBounce: boolean;
@@ -71,14 +70,7 @@ export class SpreadProjectile extends Projectile {
             return;
         }
 
-        // Calculate damage (shield enemies reduce damage)
-        let finalDamage = this.damage;
-        if (this.target.hasShield && this.target.hasShield()) {
-            finalDamage = Math.max(0, finalDamage - SHIELD_DAMAGE_REDUCTION);
-        }
-
-        // Apply damage
-        this.target.takeDamage(finalDamage);
+        this.target.takeDamage(this.damage);
 
         // Check if we should bounce or die
         if (this.hasBounced || !this.canBounce) {
