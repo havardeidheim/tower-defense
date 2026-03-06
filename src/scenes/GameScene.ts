@@ -20,7 +20,7 @@ import { SaveManager } from '../save/SaveManager';
 import { MenuScene } from './MenuScene';
 import {
     TILE_SIZE, GAME_WIDTH, GAME_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT,
-    STARTING_GOLD, STARTING_MANA, STARTING_MANA_LEVEL3, MAX_MANA, STARTING_LIVES,
+    STARTING_GOLD, STARTING_MANA, STARTING_MANA_LEVEL4, MAX_MANA, STARTING_LIVES,
     TOWER_COSTS, MANA_GRANT_INTERVAL
 } from '../game/constants';
 import {
@@ -73,9 +73,11 @@ export class GameScene extends Scene {
         this.level = new Level(levelData);
         this.waveManager = new WaveManager(this.level);
 
-        // Special mana for level 3
+        // Special mana for level 4 (no buildable tiles, so extra mana for spells)
+        // Note: intentionally NOT capped at MAX_MANA - Java original starts at 240
+        // The MAX_MANA cap only applies to mana regeneration, not starting mana
         if (this.levelIndex === 3) {
-            this.mana = Math.min(STARTING_MANA_LEVEL3, MAX_MANA);
+            this.mana = STARTING_MANA_LEVEL4;
         }
 
         this.ui = new UIManager(

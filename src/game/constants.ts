@@ -54,7 +54,7 @@ export const SPELL_COSTS: Record<string, number> = {
 // Game settings
 export const STARTING_GOLD = 180;
 export const STARTING_MANA = 60;
-export const STARTING_MANA_LEVEL3 = 240;
+export const STARTING_MANA_LEVEL4 = 240;
 export const MAX_MANA = 100;
 export const STARTING_LIVES = 5;
 
