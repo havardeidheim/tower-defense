@@ -13,6 +13,7 @@ export class SuperEnemy extends Enemy {
         this.health = this.maxHealth;
         this.maxSpeed = 65;
         this.speed = this.maxSpeed;
+        this.dodgeChance = 0.5;
     }
 
     getSpriteName(): string {
@@ -26,14 +27,14 @@ export class SuperEnemy extends Enemy {
         return this.health <= 0;
     }
 
-    canDodge(): boolean {
-        return Math.random() < 0.5; // 50% dodge chance (same as DodgeEnemy)
-    }
-
     // Shield reduces poison tick damage (original Java behavior)
     takePoisonDamage(amount: number): void {
         const reducedDamage = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
         this.health -= reducedDamage;
+    }
+
+    canDodge(): boolean {
+        return Math.random() < this.dodgeChance;
     }
 
     // Override applySlow - NEVER apply slow effect (permanently immune to slowing)

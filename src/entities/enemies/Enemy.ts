@@ -18,6 +18,7 @@ export abstract class Enemy extends GameObject {
     poisonTimer: number = 0;
     slowTimer: number = 0;
     slowAmount: number = 0;
+    dodgeChance: number = 0;
     pixelsTraveled: number = 0;
     level: Level | null = null;
     goldReward: number = ENEMY_GOLD_REWARD;

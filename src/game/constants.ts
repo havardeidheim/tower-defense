@@ -67,7 +67,6 @@ export const SLOW_DURATION = 1600;
 // Combat
 export const POISON_DAMAGE_PER_TICK = 18;
 export const SHIELD_DAMAGE_REDUCTION = 10;
-export const DODGE_CHANCE = 0.5;
 export const NOSLOW_BLOCK_COUNT = 3;
 
 // Projectile

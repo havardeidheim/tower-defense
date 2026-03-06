@@ -1,10 +1,8 @@
 import { Enemy } from './Enemy';
-import { ENEMY_GOLD_REWARD, DODGE_CHANCE } from '../../game/constants';
+import { ENEMY_GOLD_REWARD } from '../../game/constants';
 
 
 export class DodgeEnemy extends Enemy {
-    private dodgeChance: number = DODGE_CHANCE;
-
     constructor(x: number, y: number, healthLevel: number = 0) {
         super(x, y, healthLevel);
         this.goldReward = Math.floor(ENEMY_GOLD_REWARD * 1.5);
@@ -15,6 +13,7 @@ export class DodgeEnemy extends Enemy {
         this.health = this.maxHealth;
         this.maxSpeed = 70;
         this.speed = this.maxSpeed;
+        this.dodgeChance = 0.5;
     }
 
     getSpriteName(): string {
@@ -23,14 +22,5 @@ export class DodgeEnemy extends Enemy {
 
     canDodge(): boolean {
         return Math.random() < this.dodgeChance;
-    }
-
-    takeDamage(amount: number): boolean {
-        // Chance to completely dodge the attack
-        if (this.canDodge()) {
-            return false;
-        }
-        this.health -= amount;
-        return this.health <= 0;
     }
 }
