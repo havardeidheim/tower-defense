@@ -1,7 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
 import { TowerAttack } from '../attacks/TowerAttack';
-import { PoisonProjectile } from '../projectiles/PoisonProjectile';
+import { PoisonProjectile } from '../attacks/PoisonProjectile';
 import { TOWER_POISON } from '../../game/constants';
 
 export class PoisonTower extends Tower {

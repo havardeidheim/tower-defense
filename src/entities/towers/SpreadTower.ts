@@ -1,7 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
 import { TowerAttack } from '../attacks/TowerAttack';
-import { SpreadProjectile } from '../projectiles/SpreadProjectile';
+import { SpreadProjectile } from '../attacks/SpreadProjectile';
 import { TOWER_SPREAD } from '../../game/constants';
 import { resources } from '../../resources/ResourceLoader';
 

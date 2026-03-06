@@ -1,4 +1,4 @@
-import { TowerAttack } from '../attacks/TowerAttack';
+import { TowerAttack } from './TowerAttack';
 import { Enemy } from '../enemies/Enemy';
 import { resources } from '../../resources/ResourceLoader';
 

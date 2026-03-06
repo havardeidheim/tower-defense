@@ -33,8 +33,7 @@ src/
 ├── entities/
 │   ├── enemies/       # Enemy types (Normal, Fast, Dodge, Shield, Super, Noslow)
 │   ├── towers/        # Tower types (Normal, Area, Spread, Poison)
-│   ├── projectiles/   # Projectile types for tower attacks
-│   └── effects/       # Visual effects (AreaShot)
+│   └── attacks/       # Tower attacks (AreaAttack, projectiles, base classes)
 │
 ├── spells/            # Player-castable spells (Lightning, Runestone)
 │

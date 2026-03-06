@@ -1,7 +1,7 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
 import { TowerAttack } from '../attacks/TowerAttack';
-import { NormalProjectile } from '../projectiles/NormalProjectile';
+import { NormalProjectile } from '../attacks/NormalProjectile';
 import { TOWER_NORMAL } from '../../game/constants';
 
 export class NormalTower extends Tower {
