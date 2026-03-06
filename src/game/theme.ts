@@ -50,15 +50,6 @@ export const COLOR_MAP_TILE = '#808080';
 // --- Enemy indicators ---
 export const COLOR_POISON_INDICATOR = 'rgba(0, 200, 0, 0.8)';
 
-// --- Enemy fallback colors (when sprites fail to load) ---
-export const COLOR_ENEMY_NORMAL = '#8B4513';
-export const COLOR_ENEMY_FAST = '#00FF00';
-export const COLOR_ENEMY_SHIELD = '#4169E1';
-export const COLOR_ENEMY_DODGE = '#800080';
-export const COLOR_ENEMY_NOSLOW = COLOR_GOLD;
-export const COLOR_ENEMY_SUPER = '#FF0000';
-export const COLOR_ENEMY_FALLBACK = '#888';
-
 // --- Stat display ---
 export const COLOR_STAT_LABEL = '#AAA';
 export const COLOR_STAT_SEPARATOR = '#888';

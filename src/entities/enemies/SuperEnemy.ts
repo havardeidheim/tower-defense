@@ -1,6 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
-import { COLOR_ENEMY_SUPER } from '../../game/theme';
+
 
 export class SuperEnemy extends Enemy {
     constructor(x: number, y: number, healthLevel: number = 0) {
@@ -24,10 +24,6 @@ export class SuperEnemy extends Enemy {
         return Math.random() < 0.5; // 50% dodge chance (same as DodgeEnemy)
     }
 
-    canBlockSlow(): boolean {
-        return true;
-    }
-
     // 50% chance to resist slow effects (original Java behavior)
     applySlow(amount: number, duration: number): void {
         if (Math.random() > 0.5) {
@@ -49,7 +45,4 @@ export class SuperEnemy extends Enemy {
         this.health -= reducedDamage;
     }
 
-    protected getFallbackColor(): string {
-        return COLOR_ENEMY_SUPER;
-    }
 }

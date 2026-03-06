@@ -1,6 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, DODGE_CHANCE } from '../../game/constants';
-import { COLOR_ENEMY_DODGE } from '../../game/theme';
+
 
 export class DodgeEnemy extends Enemy {
     private dodgeChance: number = DODGE_CHANCE;
@@ -40,10 +40,6 @@ export class DodgeEnemy extends Enemy {
             super.applyPoison(ticks);
         }
         // else: dodged the poison
-    }
-
-    protected getFallbackColor(): string {
-        return COLOR_ENEMY_DODGE;
     }
 
 }

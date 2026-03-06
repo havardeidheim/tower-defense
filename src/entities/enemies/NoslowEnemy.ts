@@ -1,6 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, NOSLOW_BLOCK_COUNT } from '../../game/constants';
-import { COLOR_ENEMY_NOSLOW } from '../../game/theme';
+
 
 export class NoslowEnemy extends Enemy {
     private blocksRemaining: number = NOSLOW_BLOCK_COUNT;
@@ -46,11 +46,4 @@ export class NoslowEnemy extends Enemy {
         // The slow portion is always ignored (speed reduction never applied)
     }
 
-    canBlockSlow(): boolean {
-        return true; // Always immune to slow
-    }
-
-    protected getFallbackColor(): string {
-        return COLOR_ENEMY_NOSLOW;
-    }
 }

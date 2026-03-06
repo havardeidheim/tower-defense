@@ -2,7 +2,7 @@ import { GameObject } from '../../core/GameObject';
 import { Level, Direction } from '../../level/Level';
 import { TILE_SIZE, POISON_TICK_INTERVAL, POISON_DAMAGE_PER_TICK, ENEMY_GOLD_REWARD } from '../../game/constants';
 import {
-    COLOR_POISON_INDICATOR, COLOR_HEALTH_BG, COLOR_HEALTH_HIGH, COLOR_HEALTH_MID, COLOR_HEALTH_LOW, COLOR_ENEMY_FALLBACK,
+    COLOR_POISON_INDICATOR, COLOR_HEALTH_BG, COLOR_HEALTH_HIGH, COLOR_HEALTH_MID, COLOR_HEALTH_LOW,
 } from '../../game/theme';
 import { resources } from '../../resources/ResourceLoader';
 
@@ -125,10 +125,6 @@ export abstract class Enemy extends GameObject {
 
             ctx.drawImage(sprite, -this.width / 2, -this.height / 2, this.width, this.height);
             ctx.restore();
-        } else {
-            // Fallback rendering
-            ctx.fillStyle = this.getFallbackColor();
-            ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10);
         }
 
         // Draw health bar
@@ -159,10 +155,6 @@ export abstract class Enemy extends GameObject {
         ctx.fillRect(barX, barY, barWidth * healthPercent, barHeight);
     }
 
-    protected getFallbackColor(): string {
-        return COLOR_ENEMY_FALLBACK;
-    }
-
     takeDamage(amount: number): boolean {
         this.health -= amount;
         return this.health <= 0;
@@ -191,10 +183,6 @@ export abstract class Enemy extends GameObject {
 
     canDodge(): boolean {
         return false; // Override in DodgeEnemy
-    }
-
-    canBlockSlow(): boolean {
-        return false; // Override in NoslowEnemy, SuperEnemy
     }
 
     // Spell damage bypasses dodge and shield

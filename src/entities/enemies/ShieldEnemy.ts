@@ -1,6 +1,6 @@
 import { Enemy } from './Enemy';
 import { ENEMY_GOLD_REWARD, SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
-import { COLOR_ENEMY_SHIELD } from '../../game/theme';
+
 
 export class ShieldEnemy extends Enemy {
     constructor(x: number, y: number, healthLevel: number = 0) {
@@ -30,10 +30,6 @@ export class ShieldEnemy extends Enemy {
     takePoisonDamage(amount: number): void {
         const reducedDamage = Math.max(0, amount - SHIELD_DAMAGE_REDUCTION);
         this.health -= reducedDamage;
-    }
-
-    protected getFallbackColor(): string {
-        return COLOR_ENEMY_SHIELD;
     }
 
 }
