@@ -2,11 +2,12 @@ import { TowerAttack } from './TowerAttack';
 import { Enemy } from '../enemies/Enemy';
 import { Vector2 } from '../../core/Vector2';
 import { resources } from '../../resources/ResourceLoader';
+import { FRAME_TIME } from '../../game/constants';
 
 export class AreaAttack extends TowerAttack {
     private frame: number = 0;
     private frameTimer: number = 0;
-    private readonly frameDuration: number = 80; // ms per frame
+    private readonly animationFrameDuration: number = FRAME_TIME * 5;
     private readonly totalFrames: number = 6;
     private hasHit: boolean = false;
 
@@ -59,7 +60,7 @@ export class AreaAttack extends TowerAttack {
         }
 
         this.frameTimer += deltaTime;
-        if (this.frameTimer >= this.frameDuration) {
+        if (this.frameTimer >= this.animationFrameDuration) {
             this.frameTimer = 0;
             this.frame++;
             if (this.frame >= this.totalFrames) {
