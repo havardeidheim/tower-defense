@@ -4,16 +4,21 @@ export class SoundManager {
     private enabled: boolean = true;
 
     async init(): Promise<void> {
-        this.context = new AudioContext();
+        try {
+            this.context = new AudioContext();
+        } catch (e) {
+            console.warn('AudioContext not available, sounds disabled', e);
+        }
     }
 
     async loadSound(key: string, url: string): Promise<void> {
-        if (!this.context) await this.init();
+        if (!this.context) return;
 
         try {
             const response = await fetch(url);
+            if (!response.ok) return;
             const arrayBuffer = await response.arrayBuffer();
-            const audioBuffer = await this.context!.decodeAudioData(arrayBuffer);
+            const audioBuffer = await this.context.decodeAudioData(arrayBuffer);
             this.buffers.set(key, audioBuffer);
         } catch (e) {
             console.warn(`Failed to load sound: ${url}`, e);
