@@ -1,46 +1,107 @@
 Codebase Review: Refactoring Opportunities
-1. GameScene is a God Class (578 lines)
-GameScene.ts handles input, state management, rendering, UI coordination, sound effects, and game logic all in one class. This is the single biggest maintainability issue — any change requires understanding the whole file.
+Updated: 2026-03-07
 
-Suggestion: Extract concerns into focused helpers:
+============================================================
+PRIORITY 1 — Quick Wins (minimal effort, clear benefit)
+============================================================
 
-GameSceneInput — mouse/keyboard handlers
-GameSceneRenderer — all render methods
-Keep GameScene as orchestrator
-2. No Single Source of Truth for Entity Stats
-Tower stats are defined in three places:
+A. Extract ITowerInfo Interface
+   Status: NOT DONE
+   Files: UIManager.ts:214, InfoDisplay.ts:47
+   Both use an anonymous structural type for tower info:
+     tower: { getType: () => string; damage: number; range: number; attackSpeed: number; level: number; maxLevel: number }
+   Fix: Define ITowerInfo interface once, use it in both places.
+   Effort: Tiny. Impact: Clearer contracts for AI.
 
-Hardcoded in tower subclass constructors/applyUpgrade() methods
-TowerStatsConfig.ts (UI display only — decorative, not used by game logic)
-GameScene.ts:523-527 (range preview values duplicated again)
-Enemy stats are similarly hardcoded in each subclass's initStats(). Some share identical formulas (NormalEnemy/FastEnemy both use 100 + 100 * level, DodgeEnemy/SuperEnemy both use 70 + 70 * level).
+B. Fix AreaTower Hardcoded Slow Duration
+   Status: NOT DONE
+   File: AreaTower.ts:37
+   Passes literal 1600 instead of SLOW_DURATION constant from constants.ts.
+   Fix: Import and use SLOW_DURATION.
+   Effort: One-line change.
 
-Suggestion: Create a single config-driven stats system. Define all base stats, upgrade paths, and costs in one place. Have entity classes read from config instead of hardcoding.
+C. Deduplicate Tower Upgrade Costs
+   Status: NOT DONE
+   Files: NormalTower.ts:16, AreaTower.ts:18, SpreadTower.ts:18, PoisonTower.ts:19
+   All four towers have identical getUpgradeCost(): costs = [40, 80, 120].
+   Fix: Move to Tower base class as default implementation.
+   Effort: Small.
 
-3. ~50+ Magic Numbers Scattered Everywhere
-Examples:
+============================================================
+PRIORITY 2 — Medium Impact (moderate effort)
+============================================================
 
-UI layout positions throughout UIManager.ts and WavePreview.ts
-Health bar dimensions (barWidth - 10, barHeight = 4, barY = y - 8)
-Suggestion: Extract to constants.ts or create focused config files (UILayout.ts, ColorScheme.ts). This is the single most impactful change for AI development — named constants make intent clear.
+E. Eliminate Tower Range Preview Duplication
+   Status: NOT DONE
+   File: GameScene.ts:530-533
+   Tower ranges hardcoded in preview: { 'Normal': 140, 'Area': 80, 'Spread': 140, 'Poison': 120 }
+   These duplicate the getBaseRange() values in each tower subclass.
+   Fix: Either instantiate a temp tower to query range, or add static ranges
+   to a config. Best approach: add base ranges to TOWER_STATS in TowerStatsConfig.ts
+   and read from there.
+   Effort: Small. Impact: Eliminates silent desync risk.
 
-7. Structural Types Instead of Interfaces
-Both UIManager.ts and InfoDisplay.ts use anonymous structural types for tower info:
+F. Deduplicate ShieldEnemy/SuperEnemy Shield Logic
+   Status: NOT DONE
+   Files: ShieldEnemy.ts:22-32, SuperEnemy.ts:24-34
+   Identical takeDamage() and takePoisonDamage() methods in both classes.
+   Fix: Extract to a shared helper function or mixin:
+     function applyShieldedDamage(health: number, amount: number, reduction: number): number
+   Both classes call the helper. Keeps subclass structure intact.
+   Effort: Small. Impact: One place to change shield behavior.
 
-tower: { getType: () => string; damage: number; range: number; ... }
-Suggestion: Define an ITowerInfo interface and use it consistently. This makes the contract explicit and helps AI understand the expected shape.
+G. Tower/Enemy Factory Maps
+   Status: NOT DONE
+   Files: GameScene.ts:344-349 (tower switch), WaveManager.ts:112-129 (enemy switch)
+   Both use switch statements for entity instantiation.
+   Fix: Replace with Record<TowerType, (x, y) => Tower> and
+   Record<string, (x, y, level) => Enemy> maps. Exhaustive by construction.
+   Effort: Small. Impact: Compiler catches missing cases when types are added.
 
-8. Tower Instantiation Switch Statement
-GameScene.ts:338-344 has a switch on tower type strings. If TowerType is extended, the compiler won't catch the missing case.
+============================================================
+PRIORITY 3 — Larger Refactors (higher effort, strategic)
+============================================================
 
-Suggestion: Create a TowerFactory with a Record<TowerType, (x, y) => Tower> map. Exhaustive by construction.
+H. Consolidate Entity Stats into Config
+   Status: NOT DONE
+   Problem: Tower stats live in 3 places:
+     1. Tower subclass methods (getBaseDamage, applyUpgrade) — actual game logic
+     2. TowerStatsConfig.ts — UI display only (decorative)
+     3. GameScene.ts:530-533 — range preview (duplicated)
+   Enemy stats similarly hardcoded per-subclass initStats().
+   Some share formulas: Normal/Fast both use 100+100*level, Dodge/Super use 70+70*level.
+   Fix: Create a single source of truth. Tower subclasses read base stats and
+   upgrade formulas from config. TowerStatsConfig and preview both derive from it.
+   Effort: Medium. Impact: Highest — single file to edit for balance changes.
 
+I. GameScene Decomposition
+   Status: PARTIALLY DONE (UIManager, InfoDisplay, WavePreview already extracted)
+   File: GameScene.ts (584 lines)
+   What remains is orchestration: game state, entity lifecycle, input routing, rendering.
+   Each method is focused and the file is readable.
+   Verdict: Lower priority than originally assessed. Further splitting (GameSceneInput,
+   GameSceneRenderer) would add indirection without proportional benefit. The file is
+   manageable as-is. Revisit if it grows past ~700 lines.
 
-Priority Ranking for AI-Friendliness
-Priority	Refactoring	Impact
-1	Extract magic numbers to named constants	Every file benefits; AI can understand intent
-2	Consolidate entity stats into config	Single source of truth; fewer files to touch
-3	Split GameScene into focused classes	Reduces context needed for any change
-4	Create TowerFactory + ITowerInfo interface	Type safety catches errors at compile time
+============================================================
+COMPLETED / NO LONGER APPLICABLE
+============================================================
 
-The codebase is well-structured at the directory level and uses good patterns (template method, abstract base classes, scene management). The main issues are about consolidation — pulling scattered magic values, duplicated logic, and implicit contracts into explicit, centralized, well-typed constructs. These changes would dramatically reduce the context an AI needs to safely make modifications.
+J. Extract Magic Numbers to Constants
+   Status: SUBSTANTIALLY DONE
+   constants.ts has 30+ game mechanic constants.
+   theme.ts has 50+ color and font constants.
+   Remaining magic numbers are mostly rendering details (projectile sizes,
+   health bar dimensions, UI layout positions) that rarely need changing.
+
+============================================================
+ADDITIONAL OBSERVATIONS
+============================================================
+
+- Codebase is ~3,700 lines across 47 TypeScript files.
+- Directory structure is clean and well-organized.
+- Good use of abstract base classes and template method pattern.
+- No usage of `any` type. TypeScript strict mode enforced.
+- No external dependencies beyond Vite.
+- The codebase is in good shape overall. The main risk area is stats
+  duplication (issue H) which could cause silent bugs during balance tuning.

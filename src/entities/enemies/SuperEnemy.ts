@@ -39,7 +39,7 @@ export class SuperEnemy extends Enemy {
 
     // Override applySlow - NEVER apply slow effect (permanently immune to slowing)
     applySlow(_amount: number, _duration: number): void {
-        // NoslowEnemy is completely immune to slow effects
+        // SuperEnemy is completely immune to slow effects
         // The slow portion is always ignored (speed reduction never applied)
     }
 
