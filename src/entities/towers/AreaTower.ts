@@ -1,10 +1,11 @@
 import { Tower } from './Tower';
 import { Enemy } from '../enemies/Enemy';
 import { AreaAttack } from '../attacks/AreaAttack';
-import { TOWER_AREA } from '../../game/constants';
+import { TOWER_AREA, SLOW_DURATION } from '../../game/constants';
 
 export class AreaTower extends Tower {
     slowPercent: number = 0.3; // 30% slow
+    slowDuration: number = SLOW_DURATION;
 
     getBaseDamage(): number { return 20; }
     getBaseRange(): number { return 80; }
@@ -29,7 +30,7 @@ export class AreaTower extends Tower {
         return [new AreaAttack(
             this.centerX, this.centerY,
             allEnemies, this.damage, this.range,
-            this.slowPercent, 1600
+            this.slowPercent, this.slowDuration
         )];
     }
 }
