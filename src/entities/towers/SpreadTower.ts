@@ -14,11 +14,6 @@ export class SpreadTower extends Tower {
     getImageKey(): string { return 'spreadtower'; }
     getSoundKey(): string { return 'fire'; }
 
-    getUpgradeCost(): number {
-        const costs = [40, 80, 120];
-        return this.level < this.maxLevel ? costs[this.level] : 0;
-    }
-
     protected applyUpgrade(): void {
         // Matches original Java logic:
         // L1: 3 targets, 18 dmg

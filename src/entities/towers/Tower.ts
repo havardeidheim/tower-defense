@@ -13,11 +13,12 @@ export abstract class Tower extends GameObject {
     cooldownTimer: number = 0;
     totalCost: number = 0; // Track total investment for selling
 
+    private static readonly DEFAULT_UPGRADE_COSTS = [40, 80, 120];
+
     abstract getBaseDamage(): number;
     abstract getBaseRange(): number;
     abstract getBaseSpeed(): number;
     abstract getCost(): number;
-    abstract getUpgradeCost(): number;
     abstract getType(): string;
     abstract getImageKey(): string;
     abstract getSoundKey(): string;
@@ -76,6 +77,10 @@ export abstract class Tower extends GameObject {
     }
 
     protected abstract applyUpgrade(): void;
+
+    getUpgradeCost(): number {
+        return this.level < this.maxLevel ? Tower.DEFAULT_UPGRADE_COSTS[this.level] : 0;
+    }
 
     getSellValue(): number {
         // 50% of cost + 10 per level

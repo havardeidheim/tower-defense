@@ -14,11 +14,6 @@ export class AreaTower extends Tower {
     getImageKey(): string { return 'areatower'; }
     getSoundKey(): string { return 'frost'; }
 
-    getUpgradeCost(): number {
-        const costs = [40, 80, 120];
-        return this.level < this.maxLevel ? costs[this.level] : 0;
-    }
-
     protected applyUpgrade(): void {
         // +6 damage, +5% slow per level, at max level: +20 range and 50% slow
         this.damage = this.getBaseDamage() + this.level * 6;

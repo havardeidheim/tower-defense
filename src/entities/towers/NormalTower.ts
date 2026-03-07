@@ -12,11 +12,6 @@ export class NormalTower extends Tower {
     getImageKey(): string { return 'normaltower'; }
     getSoundKey(): string { return 'stone'; }
 
-    getUpgradeCost(): number {
-        const costs = [40, 80, 120];
-        return this.level < this.maxLevel ? costs[this.level] : 0;
-    }
-
     protected applyUpgrade(): void {
         // +10 range, +8 damage, -0.1 speed per level
         this.range = this.getBaseRange() + this.level * 10;

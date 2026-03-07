@@ -15,11 +15,6 @@ export class PoisonTower extends Tower {
     getImageKey(): string { return 'poisontower'; }
     getSoundKey(): string { return 'poison'; }
 
-    getUpgradeCost(): number {
-        const costs = [40, 80, 120];
-        return this.level < this.maxLevel ? costs[this.level] : 0;
-    }
-
     protected applyUpgrade(): void {
         // +1 tick per level, extra +1 at max level
         // L0: 2 ticks, L1: 3 ticks, L2: 4 ticks, L3: 6 ticks
