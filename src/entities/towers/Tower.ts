@@ -4,6 +4,18 @@ import { TowerAttack } from '../attacks/TowerAttack';
 import { resources } from '../../resources/ResourceLoader';
 import { TILE_SIZE } from '../../game/constants';
 
+export interface TowerLevelStats {
+    damage: number;
+    range: number;
+    speed: number;
+    [key: string]: number | boolean;
+}
+
+export interface TowerStats {
+    cost: number;
+    levels: [TowerLevelStats, TowerLevelStats, TowerLevelStats, TowerLevelStats];
+}
+
 export abstract class Tower extends GameObject {
     damage: number = 20;
     range: number = 140;
@@ -15,10 +27,7 @@ export abstract class Tower extends GameObject {
 
     private static readonly DEFAULT_UPGRADE_COSTS = [40, 80, 120];
 
-    abstract getBaseDamage(): number;
-    abstract getBaseRange(): number;
-    abstract getBaseSpeed(): number;
-    abstract getCost(): number;
+    abstract getStats(): TowerStats;
     abstract getType(): string;
     abstract getImageKey(): string;
     abstract getSoundKey(): string;
@@ -34,9 +43,10 @@ export abstract class Tower extends GameObject {
     }
 
     protected initStats(): void {
-        this.damage = this.getBaseDamage();
-        this.range = this.getBaseRange();
-        this.attackSpeed = this.getBaseSpeed();
+        const base = this.getStats().levels[0];
+        this.damage = base.damage;
+        this.range = base.range;
+        this.attackSpeed = base.speed;
     }
 
     update(deltaTime: number): void {

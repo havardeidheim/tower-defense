@@ -1,6 +1,7 @@
 import { resources } from '../resources/ResourceLoader';
 import { GAME_WIDTH, UI_WIDTH } from '../game/constants';
-import { TOWER_STATS, renderStatLine } from '../entities/towers/TowerStatsConfig';
+import { TOWER_DESCRIPTIONS, getStatLines, renderStatLine } from '../entities/towers/TowerStatsConfig';
+import { ITowerInfo } from '../entities/towers/ITowerInfo';
 import { TowerType } from './TowerButton';
 import {
     COLOR_GOLD, COLOR_MANA_BLUE, COLOR_TEXT, COLOR_TEXT_SUBTLE,
@@ -44,7 +45,7 @@ export class InfoDisplay {
         ctx.fillText(`Wave: ${wave + 1}/${totalWaves}`, x, y);
     }
 
-    renderTowerInfo(ctx: CanvasRenderingContext2D, tower: { getType: () => string; damage: number; range: number; attackSpeed: number; level: number; maxLevel: number }): void {
+    renderTowerInfo(ctx: CanvasRenderingContext2D, tower: ITowerInfo): void {
         const panelX = GAME_WIDTH;
         const panelY = 150;
         const panelWidth = UI_WIDTH;
@@ -67,28 +68,30 @@ export class InfoDisplay {
         let y = panelY + 28;
 
         const towerType = tower.getType() as TowerType;
-        const stats = TOWER_STATS[towerType];
-        if (!stats) return;
+        const desc = TOWER_DESCRIPTIONS[towerType];
+        if (!desc) return;
+
+        const statLines = getStatLines(towerType);
 
         // Title: tower name + level
         ctx.font = FONT_LABEL_SM;
         ctx.fillStyle = COLOR_GOLD;
         ctx.textAlign = 'left';
-        ctx.fillText(`${stats.name} (Lv ${tower.level + 1})`, textX, y);
+        ctx.fillText(`${desc.name} (Lv ${tower.level + 1})`, textX, y);
         y += 20;
 
         // Stat lines with current level bolded
-        for (const stat of stats.statLines) {
+        for (const stat of statLines) {
             renderStatLine(ctx, textX, y, stat, tower.level);
             y += 14;
         }
 
         // Special notes
-        if (stats.specialNotes) {
+        if (desc.specialNotes) {
             y += 2;
             ctx.font = FONT_NOTE;
             ctx.fillStyle = COLOR_TEXT_SUBTLE;
-            for (const note of stats.specialNotes) {
+            for (const note of desc.specialNotes) {
                 ctx.fillText(note, textX, y);
                 y += 13;
             }

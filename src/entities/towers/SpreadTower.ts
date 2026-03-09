@@ -1,37 +1,32 @@
-import { Tower } from './Tower';
+import { Tower, TowerStats } from './Tower';
 import { Enemy } from '../enemies/Enemy';
 import { SpreadProjectile } from '../attacks/SpreadProjectile';
 import { TOWER_SPREAD } from '../../game/constants';
+
 export class SpreadTower extends Tower {
     targetCount: number = 2;
     canBounce: boolean = false;
 
-    getBaseDamage(): number { return 16; }
-    getBaseRange(): number { return 140; }
-    getBaseSpeed(): number { return 1.5; }
-    getCost(): number { return 80; }
+    static readonly STATS: TowerStats = {
+        cost: 80,
+        levels: [
+            { damage: 16, range: 140, speed: 1.5, targets: 2, canBounce: false },
+            { damage: 18, range: 140, speed: 1.5, targets: 3, canBounce: false },
+            { damage: 22, range: 140, speed: 1.5, targets: 4, canBounce: false },
+            { damage: 22, range: 140, speed: 1.5, targets: 4, canBounce: true },
+        ],
+    };
+
+    getStats() { return SpreadTower.STATS; }
     getType(): string { return TOWER_SPREAD; }
     getImageKey(): string { return 'spreadtower'; }
     getSoundKey(): string { return 'fire'; }
 
     protected applyUpgrade(): void {
-        // Matches original Java logic:
-        // L1: 3 targets, 18 dmg
-        // L2: 4 targets, 22 dmg
-        // L3: 4 targets, 22 dmg, bounce enabled
-        if (this.level === 3) {
-            this.targetCount = 4;
-            this.damage = 22;
-            this.canBounce = true;
-        } else if (this.level === 2) {
-            this.targetCount = 4;
-            this.damage = 22;
-            this.canBounce = false;
-        } else {
-            this.targetCount = 2 + this.level;
-            this.damage = this.getBaseDamage() + this.level * 2;
-            this.canBounce = false;
-        }
+        const s = SpreadTower.STATS.levels[this.level];
+        this.damage = s.damage;
+        this.targetCount = s.targets as number;
+        this.canBounce = s.canBounce as boolean;
     }
 
     findTargets(enemies: Enemy[]): Enemy[] {

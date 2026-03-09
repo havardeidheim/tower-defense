@@ -8,7 +8,8 @@ import { WavePreview } from './WavePreview';
 import { Rectangle } from '../core/Rectangle';
 import { resources } from '../resources/ResourceLoader';
 import { GAME_WIDTH, UI_WIDTH, CANVAS_HEIGHT, SPELL_COSTS } from '../game/constants';
-import { TOWER_STATS, renderStatLine } from '../entities/towers/TowerStatsConfig';
+import { TOWER_DESCRIPTIONS, getStatLines, getTowerStats, renderStatLine } from '../entities/towers/TowerStatsConfig';
+import { ITowerInfo } from '../entities/towers/ITowerInfo';
 import {
     COLOR_GOLD, COLOR_MANA_BLUE, COLOR_TEXT, COLOR_TEXT_SUBTLE,
     COLOR_PANEL_BG, COLOR_BORDER,
@@ -211,7 +212,7 @@ export class UIManager {
         this.infoDisplay.renderStats(ctx, gold, mana, maxMana, lives, wave, totalWaves);
     }
 
-    renderTowerInfo(ctx: CanvasRenderingContext2D, tower: { getType: () => string; damage: number; range: number; attackSpeed: number; level: number; maxLevel: number }): void {
+    renderTowerInfo(ctx: CanvasRenderingContext2D, tower: ITowerInfo): void {
         this.infoDisplay.renderTowerInfo(ctx, tower);
         // Re-render upgrade/sell buttons on top of the info panel
         this.upgradeButton.render(ctx);
@@ -292,8 +293,11 @@ export class UIManager {
     }
 
     private renderTowerShopInfo(ctx: CanvasRenderingContext2D, towerType: TowerType): void {
-        const stats = TOWER_STATS[towerType];
-        if (!stats) return;
+        const desc = TOWER_DESCRIPTIONS[towerType];
+        if (!desc) return;
+
+        const towerStats = getTowerStats(towerType);
+        const statLines = getStatLines(towerType);
 
         this.renderInfoBackground(ctx);
 
@@ -304,33 +308,33 @@ export class UIManager {
         ctx.font = FONT_LABEL_SM;
         ctx.fillStyle = COLOR_GOLD;
         ctx.textAlign = 'left';
-        ctx.fillText(stats.name, textX, y);
+        ctx.fillText(desc.name, textX, y);
         y += 18;
 
         // Price
         ctx.font = FONT_LABEL_XS;
         ctx.fillStyle = COLOR_GOLD;
-        ctx.fillText(`Price: ${stats.cost}`, textX, y);
+        ctx.fillText(`Price: ${towerStats.cost}`, textX, y);
         y += 16;
 
         // Flavor text
         ctx.font = FONT_BODY_SM;
         ctx.fillStyle = COLOR_TEXT;
-        ctx.fillText(stats.flavorText, textX, y);
+        ctx.fillText(desc.flavorText, textX, y);
         y += 16;
 
         // Stat lines (no current level = no bolding)
-        for (const stat of stats.statLines) {
+        for (const stat of statLines) {
             renderStatLine(ctx, textX, y, stat);
             y += 14;
         }
 
         // Special notes
-        if (stats.specialNotes) {
+        if (desc.specialNotes) {
             y += 2;
             ctx.font = FONT_NOTE;
             ctx.fillStyle = COLOR_TEXT_SUBTLE;
-            for (const note of stats.specialNotes) {
+            for (const note of desc.specialNotes) {
                 ctx.fillText(note, textX, y);
                 y += 13;
             }

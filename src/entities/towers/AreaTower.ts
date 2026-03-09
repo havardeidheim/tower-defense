@@ -1,29 +1,32 @@
-import { Tower } from './Tower';
+import { Tower, TowerStats } from './Tower';
 import { Enemy } from '../enemies/Enemy';
 import { AreaAttack } from '../attacks/AreaAttack';
 import { TOWER_AREA, SLOW_DURATION } from '../../game/constants';
 
 export class AreaTower extends Tower {
-    slowPercent: number = 0.3; // 30% slow
+    slowPercent: number = 0.3;
     slowDuration: number = SLOW_DURATION;
 
-    getBaseDamage(): number { return 20; }
-    getBaseRange(): number { return 80; }
-    getBaseSpeed(): number { return 2.0; }
-    getCost(): number { return 80; }
+    static readonly STATS: TowerStats = {
+        cost: 80,
+        levels: [
+            { damage: 20, range: 80, speed: 2.0, slow: 30 },
+            { damage: 26, range: 80, speed: 2.0, slow: 35 },
+            { damage: 32, range: 80, speed: 2.0, slow: 40 },
+            { damage: 38, range: 100, speed: 2.0, slow: 50 },
+        ],
+    };
+
+    getStats() { return AreaTower.STATS; }
     getType(): string { return TOWER_AREA; }
     getImageKey(): string { return 'areatower'; }
     getSoundKey(): string { return 'frost'; }
 
     protected applyUpgrade(): void {
-        // +6 damage, +5% slow per level, at max level: +20 range and 50% slow
-        this.damage = this.getBaseDamage() + this.level * 6;
-        if (this.level >= 3) {
-            this.range = this.getBaseRange() + 20;
-            this.slowPercent = 0.5;
-        } else {
-            this.slowPercent = 0.3 + this.level * 0.05;
-        }
+        const s = AreaTower.STATS.levels[this.level];
+        this.damage = s.damage;
+        this.range = s.range;
+        this.slowPercent = (s.slow as number) / 100;
     }
 
     createAttacks(_targets: Enemy[], allEnemies: Enemy[]) {

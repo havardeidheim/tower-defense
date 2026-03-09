@@ -6,7 +6,7 @@ PRIORITY 1 — Quick Wins (minimal effort, clear benefit)
 ============================================================
 
 A. Extract ITowerInfo Interface
-   Status: NOT DONE
+   Status: DONE
    Files: UIManager.ts:214, InfoDisplay.ts:47
    Both use an anonymous structural type for tower info:
      tower: { getType: () => string; damage: number; range: number; attackSpeed: number; level: number; maxLevel: number }
@@ -14,14 +14,14 @@ A. Extract ITowerInfo Interface
    Effort: Tiny. Impact: Clearer contracts for AI.
 
 B. Fix AreaTower Hardcoded Slow Duration
-   Status: NOT DONE
+   Status: DONE
    File: AreaTower.ts:37
    Passes literal 1600 instead of SLOW_DURATION constant from constants.ts.
    Fix: Import and use SLOW_DURATION.
    Effort: One-line change.
 
 C. Deduplicate Tower Upgrade Costs
-   Status: NOT DONE
+   Status: DONE
    Files: NormalTower.ts:16, AreaTower.ts:18, SpreadTower.ts:18, PoisonTower.ts:19
    All four towers have identical getUpgradeCost(): costs = [40, 80, 120].
    Fix: Move to Tower base class as default implementation.

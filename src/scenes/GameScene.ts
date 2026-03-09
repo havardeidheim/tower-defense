@@ -16,6 +16,7 @@ import { TowerType } from '../ui/TowerButton';
 import { SpellType } from '../ui/SpellButton';
 import { GameButtonType } from '../ui/GameButton';
 import { resources } from '../resources/ResourceLoader';
+import { getTowerStats } from '../entities/towers/TowerStatsConfig';
 import { SaveManager } from '../save/SaveManager';
 import { MenuScene } from './MenuScene';
 import {
@@ -527,10 +528,7 @@ export class GameScene extends Scene {
         }
 
         // Draw range circle
-        const ranges: Record<string, number> = {
-            'Normal': 140, 'Area': 80, 'Spread': 140, 'Poison': 120
-        };
-        const range = ranges[this.placingTower!] || 100;
+        const range = getTowerStats(this.placingTower!).levels[0].range;
         const rangeImg = resources.imageCache.get(`range${range}`);
         if (rangeImg) {
             ctx.globalAlpha = 0.3;
