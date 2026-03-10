@@ -1,14 +1,9 @@
 import { Enemy } from './Enemy';
-import { ENEMY_GOLD_REWARD, NOSLOW_BLOCK_COUNT } from '../../game/constants';
+import { NOSLOW_BLOCK_COUNT } from '../../game/constants';
 
 
 export class NoslowEnemy extends Enemy {
     private blocksRemaining: number = NOSLOW_BLOCK_COUNT;
-
-    constructor(x: number, y: number, healthLevel: number = 0) {
-        super(x, y, healthLevel);
-        this.goldReward = Math.floor(ENEMY_GOLD_REWARD * 1.5);
-    }
 
     getSpriteName(): string {
         return 'vanguard';
@@ -16,6 +11,7 @@ export class NoslowEnemy extends Enemy {
 
     // Noslow uses a different health scaling: 120 + 100*level (not 120 + 120*level)
     protected initStats(): void {
+        this.goldMultiplier = 1.5;
         this.maxHealth = 120 + 100 * this.healthLevel;
         this.health = this.maxHealth;
         this.maxSpeed = 65;

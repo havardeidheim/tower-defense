@@ -74,3 +74,4 @@ export const PROJECTILE_BASE_SPEED = 6;
 
 // Gold rewards per enemy type (base)
 export const ENEMY_GOLD_REWARD = 10;
+export const GOLD_PER_HEALTH_LEVEL = 2;

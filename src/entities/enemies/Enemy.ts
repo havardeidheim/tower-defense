@@ -1,6 +1,6 @@
 import { GameObject } from '../../core/GameObject';
 import { Level, Direction } from '../../level/Level';
-import { TILE_SIZE, POISON_TICK_INTERVAL, POISON_DAMAGE_PER_TICK, ENEMY_GOLD_REWARD } from '../../game/constants';
+import { TILE_SIZE, POISON_TICK_INTERVAL, POISON_DAMAGE_PER_TICK, ENEMY_GOLD_REWARD, GOLD_PER_HEALTH_LEVEL } from '../../game/constants';
 import {
     COLOR_POISON_INDICATOR, COLOR_HEALTH_BG, COLOR_HEALTH_HIGH, COLOR_HEALTH_MID, COLOR_HEALTH_LOW,
 } from '../../game/theme';
@@ -22,6 +22,7 @@ export abstract class Enemy extends GameObject {
     pixelsTraveled: number = 0;
     level: Level | null = null;
     goldReward: number = ENEMY_GOLD_REWARD;
+    protected goldMultiplier: number = 1;
 
     abstract getSpriteName(): string;
     protected abstract initStats(): void;
@@ -32,6 +33,8 @@ export abstract class Enemy extends GameObject {
         this.y = y;
         this.healthLevel = healthLevel;
         this.initStats();
+        this.goldReward = Math.floor(ENEMY_GOLD_REWARD * this.goldMultiplier)
+                        + this.healthLevel * GOLD_PER_HEALTH_LEVEL;
     }
 
     update(deltaTime: number): void {

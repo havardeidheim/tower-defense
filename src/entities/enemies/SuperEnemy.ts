@@ -1,14 +1,10 @@
 import { Enemy } from './Enemy';
-import { ENEMY_GOLD_REWARD, SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
+import { SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 
 export class SuperEnemy extends Enemy {
-    constructor(x: number, y: number, healthLevel: number = 0) {
-        super(x, y, healthLevel);
-        this.goldReward = Math.floor(ENEMY_GOLD_REWARD * 5);
-    }
-
     protected initStats(): void {
+        this.goldMultiplier = 5;
         this.maxHealth = 70 + 70 * this.healthLevel;
         this.health = this.maxHealth;
         this.maxSpeed = 65;
