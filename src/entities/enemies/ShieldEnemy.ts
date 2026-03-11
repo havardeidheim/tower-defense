@@ -4,7 +4,6 @@ import { SHIELD_DAMAGE_REDUCTION } from '../../game/constants';
 
 export class ShieldEnemy extends Enemy {
     protected initStats(): void {
-        this.goldMultiplier = 1.5;
         this.maxHealth = 130 + 130 * this.healthLevel;
         this.health = this.maxHealth;
         this.maxSpeed = 50;

@@ -22,7 +22,6 @@ export abstract class Enemy extends GameObject {
     pixelsTraveled: number = 0;
     level: Level | null = null;
     goldReward: number = ENEMY_GOLD_REWARD;
-    protected goldMultiplier: number = 1;
 
     abstract getSpriteName(): string;
     protected abstract initStats(): void;
@@ -33,8 +32,7 @@ export abstract class Enemy extends GameObject {
         this.y = y;
         this.healthLevel = healthLevel;
         this.initStats();
-        this.goldReward = Math.floor(ENEMY_GOLD_REWARD * this.goldMultiplier)
-                        + this.healthLevel * GOLD_PER_HEALTH_LEVEL;
+        this.goldReward = ENEMY_GOLD_REWARD + this.healthLevel * GOLD_PER_HEALTH_LEVEL;
     }
 
     update(deltaTime: number): void {

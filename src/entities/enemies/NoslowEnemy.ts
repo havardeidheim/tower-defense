@@ -11,7 +11,6 @@ export class NoslowEnemy extends Enemy {
 
     // Noslow uses a different health scaling: 120 + 100*level (not 120 + 120*level)
     protected initStats(): void {
-        this.goldMultiplier = 1.5;
         this.maxHealth = 120 + 100 * this.healthLevel;
         this.health = this.maxHealth;
         this.maxSpeed = 65;

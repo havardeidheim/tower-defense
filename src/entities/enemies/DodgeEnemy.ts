@@ -3,7 +3,6 @@ import { Enemy } from './Enemy';
 
 export class DodgeEnemy extends Enemy {
     protected initStats(): void {
-        this.goldMultiplier = 1.5;
         this.maxHealth = 70 + 70 * this.healthLevel;
         this.health = this.maxHealth;
         this.maxSpeed = 70;
