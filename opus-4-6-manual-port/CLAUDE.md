@@ -114,4 +114,4 @@ npm run build
 
 ## Project Origin
 
-Ported from an original Java tower defense game located in `original-java-game/`. The TypeScript version uses modern web technologies while preserving the original gameplay mechanics.
+Ported from an original Java tower defense game located in `../original-java-game/`. The TypeScript version uses modern web technologies while preserving the original gameplay mechanics.
