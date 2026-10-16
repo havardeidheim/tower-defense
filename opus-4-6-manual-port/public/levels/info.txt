@@ -1,0 +1,62 @@
+How it works:
+ 
+Enemies spawn at the violet swirl.If an enemy reach
+the end of the road,you loose one health.If your 
+health reaches zero, you die. You must build towers 
+that attack the enemies to prevent them from reaching
+the end of the road. Towers can only be built on 
+foundations. You can also use various spells. 
+ 
+There are several types of towers, enemies and spells.
+You can gain information about them by hovering the 
+mouse over the "build tower buttons", the 
+"cast spell buttons" or the different enemies in the 
+"next wave window". The "next wave window" also 
+displays what kind of, and how many enemies will
+apear during the next wave.
+
+To place a tower or cast a spell, click on the button
+of the type of tower/spell you wish to build/cast.
+Right click to cancel whatever you are doing. 
+Building towers consume gold, while casting spells
+consume mana. Gold is gained by slaying enemies, mana
+regenerates automatically. While casting a spell or 
+building a tower, you can cancel by riht clicking 
+anywhere. When you build a tower, towers of that type 
+become more expensive, so don't just build one kind
+of tower.
+ 
+You can select towers by clicking on them. When you 
+have a tower selected, you will see information on
+that particular tower, and you can click on the
+arrow-button, or recycle-button to upgrade or sell 
+the selected tower. 
+
+General advice:
+ 
+Stonetowers and poisontowers are more effective early
+game, while firetowers are very powerfull if upgraded.
+the frosttower is for supporting other towers. 
+Stonetowes are the best for slaying enemies with armor.
+Remember to use your spells, they are important in 
+getting a high rating. Place your towers so they cover 
+as much of the road as possible, placement is the 
+difference between death and five stars!
+ 
+Good luck!
+
+tl:dr
+ 
+Stonetowers and poisontowers are the best early game.
+ 
+Enemies don't just look different from each other.
+ 
+Mouse over "things" in the right window to get info.
+ 
+Some enemies have more health.
+ 
+Click towers for info, arrow to upgrade, recycle to sell.
+ 
+Right click to cancel spells or towers.
+ 
+You can build/cast while the game is paused.

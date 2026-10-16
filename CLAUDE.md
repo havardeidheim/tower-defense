@@ -1,117 +1,27 @@
 # Road Defender: Revenge of the Road
 
-A TypeScript tower defense game ported from the original Java implementation. Players defend against waves of enemies by strategically placing towers along a path.
+A tower defense game, kept here in three versions side by side:
 
-## Technologies
+| Folder | What it is |
+|---|---|
+| `original-java-game/` | The original Java (Swing) game: source, images and level files. The reference for gameplay and balance. |
+| `opus-4-6-manual-port/` | TypeScript port made by Claude Opus 4.6 and then polished by hand. Reworked UI, and some balance changes. Deployed to GitHub Pages. |
+| `full-direct-port/` | TypeScript port written directly from the Java source, as close to the original as possible, including its balance and quirks. |
 
-- **TypeScript** - Type-safe JavaScript with strict compiler settings
-- **Vite** - Fast build tool and dev server (runs on port 8080)
-- **HTML5 Canvas** - For rendering game graphics
-- No external game frameworks - custom game engine implementation
+Each TypeScript port is a self-contained Vite + TypeScript + Canvas project with its own
+`package.json`, `public/` assets and `CLAUDE.md`. Read the `CLAUDE.md` in the folder you are working in.
+Keep changes inside one port unless asked otherwise. The ports do not share code.
 
-## Codebase Structure
-
-```
-src/
-├── game/               # Core game loop and initialization
-│   ├── Game.ts        # Main game class
-│   ├── GameLoop.ts    # Fixed 60 FPS game loop
-│   ├── main.ts        # Entry point
-│   └── constants.ts   # Game constants
-│
-├── core/              # Base classes and utilities
-│   ├── GameObject.ts  # Base class for all game objects
-│   ├── Vector2.ts     # 2D vector math
-│   └── Rectangle.ts   # Collision/bounds helpers
-│
-├── scenes/            # Game state management
-│   ├── Scene.ts       # Base scene class
-│   ├── LoadingScene.ts  # Resource loading screen
-│   ├── MenuScene.ts     # Level select menu
-│   └── GameScene.ts     # Main gameplay scene
-│
-├── entities/
-│   ├── enemies/       # Enemy types (Normal, Fast, Dodge, Shield, Super, Noslow)
-│   ├── towers/        # Tower types (Normal, Area, Spread, Poison)
-│   └── attacks/       # Tower attacks (AreaAttack, projectiles, base classes)
-│
-├── spells/            # Player-castable spells (Lightning, Runestone)
-│
-├── level/             # Level system
-│   ├── Level.ts       # Level grid and tile management
-│   ├── Tile.ts        # Individual tile logic
-│   └── WaveManager.ts # Enemy wave spawning
-│
-├── ui/                # User interface
-│   ├── UIManager.ts   # Coordinates all UI elements
-│   ├── TowerButton.ts # Tower purchase buttons
-│   ├── SpellButton.ts # Spell cast buttons
-│   └── InfoDisplay.ts # Gold/mana/lives display
-│
-├── resources/         # Asset management
-│   ├── ResourceLoader.ts  # Loads all game assets on startup
-│   ├── ImageCache.ts      # Manages PNG sprite images
-│   ├── SoundManager.ts    # Manages WAV audio files
-│   └── LevelLoader.ts     # Parses level txt files
-│
-├── save/              # Persistence
-│   └── SaveManager.ts # Cookie-based save system for level progress
-│
-└── index.html         # Game container and styling
-
-public/                # Static assets (PNG images, WAV sounds, level files)
-```
-
-## Key Concepts
-
-### Game Loop
-- Fixed framerate of 60 FPS
-- Each GameObject implements `update()` and `render()` methods
-- Scene-based architecture for managing game states
-
-### Resource Loading
-- All images (.png) and sounds (.wav) are preloaded on startup
-- Loading screen displays progress
-- Resources are cached in memory for the game session
-
-### Level System
-- Levels defined in txt files with:
-  - Map layout (grid of tiles)
-  - Wave data (enemy types and spawn timing)
-- Player must survive all waves without losing all lives
-
-### Gameplay Mechanics
-- **Gold**: Earned by killing enemies, used to build/upgrade towers
-- **Mana**: Accumulates over time, used to cast spells
-- **Lives**: Lost when enemies reach the goal
-- **Stars**: Awarded based on lives remaining (3 stars = no lives lost)
-
-### Towers
-- Placed on buildable tiles
-- Can be upgraded or sold
-- Different types have unique attack patterns and targets
-
-### Save System
-- Cookie-based persistence
-- Tracks level completion and stars earned
-- No server-side storage
-
-## Development
+## Running
 
 ```bash
-# Install dependencies
-npm install
-
-# Run dev server (localhost:8080)
-npm run dev
-
-# Type check without building
-npm run typecheck
-
-# Build for production
-npm run build
+cd opus-4-6-manual-port && npm install && npm run dev   # http://localhost:8080
+cd full-direct-port && npm install && npm run dev       # http://localhost:8081 (also listens on the network)
 ```
 
-## Project Origin
+Add `-- --host` to the manual port's `npm run dev` to reach it from other machines.
 
-Ported from an original Java tower defense game located in `original-java-game/`. The TypeScript version uses modern web technologies while preserving the original gameplay mechanics.
+## Sounds
+
+The `.wav` files are not in git. Copy them into `public/sounds/` in each port. Without them
+the games run silently.
