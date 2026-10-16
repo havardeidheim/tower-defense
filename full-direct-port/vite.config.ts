@@ -1,8 +1,5 @@
 import { defineConfig } from 'vite'
 
-// Tailscale MagicDNS names for this machine, so http://knurr:8081 works from the tailnet.
-const allowedHosts = ['knurr', '.tail9900fa.ts.net']
-
 export default defineConfig({
   base: './',
   root: 'src',
@@ -16,12 +13,12 @@ export default defineConfig({
     port: 8081,
     strictPort: true,
     host: true,
-    allowedHosts,
+    allowedHosts: true,
   },
   preview: {
     port: 8081,
     strictPort: true,
     host: true,
-    allowedHosts,
+    allowedHosts: true,
   },
 })

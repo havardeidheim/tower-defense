@@ -16,10 +16,11 @@ Keep changes inside one port unless asked otherwise. The ports do not share code
 
 ```bash
 cd opus-4-6-manual-port && npm install && npm run dev   # http://localhost:8080
-cd full-direct-port && npm install && npm run dev       # http://localhost:8081 (also listens on the network)
+cd full-direct-port && npm install && npm run dev       # http://localhost:8081
 ```
 
-Add `-- --host` to the manual port's `npm run dev` to reach it from other machines.
+Both dev servers listen on the network and accept any hostname, so they can be reached
+from other machines (for example `http://knurr:8081` over Tailscale).
 
 ## Sounds
 
